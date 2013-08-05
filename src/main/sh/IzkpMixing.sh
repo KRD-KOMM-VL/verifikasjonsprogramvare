@@ -2,7 +2,7 @@
 #
 # Zero-Knowledge Protocols for E-Vote (ZKPEV).
 #
-# Copyright © 2011, The Norwegian Ministry of Local Government and Regional
+# Copyright © 2013, The Norwegian Ministry of Local Government and Regional
 # Development (KRD).
 #
 # This file is part of ZKPEV.
