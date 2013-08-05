@@ -69,7 +69,6 @@
     <module name="UnusedImports"/>
     <module name="JavadocType">
       <property name="scope" value="public"/>
-      <property name="versionFormat" value="\$Id.*\$"/>
     </module>
     <module name="JavadocMethod">
       <property name="scope" value="public"/>
