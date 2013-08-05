@@ -30,7 +30,6 @@ import java.math.BigInteger;
 /**
  * Class representing a set of factors for an ElGamal vote group.
  *
- * @version $Id: ElGamalVoteGroupFactors.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class ElGamalVoteGroupFactors {
     private final BigInteger p;

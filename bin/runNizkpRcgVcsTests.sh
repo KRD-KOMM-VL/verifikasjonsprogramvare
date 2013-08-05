@@ -27,7 +27,6 @@
 # This script assumes that it is run from the trunk directory, and that the
 # appropriate test files are available in a subdirectory called tests.
 #
-# Version: $Id: runNizkpRcgVcsTests.sh 10997 2011-10-18 13:49:22Z fvl $
 #
 
 VERSION="1.1"

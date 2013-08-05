@@ -33,7 +33,6 @@ import java.math.BigInteger;
 /**
  * Unit tests on Area.
  *
- * @version $Id: AreaUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class AreaUnitTest {
     private static final String MAIN_AREA_PATH = "47.01.0101.010100";

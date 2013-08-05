@@ -38,7 +38,6 @@ import java.net.URL;
 /**
  * Abstract class supporting zero-knowledge proofs.
  *
- * @version $Id: ZeroKnowledgeProof.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public abstract class ZeroKnowledgeProof {
     protected static final Logger LOGGER = initializeLogger();

@@ -30,7 +30,6 @@ import java.util.ArrayList;
 /**
  * Implementation of ResultsList using an ArrayList.
  *
- * @version $Id: ResultsArrayList.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class ResultsArrayList extends ArrayList<Result> implements ResultsList {
     private ResultWriter writer;

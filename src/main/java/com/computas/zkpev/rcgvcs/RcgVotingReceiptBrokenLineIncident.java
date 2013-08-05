@@ -30,7 +30,6 @@ import com.computas.zkpev.BrokenLineIncident;
  * confirming to the format for an RCG voting receipt) in the RCG voting
  * receipts file.
  *
- * @version $Id: RcgVotingReceiptBrokenLineIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class RcgVotingReceiptBrokenLineIncident extends BrokenLineIncident {
     RcgVotingReceiptBrokenLineIncident(String line) {

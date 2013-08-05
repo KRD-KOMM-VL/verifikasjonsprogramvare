@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on the VcsEncryptedVoteNotRegisteredByRcgIncident class.
  *
- * @version $Id: VcsEncryptedVoteNotRegisteredByRcgIncidentUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class VcsEncryptedVoteNotRegisteredByRcgIncidentUnitTest {
     private static final String GIVEN_UUID = "4028806a2fda69fd012fda7a46b10012";

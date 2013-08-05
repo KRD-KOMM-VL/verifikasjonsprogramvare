@@ -29,7 +29,6 @@ import com.computas.zkpev.Incident;
  * Incident relating to an encrypted vote from the VCS retained more than once
  * in the list of cleansed votes.
  *
- * @version $Id: VcsEncryptedVoteRetainedMoreThanOnceIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class VcsEncryptedVoteRetainedMoreThanOnceIncident extends Incident {
     private final VcsEncryptedVote vcsEncryptedVote;

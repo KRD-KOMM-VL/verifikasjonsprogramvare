@@ -7,7 +7,6 @@ import com.computas.zkpev.Incident;
  * Incident relating to an extra encrypted vote in the result of the
  * cleansing server compared to the VCS encrypted votes list.
  *
- * @version $Id: InjectedCleansedVoteLineIncident.java 10836 2011-09-26 11:06:08Z fvl $
  */
 public class InjectedCleansedVoteLineIncident extends Incident {
     private final CleansedVote cleansedVote;

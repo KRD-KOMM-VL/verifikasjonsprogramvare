@@ -35,7 +35,6 @@ import java.math.BigInteger;
 /**
  * Unit tests on VcsEncryptedVoteRetentionCounter.
  *
- * @version $Id: VcsEncryptedVoteRetentionCounterUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class VcsEncryptedVoteRetentionCounterUnitTest {
     private static final String COMMA = ",";

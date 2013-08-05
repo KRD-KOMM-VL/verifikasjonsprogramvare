@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on the DoubleOccurrenceOfRcgVotingReceiptIncident class.
  *
- * @version $Id: DoubleOccurrenceOfRcgVotingReceiptIncidentUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class DoubleOccurrenceOfRcgVotingReceiptIncidentUnitTest {
     private static final String GIVEN_VOTING_RECEIPT = "a01OQllwQjlPNVcrUnk1bFFvYVRoTS9XUStBPQ==";

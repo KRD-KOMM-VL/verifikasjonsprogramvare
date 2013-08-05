@@ -26,7 +26,6 @@
 #
 # This script assumes that it is run from the trunk directory.
 #
-# Version: $Id: createSystemDocumentation.sh 10997 2011-10-18 13:49:22Z fvl $
 #
 
 VERSION="1.1"

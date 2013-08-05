@@ -35,7 +35,6 @@ import org.testng.annotations.Test;
 /**
  * Class testing the memory usage of the creation of the VCS encrypted votes.
  *
- * @version $Id: VcsEncryptedVotesMemoryConsumptionTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class VcsEncryptedVotesMemoryConsumptionTest {
     private static final int ALLOWED_MEMORY_CONSUMPTION = 10000;

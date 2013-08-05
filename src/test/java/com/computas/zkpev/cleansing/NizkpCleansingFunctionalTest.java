@@ -37,7 +37,6 @@ import java.net.URISyntaxException;
 /**
  * Functional tests on NizkpCleansing.
  *
- * @version $Id: NizkpCleansingFunctionalTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class NizkpCleansingFunctionalTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "NizkpCleansingFunctionalTestElGamalProperties.properties";

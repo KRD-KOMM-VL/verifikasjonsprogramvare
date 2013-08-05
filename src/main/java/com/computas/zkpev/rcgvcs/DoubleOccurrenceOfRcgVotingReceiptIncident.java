@@ -28,7 +28,6 @@ import com.computas.zkpev.Incident;
 /**
  * Incident representing the double occurrence of an RCG voting receipt.
  *
- * @version $Id: DoubleOccurrenceOfRcgVotingReceiptIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class DoubleOccurrenceOfRcgVotingReceiptIncident extends Incident {
     private final RcgVotingReceipt rcgVotingReceipt;

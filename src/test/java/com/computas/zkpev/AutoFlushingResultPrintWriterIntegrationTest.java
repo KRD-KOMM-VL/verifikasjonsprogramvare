@@ -34,7 +34,6 @@ import java.io.FileNotFoundException;
 /**
  * Integration tests on the AutoFlushingResultPrintWriter class.
  *
- * @version $Id: AutoFlushingResultPrintWriterIntegrationTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class AutoFlushingResultPrintWriterIntegrationTest {
     private static final String TEST_FILE_NAME = "AutoFlushingResultPrintWriterIntegrationTestFile.txt";

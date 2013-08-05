@@ -41,7 +41,6 @@ import java.util.Random;
  * for these classes is substantial since they retain the ElGamal encryption
  * pairs.
  *
- * @version $Id: VcsEncryptedVotesMemoryConsumptionTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class VcsEncryptedVotesMemoryConsumptionTest {
     private static final int ALLOWED_MEMORY_CONSUMPTION = 30000;

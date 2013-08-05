@@ -30,7 +30,6 @@ import java.math.BigInteger;
 /**
  * Class for the area codes and primes.
  *
- * @version $Id: Area.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class Area extends CsvLineParseable {
     private String path;

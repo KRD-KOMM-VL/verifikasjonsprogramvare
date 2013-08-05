@@ -37,7 +37,6 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Unit test against a decryption line dealing with the zero-knowledge proof specifically.
  *
- * @version $Id: DecryptionLineProofUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class DecryptionLineProofUnitTest {
     private static final String COMMA = ",";

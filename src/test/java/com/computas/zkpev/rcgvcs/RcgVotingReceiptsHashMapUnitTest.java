@@ -34,7 +34,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests against the RcgVotingReceiptsHashMap class.
  *
- * @version $Id: RcgVotingReceiptsHashMapUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class RcgVotingReceiptsHashMapUnitTest {
     private static final String GIVEN_ABSENT_VOTING_RECEIPT = "Absent";

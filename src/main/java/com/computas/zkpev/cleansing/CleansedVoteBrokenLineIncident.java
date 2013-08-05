@@ -30,7 +30,6 @@ import com.computas.zkpev.BrokenLineIncident;
  * confirming to the format for an cleansed encrypted vote) in the cleansed
  * votes file.
  *
- * @version $Id: CleansedVoteBrokenLineIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class CleansedVoteBrokenLineIncident extends BrokenLineIncident {
     CleansedVoteBrokenLineIncident(String line) {

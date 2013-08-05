@@ -31,7 +31,6 @@ import java.util.List;
 /**
  * Interface defining the API for a list of cleansed votes.
  *
- * @version $Id: CleansedVotesList.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public interface CleansedVotesList extends List<CleansedVote>, Collection {
     /**

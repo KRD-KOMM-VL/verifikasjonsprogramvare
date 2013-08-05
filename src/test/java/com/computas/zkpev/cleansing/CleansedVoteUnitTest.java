@@ -34,7 +34,6 @@ import java.math.BigInteger;
 /**
  * Unit tests on CleansedVote.
  *
- * @version $Id: CleansedVoteUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class CleansedVoteUnitTest {
     private static final String COMMA = ",";

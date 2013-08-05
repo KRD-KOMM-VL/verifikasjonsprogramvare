@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests against DecryptionLinesArrayList.
  *
- * @version $Id: DecryptionLinesArrayListUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class DecryptionLinesArrayListUnitTest {
     private DecryptionLinesArrayList list;

@@ -44,7 +44,6 @@ import java.security.NoSuchAlgorithmException;
  * necessary to match it with an RCG voting receipt are retained after
  * construction of the object.
  *
- * @version $Id: VcsEncryptedVote.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class VcsEncryptedVote extends CsvLineParseable {
     static final String UTF_8 = "UTF-8";

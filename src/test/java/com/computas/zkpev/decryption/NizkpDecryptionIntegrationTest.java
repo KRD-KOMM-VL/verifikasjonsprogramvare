@@ -35,7 +35,6 @@ import java.io.IOException;
 /**
  * Integration tests against the NizkpDecryption class.
  *
- * @version $Id: NizkpDecryptionIntegrationTest.java 11011 2011-10-20 08:26:55Z fvl $
  *
  */
 public class NizkpDecryptionIntegrationTest {

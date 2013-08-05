@@ -29,7 +29,6 @@ import com.computas.zkpev.Incident;
  * Incident representing an encrypted vote not being registered with a voting
  * receipt by the RCG.
  *
- * @version $Id: VcsEncryptedVoteNotRegisteredByRcgIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class VcsEncryptedVoteNotRegisteredByRcgIncident extends Incident {
     private final VcsEncryptedVote vcsEncryptedVote;

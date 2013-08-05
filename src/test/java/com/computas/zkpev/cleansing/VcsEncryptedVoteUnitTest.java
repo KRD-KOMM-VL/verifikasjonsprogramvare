@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on the VcsEncryptedVote class.
  *
- * @version $Id: VcsEncryptedVoteUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class VcsEncryptedVoteUnitTest {
     private static final int NO_OF_GIVEN_ENC_VOTE_OPT_IDS = 4;

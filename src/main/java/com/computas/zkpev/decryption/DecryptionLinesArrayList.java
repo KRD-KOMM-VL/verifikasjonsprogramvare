@@ -33,7 +33,6 @@ import java.util.ArrayList;
 /**
  * Implementation of DecryptionLinesList using an ArrayList.
  *
- * @version $Id: DecryptionLinesArrayList.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class DecryptionLinesArrayList extends ArrayList<DecryptionLine>
     implements DecryptionLinesList {

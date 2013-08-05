@@ -35,7 +35,6 @@ import java.math.BigInteger;
 /**
  * Integration tests on the ElGamalZkp class.
  *
- * @version $Id: ElGamalZkpIntegrationTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class ElGamalZkpIntegrationTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "ElGamalZkpIntegrationTestElGamalProperties.properties";

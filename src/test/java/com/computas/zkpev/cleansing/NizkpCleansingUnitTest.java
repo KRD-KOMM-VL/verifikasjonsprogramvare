@@ -33,7 +33,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on NizkpCleansing.
  *
- * @version $Id: NizkpCleansingUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class NizkpCleansingUnitTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Corge";

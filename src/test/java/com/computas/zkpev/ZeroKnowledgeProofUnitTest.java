@@ -33,7 +33,6 @@ import java.io.IOException;
 /**
  * Unit tests against the AbstractZkp class.
  *
- * @version $Id: ZeroKnowledgeProofUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class ZeroKnowledgeProofUnitTest {
     private ZeroKnowledgeProof zkp;

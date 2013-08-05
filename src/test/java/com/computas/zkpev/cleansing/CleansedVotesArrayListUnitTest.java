@@ -33,7 +33,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on CleansedVotesArrayList.
  *
- * @version $Id: CleansedVotesArrayListUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class CleansedVotesArrayListUnitTest {
     private static final String BROKEN_LINE = "*";

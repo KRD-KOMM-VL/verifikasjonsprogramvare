@@ -29,7 +29,6 @@ import java.io.IOException;
 /**
  * Interface representing collections of items.
  *
- * @version $Id: Collection.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public interface Collection {
     /**

@@ -32,7 +32,6 @@ import java.util.List;
  * encrypted votes that have a voting receipt equal to the voting receipt
  * stored in the RCG voting receipt.
  *
- * @version $Id: RcgVotingReceiptCounter.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class RcgVotingReceiptCounter {
     private final RcgVotingReceipt rcgVotingReceipt;

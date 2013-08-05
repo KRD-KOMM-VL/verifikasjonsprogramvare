@@ -31,7 +31,6 @@ import java.util.Map;
 /**
  * Interface for the Map holding all RCG voting receipts.
  *
- * @version $Id: RcgVotingReceiptsMap.java 10998 2011-10-18 14:04:09Z fvl $
  *
  */
 public interface RcgVotingReceiptsMap extends Map<String, RcgVotingReceiptCounter>,

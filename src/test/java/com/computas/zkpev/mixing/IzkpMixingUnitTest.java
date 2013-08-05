@@ -33,7 +33,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on the IzkpMixing class.
  *
- * @version $Id: IzkpMixingUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class IzkpMixingUnitTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Foo";

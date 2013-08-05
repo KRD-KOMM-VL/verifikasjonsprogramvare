@@ -29,7 +29,6 @@ import com.computas.zkpev.ElGamalEncryptionPair;
 /**
  * Class representing a cleansed vote from the list of cleansed votes.
  *
- * @version $Id: CleansedVote.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class CleansedVote extends CsvLineParseable {
     private String contestId;

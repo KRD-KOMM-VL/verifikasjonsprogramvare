@@ -34,7 +34,6 @@ import java.util.List;
  * A class counting how many times a VCS encrypted vote appears in the result
  * file from the Cleansing server.
  *
- * @version $Id: VcsEncryptedVoteRetentionCounter.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class VcsEncryptedVoteRetentionCounter {
     private final VcsEncryptedVote vcsEncryptedVote;

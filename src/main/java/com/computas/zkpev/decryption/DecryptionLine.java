@@ -34,7 +34,6 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Domain object holding all relevant information about a decryption line.
  *
- * @version $Id: DecryptionLine.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class DecryptionLine extends CsvLineParseable {
     private static final String HASHING_ALGORITHM = "SHA-256";

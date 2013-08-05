@@ -43,7 +43,6 @@ import java.util.Properties;
  * result from the cleansing process doesn't contain any votes that were not
  * present in the VCS.
  *
- * @version $Id: NizkpCleansing.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class NizkpCleansing extends ZeroKnowledgeProof {
     private static final String EL_GAMAL_MODULUS_PROPERTY_NAME = "p";

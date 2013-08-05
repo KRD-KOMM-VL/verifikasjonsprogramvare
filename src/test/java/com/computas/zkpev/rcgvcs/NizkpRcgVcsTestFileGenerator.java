@@ -33,7 +33,6 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Class to generate test files for the NizkRcgVcs class.
  *
- * @version $Id: NizkpRcgVcsTestFileGenerator.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public final class NizkpRcgVcsTestFileGenerator {
     private static final int[] TEST_FILE_LENGTHS = new int[] {

@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit test against RCG voting receipts.
  *
- * @version $Id: RcgVotingReceiptUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class RcgVotingReceiptUnitTest {
     private static final String COMMA = ",";

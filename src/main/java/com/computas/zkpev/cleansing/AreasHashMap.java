@@ -33,7 +33,6 @@ import java.util.HashMap;
 /**
  * A class implementing the AreasMap using a HashMap.
  *
- * @version $Id: AreasHashMap.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class AreasHashMap extends HashMap<String, Area> implements AreasMap {
     @Override

@@ -33,7 +33,6 @@ import java.util.List;
 /**
  * Class representing a list of ElGamal vote groups factors.
  *
- * @version $Id: ElGamalVoteGroupsFactors.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class ElGamalVoteGroupsFactors extends ArrayList<ElGamalVoteGroupFactors>
     implements List<ElGamalVoteGroupFactors> {

@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on the RcgVotingReceiptCollisionIncident class.
  *
- * @version $Id: RcgVotingReceiptCollisionIncidentUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class RcgVotingReceiptCollisionIncidentUnitTest {
     private static final String FIRST_VCS_ENCRYPTED_VOTE_UUID = "4028806a2fde06e0012fde40c5aa000e";

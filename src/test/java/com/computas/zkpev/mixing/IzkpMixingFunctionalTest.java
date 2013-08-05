@@ -34,7 +34,6 @@ import org.testng.annotations.Test;
  * file, and that all mixing/audit data sets have correct proofs. A sample
  * database dump is available in the test resources catalog.
  *
- * @version $Id: IzkpMixingFunctionalTest.java 11011 2011-10-20 08:26:55Z fvl $
  *
  */
 public class IzkpMixingFunctionalTest {

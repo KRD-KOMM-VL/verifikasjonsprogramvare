@@ -28,7 +28,6 @@ import com.computas.zkpev.Incident;
 /**
  * Incident relating to an invalid mixing data record.
  *
- * @version $Id: InvalidMixingDataRecordIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class InvalidMixingDataRecordIncident extends Incident {
     static final String INPUT_VOTES_INVALID = "Input votes invalid";

@@ -30,7 +30,6 @@ import java.io.PrintWriter;
 /**
  * ResultWriter using a PrintWriter with automatic flushing enabled.
  *
- * @version $Id: AutoFlushingResultPrintWriter.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class AutoFlushingResultPrintWriter implements ResultWriter {
     private final PrintWriter printWriter;

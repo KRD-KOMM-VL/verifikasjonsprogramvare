@@ -31,7 +31,6 @@ import java.util.List;
  * Incident related to two or more VCS encrypted votes resulting in the same
  * receipt.
  *
- * @version $Id: RcgVotingReceiptCollisionIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class RcgVotingReceiptCollisionIncident extends Incident {
     private final RcgVotingReceipt rcgVotingReceipt;

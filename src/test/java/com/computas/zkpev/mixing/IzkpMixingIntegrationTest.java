@@ -35,7 +35,6 @@ import java.io.IOException;
 /**
  * Integration tests on the IzkpMixing class.
  *
- * @version $Id: IzkpMixingIntegrationTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class IzkpMixingIntegrationTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "IzkpMixingIntegrationTestElGamalProperties.properties";

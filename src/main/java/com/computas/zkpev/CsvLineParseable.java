@@ -32,7 +32,6 @@ import java.util.List;
  * Abstract superclass for domain objects that can be parsed in from a CSV
  * line.
  *
- * @version $Id: CsvLineParseable.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public abstract class CsvLineParseable {
     protected static final String COMMA = ",";

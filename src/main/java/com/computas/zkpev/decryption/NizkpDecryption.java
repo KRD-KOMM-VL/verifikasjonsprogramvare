@@ -36,7 +36,6 @@ import java.security.NoSuchAlgorithmException;
  * Class performing the non-interactive zero-knowledge proof for the correct
  * decryption in the counting server.
  *
- * @version $Id: NizkpDecryption.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class NizkpDecryption extends ElGamalZkp {
     private static final int MIN_NO_OF_PARAMETERS_ALLOWED = 3;

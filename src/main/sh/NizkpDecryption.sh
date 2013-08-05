@@ -24,7 +24,6 @@
 #
 # Script to the non-interactive zero-knowledge protocol proving correct decryption.
 #
-# Version: $Id: NizkpDecryption.sh 10999 2011-10-18 14:06:50Z fvl $
 #
 
 java -cp lib/bsh-2.0b4.jar:lib/commons-codec-1.5.jar:lib/commons-lang-2.6.jar:lib/jcommander-1.12.jar:lib/junit-3.8.1.jar:lib/log4j-1.2.16.jar:lib/snakeyaml-1.6.jar:lib/testng-6.0.1.jar:lib/zkpev-1.1.jar com.computas.zkpev.decryption.NizkpDecryption $@

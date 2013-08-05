@@ -26,7 +26,6 @@ package com.computas.zkpev;
 /**
  * Object representing an Incident that occurred during a proof.
  *
- * @version $Id: Incident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public abstract class Incident implements Result {
     protected static final String COMMA = ",";

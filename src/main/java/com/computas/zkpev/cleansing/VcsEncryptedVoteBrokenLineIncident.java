@@ -30,7 +30,6 @@ import com.computas.zkpev.BrokenLineIncident;
  * confirming to the format for an VCS encrypted vote) in the VCS encrypted
  * votes file.
  *
- * @version $Id: VcsEncryptedVoteBrokenLineIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class VcsEncryptedVoteBrokenLineIncident extends BrokenLineIncident {
     VcsEncryptedVoteBrokenLineIncident(String line) {

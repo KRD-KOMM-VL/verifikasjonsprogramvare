@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on the RcgVotingReceiptBrokenLineIncident class.
  *
- * @version $Id: RcgVotingReceiptBrokenLineIncidentUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class RcgVotingReceiptBrokenLineIncidentUnitTest {
     private static final String SAMPLE_LINE = "*";

@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * Interface for the List holding all the decryption lines from the Counting server.
  *
- * @version $Id: DecryptionLinesList.java 10998 2011-10-18 14:04:09Z fvl $
  *
  */
 public interface DecryptionLinesList extends List<DecryptionLine>, Collection {

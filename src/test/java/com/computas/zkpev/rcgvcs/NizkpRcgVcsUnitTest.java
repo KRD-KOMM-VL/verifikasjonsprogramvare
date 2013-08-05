@@ -33,7 +33,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests against the NizkpRcgVcs class.
  *
- * @version $Id: NizkpRcgVcsUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class NizkpRcgVcsUnitTest {
     private static final String RCG_FILE_NAME = "Foo";

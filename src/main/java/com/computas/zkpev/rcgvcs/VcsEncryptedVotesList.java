@@ -31,7 +31,6 @@ import java.util.List;
 /**
  * Interface for the List holding all the encrypted votes from the VCS.
  *
- * @version $Id: VcsEncryptedVotesList.java 10998 2011-10-18 14:04:09Z fvl $
  *
  */
 public interface VcsEncryptedVotesList extends List<VcsEncryptedVote>, Collection {

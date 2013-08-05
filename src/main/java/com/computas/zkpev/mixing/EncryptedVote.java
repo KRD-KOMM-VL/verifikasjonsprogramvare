@@ -29,7 +29,6 @@ import com.computas.zkpev.ElGamalEncryptionPair;
 /**
  * Class representing an encrypted vote in the context of the mixing process.
  *
- * @version $Id: EncryptedVote.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class EncryptedVote extends CsvLineParseable {
     private ElGamalEncryptionPair elGamalEncryptionPair;

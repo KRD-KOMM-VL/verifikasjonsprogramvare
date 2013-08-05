@@ -32,7 +32,6 @@ import java.util.ArrayList;
 /**
  * Unit tests on the ResultsArrayList class.
  *
- * @version $Id: ResultsArrayListUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class ResultsArrayListUnitTest {
     /**

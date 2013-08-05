@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on DoubleOccurrenceOfCleansedVoteLineIncident.
  *
- * @version $Id: VcsEncryptedVoteRetainedMoreThanOnceIncidentUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class VcsEncryptedVoteRetainedMoreThanOnceIncidentUnitTest {
     private static final int THREE = 3;

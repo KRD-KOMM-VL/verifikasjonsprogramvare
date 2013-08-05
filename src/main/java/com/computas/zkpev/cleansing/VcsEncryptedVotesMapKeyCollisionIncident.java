@@ -33,7 +33,6 @@ import com.computas.zkpev.Incident;
  * a problem in the VCS, which results in the duplication of a VCS encrypted
  * vote.
  *
- * @version $Id: VcsEncryptedVotesMapKeyCollisionIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class VcsEncryptedVotesMapKeyCollisionIncident extends Incident {
     private final String uuid1;

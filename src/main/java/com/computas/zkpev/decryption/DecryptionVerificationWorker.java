@@ -32,7 +32,6 @@ import java.security.NoSuchAlgorithmException;
 /**
  * A worker thread performing the decryption verification.
  *
- * @version $Id: DecryptionVerificationWorker.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class DecryptionVerificationWorker extends ElGamalVerificationWorker {
     private final NizkpDecryption master;

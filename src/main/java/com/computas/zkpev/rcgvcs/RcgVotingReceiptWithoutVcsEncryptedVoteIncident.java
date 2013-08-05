@@ -29,7 +29,6 @@ import com.computas.zkpev.Incident;
  * An incident representing the situation in which no VCS encrypted vote
  * matched the RCG voting receipt.
  *
- * @version $Id: RcgVotingReceiptWithoutVcsEncryptedVoteIncident.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class RcgVotingReceiptWithoutVcsEncryptedVoteIncident extends Incident {
     private final RcgVotingReceipt rcgVotingReceipt;

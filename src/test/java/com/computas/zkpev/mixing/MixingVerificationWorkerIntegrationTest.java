@@ -40,7 +40,6 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Integration tests on the MixingVerificationWorker.
  *
- * @version $Id: MixingVerificationWorkerIntegrationTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class MixingVerificationWorkerIntegrationTest {
     private static final BigInteger SAMPLE_P = new BigInteger(

@@ -33,7 +33,6 @@ import java.io.IOException;
 /**
  * Functional tests against the NizkpRcgVcs class.
  *
- * @version $Id: NizkpRcgVcsFunctionalTest.java 11011 2011-10-20 08:26:55Z fvl $
  *
  */
 public class NizkpRcgVcsFunctionalTest {

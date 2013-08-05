@@ -34,7 +34,6 @@ import java.math.BigInteger;
 /**
  * Unit tests dealing with the compression of the VCS encrypted votes.
  *
- * @version $Id: VcsEncryptedVoteCompressionUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class VcsEncryptedVoteCompressionUnitTest {
     private static final BigInteger AREA_PRIME = new BigInteger("41143");

@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on the IncorrectMixingProofIncident class.
  *
- * @version $Id: IncorrectMixingProofIncidentUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class IncorrectMixingProofIncidentUnitTest {
     private static final String SAMPLE_MIXING_UUID = "050ec7482895429dbae04688bf22fa57";

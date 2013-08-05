@@ -32,7 +32,6 @@ import java.io.UnsupportedEncodingException;
 /**
  * Facade to Apache's commons-lang ArrayUtils for byte array concatenation.
  *
- * @version $Id: ByteArrayUtils.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public final class ByteArrayUtils {
     static final String UTF_8 = "UTF-8";

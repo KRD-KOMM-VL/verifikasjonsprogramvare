@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests against the VcsEncryptedVote class.
  *
- * @version $Id: VcsEncryptedVoteEqualityUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class VcsEncryptedVoteEqualityUnitTest {
     private static final String COMMA = ",";

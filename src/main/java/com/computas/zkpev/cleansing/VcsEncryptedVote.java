@@ -31,7 +31,6 @@ import java.math.BigInteger;
 /**
  * Class representing an encrypted vote from the VCS.
  *
- * @version $Id: VcsEncryptedVote.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class VcsEncryptedVote extends CsvLineParseable {
     private String uuid;

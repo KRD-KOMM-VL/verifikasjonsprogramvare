@@ -39,7 +39,6 @@ import java.net.URISyntaxException;
 /**
  * Integration tests on NizkpCleansing.
  *
- * @version $Id: NizkpCleansingIntegrationTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class NizkpCleansingIntegrationTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "NizkpCleansingIntegrationTestElGamalProperties.properties";

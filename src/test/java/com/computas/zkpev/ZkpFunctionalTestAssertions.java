@@ -28,7 +28,6 @@ import static org.testng.Assert.assertTrue;
 /**
  * A set of assertions used by the functional tests for the ZKPs.
  *
- * @version $Id: ZkpFunctionalTestAssertions.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public final class ZkpFunctionalTestAssertions {
     private ZkpFunctionalTestAssertions() {

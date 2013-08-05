@@ -31,7 +31,6 @@ import java.io.IOException;
  * Class performing the non-interactive zero-knowledge proof between
  * the Return Code Generator (RCG) and the Vote Collector Server (VCS).
  *
- * @version $Id: NizkpRcgVcs.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class NizkpRcgVcs extends ZeroKnowledgeProof {
     private static final int MIN_NO_OF_PARAMETERS_ALLOWED = 2;

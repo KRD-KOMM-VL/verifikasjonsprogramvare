@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 /**
  * Unit tests on AreasHashMap.
  *
- * @version $Id: AreasHashMapUnitTest.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class AreasHashMapUnitTest {
     private static final String MAIN_AREA_PATH = "47.01.0101.010100";

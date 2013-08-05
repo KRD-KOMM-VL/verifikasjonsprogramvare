@@ -36,7 +36,6 @@ import java.util.HashMap;
 /**
  * An implementation of VcsEncryptedVotesMap using a HashMap.
  *
- * @version $Id: VcsEncryptedVotesHashMap.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class VcsEncryptedVotesHashMap extends HashMap<String, VcsEncryptedVoteRetentionCounter>
     implements VcsEncryptedVotesMap {

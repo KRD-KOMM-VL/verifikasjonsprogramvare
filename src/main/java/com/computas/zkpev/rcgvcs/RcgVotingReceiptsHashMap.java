@@ -33,7 +33,6 @@ import java.util.HashMap;
 /**
  * Implementation of the RcgVotingReceiptsMap using a HashMap.
  *
- * @version $Id: RcgVotingReceiptsHashMap.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class RcgVotingReceiptsHashMap extends HashMap<String, RcgVotingReceiptCounter>
     implements RcgVotingReceiptsMap {

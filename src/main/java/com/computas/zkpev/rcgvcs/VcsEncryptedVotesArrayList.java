@@ -33,7 +33,6 @@ import java.util.ArrayList;
 /**
  * Implementation of VcsEncryptedVotesList using an ArrayList.
  *
- * @version $Id: VcsEncryptedVotesArrayList.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class VcsEncryptedVotesArrayList extends ArrayList<VcsEncryptedVote>
     implements VcsEncryptedVotesList {

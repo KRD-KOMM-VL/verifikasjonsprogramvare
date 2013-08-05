@@ -25,7 +25,6 @@
 # Script to unpack the result of the cleansing process, and copy all ballot
 # files into one directory.
 #
-# Version: $Id: UnpackCleansedFiles.sh 10999 2011-10-18 14:06:50Z fvl $
 #
 
 SOURCEFILE=$1

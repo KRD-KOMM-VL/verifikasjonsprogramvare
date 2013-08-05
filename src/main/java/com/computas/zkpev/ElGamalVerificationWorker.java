@@ -28,7 +28,6 @@ import java.math.BigInteger;
 /**
  * Superclass for verification workers using ElGamal.
  *
- * @version $Id: ElGamalVerificationWorker.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class ElGamalVerificationWorker extends Thread {
     private final BigInteger p;

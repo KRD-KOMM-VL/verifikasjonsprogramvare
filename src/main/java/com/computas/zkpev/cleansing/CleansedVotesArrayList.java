@@ -33,7 +33,6 @@ import java.util.ArrayList;
 /**
  * Implementation of CleansedVotesList using an ArrayList.
  *
- *@version $Id: CleansedVotesArrayList.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public class CleansedVotesArrayList extends ArrayList<CleansedVote>
     implements CleansedVotesList {

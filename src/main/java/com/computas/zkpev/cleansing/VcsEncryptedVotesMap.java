@@ -30,7 +30,6 @@ import java.util.Map;
 /**
  * An interface defining the how a map with VCS encrypted votes should behave.
  *
- * @version $Id: VcsEncryptedVotesMap.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public interface VcsEncryptedVotesMap extends Map<String, VcsEncryptedVoteRetentionCounter>,
     Collection {

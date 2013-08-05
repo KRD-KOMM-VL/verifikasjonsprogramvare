@@ -28,7 +28,6 @@ import java.util.Random;
 /**
  * Class to generate random VCS encrypted vote lines.
  *
- * @version $Id: VcsEncryptedVoteLineGenerator.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public class VcsEncryptedVoteLineGenerator {
     private static final int NO_OF_ELECTION_EVENTS = 3;

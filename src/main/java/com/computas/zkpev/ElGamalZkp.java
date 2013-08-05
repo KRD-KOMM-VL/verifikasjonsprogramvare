@@ -32,7 +32,6 @@ import java.util.Properties;
 /**
  * Superclass for ElGamal-based zero-knowledge proofs.
  *
- * @version $Id: ElGamalZkp.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public abstract class ElGamalZkp extends ZeroKnowledgeProof {
     private static final String EL_GAMAL_PUBLIC_KEY_PROPERTY_NAME = "publicKey";

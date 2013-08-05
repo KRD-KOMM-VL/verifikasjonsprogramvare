@@ -28,7 +28,6 @@ import static org.testng.Assert.assertTrue;
  * Helper class with assertions about memory consumption for the memory
  * consumption tests.
  *
- * @version $Id: MemoryConsumptionAssertions.java 11011 2011-10-20 08:26:55Z fvl $
  */
 public final class MemoryConsumptionAssertions {
     private static final Runtime RUNTIME = Runtime.getRuntime();

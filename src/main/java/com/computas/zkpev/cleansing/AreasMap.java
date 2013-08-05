@@ -30,7 +30,6 @@ import java.util.Map;
 /**
  * Interface defining a map with Areas.
  *
- * @version $Id: AreasMap.java 10998 2011-10-18 14:04:09Z fvl $
  */
 public interface AreasMap extends Map<String, Area>, Collection {
     /**
