@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: pmd.xml 10996 2011-10-18 13:43:20Z fvl $ -->
+<!-- Zero-Knowledge Protocols for E-Vote (ZKPEV)
+
+     Copyright © 2011, The Norwegian Ministry of Local Government and Regional
+     Development (KRD)
+
+     This file is part of ZKPEV.
+
+     ZKPEV is free software: you can redistribute it and/or modify it under the
+     terms of the GNU General Public License as published by the Free Software
+     Foundation, either version 3 of the License, or (at your option) any later
+     version.
+
+     ZKPEV is distributed in the hope that it will be useful, but WITHOUT ANY
+     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+     FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     details.
+     
+     You can find a copy of the GNU General Public License in
+     /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
+     http://www.gnu.org/licenses/. -->
+<ruleset name="Custom PMD ruleset for RiCX" xmlns="http://pmd.sf.net/ruleset/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd" xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+  <description>
+    This is the custom PMD ruleset for ZKPEV.
+  </description>
+  <rule ref="rulesets/basic.xml"/>
+  <rule ref="rulesets/braces.xml"/>
+  <rule ref="rulesets/codesize.xml">
+    <!-- The rule TooManyMethods is configured explicitly below -->
+    <exclude name="TooManyMethods"/>
+  </rule>
+  <rule ref="rulesets/codesize.xml/TooManyMethods">
+    <properties>
+      <!-- The default value of the property maxmethods is 10 -->
+      <property name="maxmethods" value="20"/>
+    </properties>
+  </rule>
+  <rule ref="rulesets/clone.xml"/>
+  <rule ref="rulesets/controversial.xml/AssignmentInOperand"/>
+  <rule ref="rulesets/controversial.xml/DontImportSun"/>
+  <rule ref="rulesets/design.xml">
+    <!-- The rule EmptyMethodInAbstractClassShouldBeAbstract has a bug in PMD 4.1, generating false positives. See e.g. PMD tracker 1855409 -->
+    <exclude name="EmptyMethodInAbstractClassShouldBeAbstract"/>
+    <!-- The rule UncommentedEmptyMethod suffers from the same problem as EmptyMethodInAbstractClassShouldBeAbstract, see above. -->
+    <exclude name="UncommentedEmptyMethod"/>
+  </rule>
+  <rule ref="rulesets/imports.xml"/>
+  <rule ref="rulesets/logging-java.xml"/>
+  <rule ref="rulesets/naming.xml/AvoidDollarSigns"/>
+  <rule ref="rulesets/naming.xml/AvoidFieldNameMatchingMethodName"/>
+  <rule ref="rulesets/naming.xml/AvoidFieldNameMatchingTypeName"/>
+  <rule ref="rulesets/naming.xml/BooleanGetMethodName"/>
+  <rule ref="rulesets/naming.xml/ClassNamingConventions"/>
+  <rule ref="rulesets/naming.xml/MethodNamingConventions"/>
+  <rule ref="rulesets/naming.xml/MethodWithSameNameAsEnclosingClass"/>
+  <rule ref="rulesets/naming.xml/NoPackage"/>
+  <rule ref="rulesets/naming.xml/PackageCase"/>
+  <rule ref="rulesets/naming.xml/ShortMethodName"/>
+  <rule ref="rulesets/naming.xml/SuspiciousConstantFieldName"/>
+  <rule ref="rulesets/naming.xml/SuspiciousEqualsMethodName"/>
+  <rule ref="rulesets/naming.xml/SuspiciousHashcodeMethodName"/>
+  <rule ref="rulesets/naming.xml/VariableNamingConventions"/>
+  <rule ref="rulesets/optimizations.xml/AddEmptyString"/>
+  <rule ref="rulesets/optimizations.xml/AvoidArrayLoops"/>
+  <rule ref="rulesets/optimizations.xml/SimplifyStartsWith"/>
+  <rule ref="rulesets/optimizations.xml/UnnecessaryWrapperObjectCreation"/>
+  <rule ref="rulesets/optimizations.xml/UseArrayListInsteadOfVector"/>
+  <rule ref="rulesets/optimizations.xml/UseArraysAsList"/>
+  <rule ref="rulesets/optimizations.xml/UseStringBufferForStringAppends"/>
+  <rule ref="rulesets/strings.xml">
+    <!-- The rule AvoidDuplicateLiterals is already handled by Checkstyle's MultipleStringLiterals check -->
+    <exclude name="AvoidDuplicateLiterals"/>
+  </rule>
+  <rule ref="rulesets/unusedcode.xml"/>
+</ruleset>

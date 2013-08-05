@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id: site.xml 11008 2011-10-20 06:56:03Z fvl $ -->
+<!-- Zero-Knowledge Protocols for E-Vote (ZKPEV)
+
+     Copyright © 2011, The Norwegian Ministry of Local Government and Regional
+     Development (KRD)
+
+     This file is part of ZKPEV.
+
+     ZKPEV is free software: you can redistribute it and/or modify it under the
+     terms of the GNU General Public License as published by the Free Software
+     Foundation, either version 3 of the License, or (at your option) any later
+     version.
+
+     ZKPEV is distributed in the hope that it will be useful, but WITHOUT ANY
+     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+     FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     details.
+     
+     You can find a copy of the GNU General Public License in
+     /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
+     http://www.gnu.org/licenses/. -->
+<project name="Maven">
+<!--
+  <bannerLeft>
+    <name>Maven</name>
+    <src>http://maven.apache.org/images/apache-maven-project.png</src>
+    <href>http://maven.apache.org/</href>
+  </bannerLeft>
+  <bannerRight>
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  </bannerRight>
+-->  
+  <body>
+    <links>
+      <item name="E-valg 2011-prosjektet" href="http://www.regjeringen.no/nb/dep/krd/prosjekter/e-valg-2011-prosjektet.html"/>
+      <item name="GNU Licenses" href="http://www.gnu.org/licenses/"/>
+    </links>
+    <menu name="ZKPEV">
+      <item name="Introduction" href="index.html"/>
+      <item name="NIZKP RCG-VCS" href="NIZKP_RCG-VCS.html"/>
+      <item name="NIZKP Cleansing" href="NIZKP_Cleansing.html"/>
+      <item name="IZKP Mixing" href="IZKP_Mixing.html"/>
+      <item name="NIZKP Decryption" href="NIZKP_Decryption.html"/>
+      <item name="License (GPL v3.0)" href="gpl-3.0-standalone.html"/>
+    </menu>
+    <menu ref="reports"/>
+  </body>
+</project>

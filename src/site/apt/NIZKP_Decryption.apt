@@ -1,0 +1,289 @@
+~~ Zero-Knowledge Protocols for E-Vote (ZKPEV).
+~~
+~~ Copyright © 2011, The Norwegian Ministry of Local Government and Regional
+~~ Development (KRD).
+~~
+~~ This file is part of ZKPEV.
+~~
+~~ ZKPEV is free software: you can redistribute it and/or modify it under the
+~~ terms of the GNU General Public License as published by the Free Software
+~~ Foundation, either version 3 of the License, or (at your option) any later
+~~ version.
+~~
+~~ ZKPEV is distributed in the hope that it will be useful, but WITHOUT ANY
+~~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+~~ A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+~~   
+~~ You can find a copy of the GNU General Public License in
+~~ /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
+~~ http://www.gnu.org/licenses/.
+
+~~ $Id: NIZKP_Decryption.apt 11000 2011-10-18 14:10:56Z fvl $
+
+NIZKP Decryption
+
+* Introduction
+
+  This proof checks the Schnorr signature based zero-knowledge proof on
+  each of the votes decrypted by the Electoral Board in the Counting Server.
+  This proof demonstrates
+  that the correct private key has been used to decrypt the encrypted votes.
+  This proof is non-interactive, and can therefore be run over a CSV file
+  extracted from
+  the Counting server database containing both encrypted votes, decrypted votes
+  and their zero-knowledge proofs.   The following figure
+  illustrates the relation of this proof to the architecture of the E-vote
+  system architecture.
+  
+[images/NIZKP_Decryption.png] The relation of NIZKP Decryption to the architecture 
+                            of the E-vote system architecture.
+                           
+* Basic Algorithm
+
+  This proof requires the following two inputs:
+
+    * The encrypted and decrypted votes from the counting server, together with
+      their zero-knowledge proofs.
+  
+    * The ElGamal encryption system properties.
+    
+    * The ElGamal public key of the Electoral Board.
+
+  The algorithm produces only one output:
+
+    * A log file containing a message for every violation found
+  
+  The following pseudocode outlines the basic algorithm for this proof.
+
+    [[1]] <Log File> := Open a log file
+  
+    [[]] <Votes File> := Open the file with the encrypted votes, decrypted votes
+                         and the zero-knowledge proofs from the counting server
+                       
+    [[]] <<Until>> end of <Votes File> reached <<do>>
+  
+         [[1]] <Line> := Read the next line from the <Votes File>
+       
+         [[]] <Encrypted Vote> := Extract the encrypted vote from the <Line>
+       
+         [[]] <Decrypted Vote> := Extract the decrypted vote from the <Line>
+       
+         [[]] <Zero-Knowledge Proof> := Extract the zero-knowledge proof from the
+                                        <Line>
+       
+         [[]] <Correct decryption> := Verify the <Zero-Knowledge Proof> against
+                                      <Encrypted Vote> and <Decrypted Vote>
+       
+         [[]] <<If>> <<not>> <Correct decryption> <<then>>
+       
+              [[1]] Log to <Log File> that the <Decrypted Vote> wasn't a correct
+                    decryption of the <Encrypted Vote> according to the
+                    <Zero-Knowlegde Proof>
+
+    [[]] Close the <Log File>
+
+    [[]] Close the <Votes File>
+    
+  The verification of the zero-knowledge proof is done as follows:
+  
+    [[1]] Extract the <Encrypted Voting Options> as a set of (<a>[<i>], <b>[<i>])
+    
+    [[]] Extract the <Decrypted Voting Options> as <Bo>
+    
+    [[]] Extract the <Zero-Knowledge Proof> as (<s>, <c>)
+    
+    [[]] <Ai> := 1
+
+    [[]] <Bi> := 1
+    
+    [[]] <<For each>> (<a>[<i>], <b>[<i>]) <<in>> <Encrypted Voting Options> <<do>>
+    
+         [[1]] <Ai> := <Ai> * <a>[<i>]
+
+         [[]] <Bi> := <Bi> * <b>[<i>]
+                  
+    [[]] <x> := SHA-256(<Bo>)
+    
+    [[]] <<If>> <Bo> \u2264 <Bi> <<then>>
+         
+         [[1]] <h1> := ((<Bi> / <Bo>) ^ <x>) * <h>
+    
+         [[]] <g1> := (<Ai> ^ <x>) * <g>
+    
+    [[]] <<Else>>
+   
+         [[1]] <h1> := ((<Bo> / <Bi>) ^ <x>) * <h>
+    
+         [[]] <g1> := ((1 / <Ai>) ^ <x>) * <g>
+
+    [[]] <w1> := (<g1> ^ <s>) * (<h1> ^ <c>)
+    
+    [[]] <c1> := SHA-256(<w1> || <g> || <h>)
+    
+    [[]] Verify that <c1> == <c>
+    
+  In this alhorithm, <h> is the public ElGamal key of the Electoral Board, and
+  <g> the generator of the cyclic group.
+  
+  Notice that the decrypted vote is retrieved as <Bo>, the product of the 
+  decrypted voting options <C>[<i>].
+
+* Parallellization
+
+  In order to speed up the verification of a large batch of decryption lines,
+  the basic algorithm has been parallellized in the following manner:
+  
+    * All decryption lines are read from the decryption lines file.
+    
+    * After that, a number of worker threads is set up. These worker threads
+      will do the verification of the decryption lines. By default, the number
+      of worker threads is equal to the number of processors available to
+      the Java virtual machine, as returned by the method <<<Runtime.getRuntime().availableProcessors()>>>.
+      
+    * When a worker thread starts to run, it request a work batch from its
+      master, i.e. a set with decryption lines. By default, the batch size is
+      set to 300.
+      
+    * When all decryption lines have been handed out to worker threads, the
+      master returns empty batches of work in order to signal that there is no
+      more work to be done. This is the signal to the worker threads to exit.
+      
+    * When all worker threads have exited, the master thread will finish up all
+      the work, which includes closing the log file.
+      
+  Notice that the verification of the proof of a decryption line is not linked
+  to any other calculation, and that the speed-up factor therefore can be 
+  expected to be close to the number of processors over which the work is
+  distributed. It should also be noted that the method <<<Runtime.getRuntime().availableProcessors()>>>
+  will not always give a correct estimation of the speed-up factor, since it
+  may return the number of (hardware) threads in the system instead of the number
+  of processors. It is the number of processors, not hardware threads, that is
+  of importance in the case at hand.
+  
+* Running the Program
+
+  The program can be run using the script <<<NizkpDecryption.sh>>>. A correct
+  invocation of the script looks like this:
+  
+-------------------------------------------------------------------------------------------------------------
+NizkpDecryption.sh <ElGamalPropertiesFileName> <ElGamalPublicKeyFileName> <DecryptionFileName> [<ResultsFileName>]
+-------------------------------------------------------------------------------------------------------------
+
+  The arguments are as follows:
+  
+    * <<<ElGamalPropertiesFileName>>>, the name of the file where the program
+      can find the ElGamal encryption system properties.
+      
+    * <<<ElGamalPublicKeyFileName>>>, the name of the file where the program can
+      fing the ElGamal public key of the Electoral Board.
+  
+    * <<<DecryptionFileName>>>, the name of the file where the program can find
+      the decryption lines.
+    
+    * <<<ResultsFileName>>>, the name of the file where the program can write the results
+      to. This argument is optional; if it is not provided, no results will be
+      written to a file.
+  
+  The following is an example of a correct invocation of the program:
+  
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties NizkpDecryptionFunctionalTestElGamalPublicKey.properties NizkpDecryptionFunctionalTestDecryptionFile.csv Results.csv
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  The following invocation will do the same thing, but will not write the 
+  results to a file:
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties NizkpDecryptionFunctionalTestElGamalPublicKey.properties NizkpDecryptionFunctionalTestDecryptionFile.csv
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Input
+
+** ElGamal Encryption System Properties
+
+   The first input file is a properties file containing all the properties
+   defining the ElGamal encryption system used for the encryption of the votes:
+   
+     * <<<p>>>: The modulus for the multiplicative group in which <G> is
+       defined. (<<<BigInteger>>>)
+
+     * <<<q>>>: The order of the cyclic group <G>. (<<<BigInteger>>>)
+
+     * <<<generator>>>: The generator for the cyclic group <G>.
+       (<<<BigInteger>>>)
+     
+** ElGamal Public Key
+
+   The second input file is a properties file containing the ElGamal public key
+   of the Electoral Board:
+   
+     * <<<publicKey>>>: The public key <h>. (<<<BigInteger>>>)
+
+** Decryption File
+
+   The third input file is a comma-separated values (CSV) file, with the
+   following fields in the following order:
+  
+     * <<<ELECTIONEVENTID>>>: The election event of the ballot. (<<<String>>>)
+     
+     * <<<ELECTIONID>>>: The election of the ballot. (<<<String>>>)
+     
+     * <<<CONTESTID>>>: The contest of the ballot. (<<<String>>>)
+     
+     * <<<ENCRYPTED_VOTEOPTIDS>>>: The ballot encrypted option identifiers.
+       (<<<byte[]>>>)
+     
+     * <<<DECRYPTED_VOTEOPTIDS>>>: The product of the ballot decrypted option
+       identifiers. (<<<BigInteger>>>)
+     
+     * <<<SIGNATURE>>>: The Schnorr signature proof. (<<<byte[]>>>)
+     
+* Output
+
+  The output of this program is a result file, listing all incidents that
+  occurred during its execution. The following is an overview over the incidents
+  the program can detect:
+
+    * <<<DecryptionFileBrokenLineIncident>>>: The decryption file contained a 
+      line that didn't conform to the format. The results
+      file will show the first eighty characters of the line, commas being
+      replaced by apostrophes.
+      
+    * <<<DecryptionLineWithIncorrectProofIncident>>>: The decryption file
+      contained a line for which the zero-knowledge proof was incorrect. The
+      results file will show the election event ID, the election ID, the contest
+      ID, the encrypted voting options, the decrypted voting options and the
+      incorrect Schnorr signature proof.
+
+* Sample Files
+  
+  Three sample files containing the ElGamal encryption properties, the ElGamal
+  public key and three decryption lines are provided with this program. The 
+  decryption lines include a broken line, a line with a correct proof and a line
+  with an incorrect proof.
+
+  Use the following command from the command-line in order to run the program
+  against the three sample files, directing all output to a file called
+  <<<Results.csv>>>:
+  
+----------------------------------------------------------------------------------------------------------------  
+./NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties NizkpDecryptionFunctionalTestElGamalPublicKey.properties NizkpDecryptionFunctionalTestDecryptionFile.csv Results.csv
+----------------------------------------------------------------------------------------------------------------
+
+  The program should then output the following information to the console:
+  
+----------------------------------------------------------------------------------------------------
+INFO - Results file Results.csv opened for writing.
+INFO - Loading the decryption lines from NizkpDecryptionFunctionalTestDecryptionFile.csv.
+INFO - All decryption lines from the Counting Server loaded.
+INFO - Setting up 4 worker threads.
+INFO - Results file Results.csv closed for writing; wrote 2 events to it.
+INFO - Done.
+----------------------------------------------------------------------------------------------------
+
+  The content of the file <<<Results.csv>>> should look like this:
+
+----------------------------------------------------
+DecryptionFileBrokenLineIncident,*
+DecryptionLineWithIncorrectProofIncident,999901,01,000004,MzY2MDI1Njg4NTgzMDQ5OTQ5NTE2NTQ2ODU5NTAzNjQxMDQxNzUzMDMyODE3NDM2#n#MDM5ODc4OTgwODYxNzgxOTU4Mjk4Mjg3Mjc0MzMyMzI1MDExNzA2NTc0NzA2Mzkw#n#NDQwMzcyMjQ5MjE4MzAxNTUxMDA5NjY2ODA0ODYzNDc4MTE4NjI4OTM4NzE2MzM2#n#MDEwNTk0NzY0NzUzNTM2OTAxNTgyNTE1MDEyMTgwNjUwMDI4OTg2MTQ1Nzk3ODMx#n#OTMyNjkzODAxNjA0NTUyODA1NDQ1OTY2MTcwNTgyNTkxNTM4NzMyNDg4NTA2Mzg4#n#MzIzMzk2MzUyNDQ4MTQzNjUwMzE2NDc2MDgwMjQwMjY3NTc3NjMyMzgyMTY5OTMz#n#MTU1MjIyNzg0MTU2Njk4ODU0OTE1NTE5MzQxODA4OTk3MDIwODg0NTAxNzA4MTY2#n#NzY5Mjk2ODc2NTE1NDYwNTM5MDAxNDM1MTI0NDk1Mzk5MjgzMTQ2NTU4ODk0NTM1#n#NjM3MDA4NTMwMDM5MjgyMjAwMTI4NzQ2NTYxNDEyMzE5OTc4MDM3OTUxMzk1NTkz#n#Mzg0Mzg1MjMwNDAyNzk0NjMyNzE4NDE2MTg4OTk5NDMyNTM1MzA3NDU0MjIwODU2#n#ODQ5NDU0NzYxODg0MDU2NzI1NzgyMTczMTkzNzM5NjQyMjg3MDI2ODI0NTY0OTc1#n#MTcwOTQxNTUyMTY3MTI2NzE0OTY1MTI5NTI3ODYwMTUwODg0MjE0NjUyNzUzNTg3#n#MjczMTkyODc3MjczMzM2NzMyNTEwNDE3MjM5MjIzMDA4MTY3ODI3MnwyMjQ5NDA3#n#MjA0NzM4OTYzNzc0OTc0MTI2NzIzODA1MzQ0ODM5ODMzOTkyMTY2MzEzNTIzNDI3#n#MDY3NDE0MDgwOTMyNDgxNzQ2MDMzNTA4NzM3NTgxNDc5MTY1MzY1MzYwNDIwOTY0#n#MDA0MjI3NjEzNjA3MzU4MTE1ODc0MDY2MDA3NTM0NjIwNjcyMjU5NTQ5MTEzMDUy#n#NTI2MjM3NjU2NDY4MTg3OTQ0OTIwNjMxODc1NjQ2OTU0MTEyOTkxNDA0OTAxNDIx#n#NTkwNDU1MDEwODA1ODM4ODE3OTUxMDgwNjY2MDI0MTkwNTQ0NTcwMTc4NTcwNTgy#n#NjUwMDkxMzg4MTI5ODg0Mjk3MzcxMTAwNzgyMzIxNzc0OTUzNjU0OTYxMDE2MDM2#n#OTE5NDI0MjQzODQ0NTMxMDA3MzYwMzg5NDUzMTQ2MjM2NjM0NTczNTk2MzgyOTk3#n#MzA0NDY2NjU1MjE1OTE4OTc0ODg3NjM3MzkwMDkwMjgxMzczNTk4NDAyNjE2MDU0#n#NDgyNzI5Mzg3MzYwMDkzNzAyODgwMDEwNjU0Nzg5MjA4MTUwMzAwOTk2NTE0MDA0#n#Njk0NzQyNzY4NzYxMjA0MDM2NDU2ODUzMDIzMDU2NjU3OTQ4NjY2NjI4MzEyNTg5#n#MjM0NjYzMTQ3NDEzOTg4ODgyNjM4OTMzMzIzODY2NjcyMzM2ODg2NzE5MjU3MTUx#n#NzU4MDQyNDYzNDM0MzMyMTQ1ODI2MzgwMTgxMjg4NTM2MTM2MjMwNDM2OTcxMzAx#n#OTUzMTE3OTIzNjcyMzQ1NzUzMjg4MjgzMzkwMDcwNTU5MQ==#,92413907,OTgxMzYzNTc0Mjk2MzcxMjg0MTQyMzQzMjQ2MTA3ODQ5Mzc3NzYyNDI1NDIxMjg0NDY0MTUyNTczMDU2MTc4MTIzNjIwNTIzMTE5MHwtMjQyNjQ1NTkwNzk0NjE5NTE4NDI3MTA1ODM4MzEwNjA1MzcxODg2NjUzMTUxMjkxMDgyMzUwMzE5MjAxOTI5MzkwNzQ3MDU3NzkyNjk0NTk3MTYzMDU4Mzk4NTMyODA3MDMyNDcxODU1MzE0NTkwMzMwMzkzNDk4Mjc1NTYyMTA5MzQ0MTkwOTM1MTcwOTkyODU3MjQ5NjI1MjA0NTEzMTI3NTkxNzM5MjkyNDM5OTQzNDUxNTgyNDk0OTk3ODE5MDU0MzM4NDk0MTM1NDk5OTQ4OTIzMjMwMjk3NzA3NjcxMTA5NDUxNjc0OTg4NDU0MTUwNzkyMDYyNjk5MzkyOTM2ODMyNjI3MzEyMzc2ODUxMDE1ODIzMjU2NTM0MDkyNzYwNjk3MDUzMDUzMzczMDM0Nzg2MzIzNDAwOTg5MjY3MzAyNDg0MzE3NzYwMjQ5ODMxMDg2NTUwMjY0NDgxNzYyNzA5NDE4MjUyODU0MzM3OTY2MjY0NzM3NDgxMTg5Njg3MzUzODkxNDU0NzQ2MjY3OTA2OTgyNTE4Njk5NjI4MDg3MTEyMTQ1MzA3NjY1NzQwNzg3NTQ3MzA4NzM2ODMwNjgzNDIyMTQwMjk4OTg0ODQ2MTA4ODM2ODQwOTM5NTEyMTgzNDk0OTk2Njg2OTEzNzczMTI3OTM5MTI4NzMzNjQ5MjgzNjY3OTE3MzM0NDEyNDQ4MDQ3MjYzNTY3Nzg1MDM1NzIxNTE3NjM5MTM5NDQ3MjkyMjYwNjk2NzI5MDk1MjU0NDAxMjY3ODE2ODQ0OTUyNDgxOTY0ODQ1Mzk2MTM1MTI2NjQ2MTEyMDQzMDY4NzQyMDUwNTQwNzUwODcxNjg4OTM0OTk3MTY0ODM2MzMxMTAyNDg3OTM4NjUxMzY2NDMxMzUxNjE2ODYxMzYwNTYzfG51bGw=
+----------------------------------------------------

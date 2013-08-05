@@ -1,0 +1,356 @@
+~~ Zero-Knowledge Protocols for E-Vote (ZKPEV).
+~~
+~~ Copyright © 2011, The Norwegian Ministry of Local Government and Regional
+~~ Development (KRD).
+~~
+~~ This file is part of ZKPEV.
+~~
+~~ ZKPEV is free software: you can redistribute it and/or modify it under the
+~~ terms of the GNU General Public License as published by the Free Software
+~~ Foundation, either version 3 of the License, or (at your option) any later
+~~ version.
+~~
+~~ ZKPEV is distributed in the hope that it will be useful, but WITHOUT ANY
+~~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+~~ A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+~~   
+~~ You can find a copy of the GNU General Public License in
+~~ /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
+~~ http://www.gnu.org/licenses/.
+
+~~ $Id: IZKP_Mixing.apt 11000 2011-10-18 14:10:56Z fvl $
+
+IZKP Mixing
+
+* Introduction
+
+  This proof checks the Schnorr signature based zero-knowledge proofs on
+  the mix-nodes. This proof demonstrates that the mix-node has decrypted and
+  encrypted groups of votes it has received as input correctly. This proof is
+  interactive, and requires communication with the databases of the mix-nodes.
+  The following figure
+  illustrates the relation of this proof to the architecture of the E-vote
+  system architecture.
+  
+[images/IZKP_Mixing.png] The relation of IZKP Mixing to the architecture of
+                           the E-vote system architecture.
+ 
+* Basic Algorithm
+
+  This proof requires the following three inputs:
+
+    * The input and the output to each of the mixing nodes, together with the
+      grouping of these votes and the zero-knowledge proofs for correct mixing.
+  
+    * The ElGamal encryption system properties.
+    
+    * The ElGamal public key of the Electoral Board.
+
+  The algorithm produces only one output:
+
+    * A log file containing a message for every violation found
+  
+  The following pseudocode outlines the basic algorithm for this proof.
+
+    [[1]] <Log File> := Open a log file
+  
+    [[]] <Mixing Database> := Open a connection to the database containing the
+    						  information from the mixing process
+                       
+    [[]] <<For each>> <Mixing Node Dataset> <<in>> <Mixing Database> <<do>>
+  
+         [[1]] <Input Votes> := Extract the encrypted votes used as input from
+         	   the <Mixing Node Dataset>
+       
+         [[]] <Output Votes> := Extract the encrypted votes used as output from
+              the <Mixing Node Dataset>
+
+         [[]] <Input Votes Grouping> := Extract the division of the
+              <Input Votes> into subgroups from the <Mixing Node Dataset>
+
+         [[]] <Output Votes Grouping> := Extract the division of the
+              <Output Votes> into subgroups from the <Mixing Node Dataset>
+            
+         [[]] <Zero-Knowledge Proofs> := Extract the zero-knowledge proofs per
+              subgroup from the <Mixing Node Dataset>
+              
+         [[]] <<For each>> <Subgroup> <<in>> <Input Votes Grouping> <<do>>
+              
+              [[1]] <Input Votes Subgroup> := Extract the input votes from
+                    <Input Votes> belonging to this <Subgroup>
+       
+              [[]] <Output Votes Subgroup> := Extract the output votes from
+                   <Output Votes> belonging to this <Subgroup>
+              
+              [[]] <Zero-knowledge Proof> := Extract the zero-knowledge proof
+                   from <Zero-Knowledge Proofs> for this <Subgroup>
+                   
+              [[]] <Correct mixing> := Verify the <Zero-knowledge Proof> against
+                   the <Input Votes Subgroup> and <Output Votes Subgroup>
+       
+              [[]] <<If>> <<not>> <Correct mixing> <<then>>
+       
+                   [[1]] Log to <Log File> that the <Mixing Node Dataset> wasn't
+                         correctly mixed according to the <Zero-Knowledge Proofs>
+
+    [[]] Close the <Log File>
+
+    [[]] Close the <Mixing Database>
+    
+  The verification of the zero-knowledge proofs is done as follows:
+
+    [[1]] <Ai> := 1
+
+    [[]] <Bi> := 1
+  
+    [[]] <<For each>> <Input Vote> <<in>> <Input Votes Subgroup> <<do>>
+    
+          [[1]] Extract the <Input Voting Options> as a set of (<a>[<i>], <b>[<i>])
+
+          [[]] <<For each>> (<a>[<i>], <b>[<i>]) <<in>> <Input Voting Options> <<do>>
+    
+               [[1]] <Ai> := <Ai> * <a>[<i>]
+
+               [[]] <Bi> := <Bi> * <b>[<i>]
+
+    [[]] <Ao> := 1
+
+    [[]] <Bo> := 1
+
+    [[]] <<For each>> <Output Vote> <<in>> <Output Votes Subgroup> <<do>>
+    
+          [[1]] Extract the <Output Voting Options> as a set of (<a>[<i>], <b>[<i>])
+
+          [[]] <<For each>> (<a>[<i>], <b>[<i>]) <<in>> <Output Voting Options> <<do>>
+    
+               [[1]] <Ao> := <Ai> * <a>[<i>]
+
+               [[]] <Bo> := <Bi> * <b>[<i>]
+      
+    [[]] Extract the <Zero-Knowledge Proof> as (<s>, <c>)
+                  
+    [[]] <x> := SHA-256(<Ai> || <Ao> || <Bi> || <Bo> || <g> || <h>)
+    
+    [[]] <h1> := ((<Bo> / <Bi>) ^ <x>) * (<Ao> / <Ai>)
+  
+    [[]] <g1> := (<h> ^ <x>) * <g>
+
+    [[]] <w1> := (<g1> ^ <s>) * (<h1> ^ <c>)
+    
+    [[]] <c1> := SHA-256(<w1> || <g> || <h>)
+    
+    [[]] Verify that <c1> == <c>
+    
+  In this alhorithm, <h> is the public ElGamal key of the Electoral Board, and
+  <g> the generator of the cyclic group.
+
+* Parallellization
+
+  The algorithm can easily be parallellized performing the verification of the
+  zero-knowledge proofs for each mixing node data set in a separate threads.
+  Notice that the zero-knowledge proofs in one mixing node data set aren't 
+  related to the zero-knowledge proofs in another mixing node data set. The
+  speed-up factor therefore can be expected to be close to the number of
+  processors over which the many threads will be distributed.
+
+* Running the Program
+
+  The program can be run using the script <<<IzkpMixing.sh>>>. A correct
+  invocation of the script looks like this:
+  
+-------------------------------------------------------------------------------------------------------------
+IzkpMixing.sh <ElGamalPropertiesFileName> <ElGamalPublicKeyFileName> <DatabasePropertiesFileName> [<ResultsFileName>]
+-------------------------------------------------------------------------------------------------------------
+
+  The arguments are as follows:
+  
+    * <<<ElGamalPropertiesFileName>>>, the name of the file where the program
+      can find the ElGamal encryption system properties.
+      
+    * <<<ElGamalPublicKeyFileName>>>, the name of the file where the program can
+      fing the ElGamal public key of the Electoral Board.
+  
+    * <<<DatabasePropertiesFileName>>>, the name of the file where the program can find
+      the properties needed to access the database.
+    
+    * <<<ResultsFileName>>>, the name of the file where the program can write the results
+      to. This argument is optional; if it is not provided, no results will be
+      written to a file.
+  
+  The following is an example of a correct invocation of the program:
+  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+IzkpMixing.sh IzkpMixingFunctionalTestElGamalProperties.properties IzkpMixingFunctionalTestElGamalPublicKey.properties IzkpMixingDatabaseProperties.properties Results.csv
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  The following invocation will do the same thing, but will not write the 
+  results to a file:
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+IzkpMixing.sh IzkpMixingFunctionalTestElGamalProperties.properties IzkpMixingFunctionalTestElGamalPublicKey.properties IzkpMixingDatabaseProperties.properties
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Input
+
+** ElGamal Encryption System Properties
+
+   The first input file is a properties file containing all the properties
+   defining the ElGamal encryption system used for the encryption of the votes:
+   
+     * <<<p>>>: The modulus for the multiplicative group in which <G> is
+       defined. (<<<BigInteger>>>)
+
+     * <<<q>>>: The order of the cyclic group <G>. (<<<BigInteger>>>)
+
+     * <<<generator>>>: The generator for the cyclic group <G>.
+       (<<<BigInteger>>>)
+     
+** ElGamal Public Key
+
+   The second input file is a properties file containing the ElGamal public key
+   of the Electoral Board:
+   
+     * <<<publicKey>>>: The public key <h>. (<<<BigInteger>>>)
+
+** Database Properties
+
+   The thrird input file is a properties file containing the properties needed
+   to connect to the database:
+   
+     * <<<databasename>>>: The name of the database. (<<<String>>>)
+     
+     * <<<username>>>: The username needed to access the database. (<<<String>>>)
+     
+     * <<<password>>>: The password corresponding to the <<<username>>>. (<<<String>>>)
+
+* Output
+
+  The output of this program is a result file, listing all incidents that
+  occurred during its execution. The following is an overview over the incidents
+  the program can detect:
+
+    * <<<IncorrectMixingProofIncident>>>: The mixing database contained a
+      mixing/audit data for which the zero-knowledge proof was incorrect. The
+      results file will show the mixing UUID, the audit UUID and the vote group
+      for the zero-knowledge proof that was incorrect.
+      
+    * <<<InvalidAuditDataRecordIncident>>>: The mixing database contained an
+      audit data record that could not be read. The results file will show the
+      UUID of the audit data record, and a cause why the audit data record could
+      not be read. The three causes that have been defined are:
+      
+      * <<<Input vote groups invalid>>>.
+      
+      * <<<Output vote groups invalid>>>.
+      
+      * <<<Reencryption proofs invalid>>>. Note that this case is different from
+        the incident reported as an <<<IncorrectMixingProofIncident>>>: here,
+        there was a problem while trying to read the reencryption proof, whereas
+        in the case of an <<<IncorrectMixingProofIncident>>>, the reencryption
+        proof could be read, but was incorrect.
+        
+   * <<<InvalidMixingDataRecordIncident>>>: The mixing database contained an
+      mixing data record that could not be read. The results file will show the
+      UUID of the mixing data record, and a cause why the mixing data record could
+      not be read. The two causes that have been defined are:
+
+      * <<<Input votes invalid>>>.
+      
+      * <<<Output votes invalid>>>.
+
+* Sample Files
+
+  Three sample files containing the ElGamal encryption properties, the ElGamal
+  public key and the database properties are provided with this program.
+
+  Use the following command from the command-line in order to run the program
+  against the three sample files, directing all output to a file called
+  <<<Results.csv>>>:
+  
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+./IzkpMixing.sh IzkpMixingFunctionalTestElGamalProperties.properties IzkpMixingFunctionalTestElGamalPublicKey.properties IzkpMixingDatabaseProperties.properties Results.csv
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  The program should then output the following information to the console:
+  
+----------------------------------------------------------------------------------------------------
+INFO - Results file Izkp.csv opened for writing.
+INFO - Loading the mixing data from mxmanagertest.
+INFO - All mixing data from the Mixing Server loaded.
+INFO - 4 worker threads set up.
+INFO - Worker for mixing/audit dataset a13868a6b6fd4b78a6b65e3840be9ad6/c3c5c17c5ba246438e942539429926bd finished; all proofs were correct.
+INFO - Worker for mixing/audit dataset f450bba1a10946b4acf7a14224003027/2c7268b07f234edc98563946864c10f8 finished; all proofs were correct.
+INFO - Worker for mixing/audit dataset 398abc84d00149b9b94b1193b484e3b1/f9045bf144aa4547a97aba54dbd86c95 finished; all proofs were correct.
+INFO - Worker for mixing/audit dataset 766ae3944f3744f1b059d865fadda924/050ec7482895429dbae04688bf22fa57 finished; all proofs were correct.
+INFO - Results file Izkp.csv closed for writing; wrote 0 events to it.
+INFO - Done.
+----------------------------------------------------------------------------------------------------
+
+  In this case, the content of the file <<<Results.csv>>> should be empty. If
+  problems were found, it will typically look like this:
+
+----------------------------------------------------
+IncorrectMixingProofIncident,daacc2e43c6044589d5525749a8b0ef0,050ec7482895429dbae04688bf22fa57,0
+IncorrectMixingProofIncident,90b37ec02d6846aaae0a31253b6a00a6,c3c5c17c5ba246438e942539429926bd,0
+IncorrectMixingProofIncident,2ce8cf95411b49999112565a7fe50094,2c7268b07f234edc98563946864c10f8,0
+InvalidMixingDataRecordIncident,766ae3944f3744f1b059d865fadda924,Input votes invalid
+InvalidMixingDataRecordIncident,a13868a6b6fd4b78a6b65e3840be9ad6,Input votes invalid
+----------------------------------------------------
+
+* Database Installation
+
+  In contrast to the two other proofs, this proof runs against a database.
+  Follow the following instructions in order to get a dump from the mixing
+  database installed locally:
+  
+** Install PostgreSQL 9.1
+
+  The following instructions will install PostgreSQL 9.1 on Ubuntu 11.04 (as per
+  31 August 2011):
+  
+  * Add the PostgreSQL PPA repository: <<<sudo add-apt-repository ppa:pitti/postgresql>>>.
+  
+  * Update APT: <<<sudo apt-get update>>>.
+  
+  * Install PostgreSQL 9.1: <<<sudo apt-get install postgresql>>>
+  
+** Configure PostgreSQL
+
+  Configure PostgreSQL such that it is ready for the database dump file to be
+  restored. This involved creating a user and creating the target database.
+    
+  * Create and set-up the user <<<usertestmxsmanager>>> as follows:
+
+---------------------------------------------------------------
+$ sudo -u postgres createuser -P usertestmxsmanager
+Enter password for new role: 
+Enter it again: 
+Shall the new role be a superuser? (y/n) n
+Shall the new role be allowed to create databases? (y/n) n
+Shall the new role be allowed to create more new roles? (y/n) n
+---------------------------------------------------------------
+    
+  * Create a target database for the dump using <<<sudo -u postgres createdb mxmanagertest>>>.
+
+** Restore the Database
+  
+  Finally, you can restore the database dump into the newly created database. 
+  If the database dump is a so-called plain dump, you
+  can use the following command to do this: <<<sudo -u postgres psql mxmanagertest -f mxsmdump1>>>.
+  This command should be issued from the catalog where the file with the
+  database dump (<<<mxsmdump1>>>) is located. If the database dump is a so-called
+  custom dump, you can use the following command instead from the same 
+  catalog: <<<sudo -u postgres pg_restore -d mxmanagertest mxsmdump1>>>.
+  
+** Re-restoring the Database
+
+  You can re-restore a database, i.e. restore the database to the same
+  PostgreSQL database instance by dropping the database instance first (<<<sudo -u postgres dropdb mxmanagertest>>>), 
+  re-creating (<<<sudo -u postgres createdb mxmanagertest>>>) it and then
+  restoring it once again from the dump (<<<sudo -u postgres psql mxmanagertest -f mxsmdump1>>> or <<<sudo -u postgres ps_restore -d mxmanagertest mxsmdump1>>>).
+    
+** pgAdmin III
+
+  Optionally, you may want to install pgAdmin III to administer the database.
+  You can install it using <<<sudo apt-get install pgadmin3>>>, and then launch
+  it issuing <<<pgadmin3>>> at the command line.
