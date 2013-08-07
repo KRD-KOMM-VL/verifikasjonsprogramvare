@@ -212,6 +212,26 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>0.29</version>
+        <configuration>
+          <targetClasses>
+            <param>com.computas.zkpev.*</param>
+          </targetClasses>
+          <targetTests>
+            <param>com.computas.zkpev.*</param>
+          </targetTests>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>mutationCoverage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.2</version>
