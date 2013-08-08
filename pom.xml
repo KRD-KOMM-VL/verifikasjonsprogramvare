@@ -70,7 +70,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
- 
   <pluginRepositories>
     <pluginRepository>
       <id>apache.snapshots</id>
@@ -145,6 +144,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.0.1</version>
         <configuration>
           <rulesets>
             <ruleset>pmd.xml</ruleset>
@@ -223,13 +223,13 @@
             <param>com.computas.zkpev.*</param>
           </targetTests>
         </configuration>
-        <executions>
+        <!-- executions>
           <execution>
             <goals>
               <goal>mutationCoverage</goal>
             </goals>
           </execution>
-        </executions>
+        </executions -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
