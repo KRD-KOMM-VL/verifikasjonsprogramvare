@@ -45,10 +45,15 @@ public class ZeroKnowledgeProofUnitTest {
         zkp = new ZeroKnowledgeProof(new String[] {  }) {
                     @Override
                     protected void parseArguments(String[] arguments) {
+                        // No implementation needed as part of the unit test.
                     }
 
+                    /**
+                     * No need to do anything for unit test purposes.
+                     */
                     @Override
                     protected void run() throws IOException {
+                        // No implementation needed as part of the unit test.
                     }
                 };
     }
