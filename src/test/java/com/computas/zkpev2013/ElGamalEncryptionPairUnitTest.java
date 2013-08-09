@@ -22,7 +22,6 @@
  */
 package com.computas.zkpev2013;
 
-import org.junit.Assert;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
@@ -76,7 +75,7 @@ public class ElGamalEncryptionPairUnitTest {
      */
     @Test
     public void constructorWithStringBehavesWell() {
-        Assert.assertEquals(pair,
+        assertEquals(pair,
             new ElGamalEncryptionPair(
                 (PUBLIC_KEY_COMPONENT + "|" + MESSAGE_COMPONENT).getBytes()));
     }

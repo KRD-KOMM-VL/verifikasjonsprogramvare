@@ -74,7 +74,7 @@ public class ResultsArrayListUnitTest {
         implements ResultWriter {
         @Override
         public void close() {
-        	// No implementation needed as part of the unit test.
+            // No implementation needed as part of the unit test.
         }
 
         @Override

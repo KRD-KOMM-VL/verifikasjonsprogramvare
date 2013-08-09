@@ -66,8 +66,8 @@ public class ElGamalZkpIntegrationTest {
 
                     @Override
                     protected void run() throws Exception {
-                    	// No implementation needed as part of the integration test.
-                    	}
+                        // No implementation needed as part of the integration test.
+                    }
                 };
     }
 

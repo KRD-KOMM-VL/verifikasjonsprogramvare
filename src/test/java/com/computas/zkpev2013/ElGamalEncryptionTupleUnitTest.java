@@ -23,7 +23,7 @@
 package com.computas.zkpev2013;
 
 import org.apache.commons.lang.StringUtils;
-import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
 import org.testng.annotations.BeforeMethod;
@@ -31,7 +31,8 @@ import org.testng.annotations.Test;
 
 import java.math.BigInteger;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -41,14 +42,8 @@ import java.util.ArrayList;
 public class ElGamalEncryptionTupleUnitTest {
     private static final BigInteger PUBLIC_KEY_COMPONENT = new BigInteger(
             "1234");
-    private static final ArrayList<BigInteger> MESSAGE_COMPONENTS = new ArrayList<BigInteger>() {
-
-            {
-                add(new BigInteger("1231"));
-                add(new BigInteger("4131"));
-            }
-        };
-
+    private static final List<BigInteger> MESSAGE_COMPONENTS = Arrays.asList(new BigInteger(
+                "1231"), new BigInteger("4131"));
     private static final BigInteger MODULUS = new BigInteger("7919");
     private static final BigInteger MESSAGE_COMPONENT_CONVERTED = new BigInteger(
             "1263");
@@ -157,12 +152,7 @@ public class ElGamalEncryptionTupleUnitTest {
     public void mustNotBeEqualToAnotherElGamalEncryptionToupleWithAnotherMessageComponent() {
         assertFalse(touple.equals(
                 new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT,
-                    new ArrayList<BigInteger>() {
-
-                {
-                    add(BigInteger.ONE);
-                }
-            })));
+                    Arrays.asList(BigInteger.ONE))));
     }
 
     /**
