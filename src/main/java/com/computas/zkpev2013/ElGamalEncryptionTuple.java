@@ -60,7 +60,7 @@ public class ElGamalEncryptionTuple {
      * @param messageComponents The list of message components of the ElGamal encryption tuple.
      */
     public ElGamalEncryptionTuple(BigInteger publicKeyComponent,
-                                  List<BigInteger> messageComponents) {
+        List<BigInteger> messageComponents) {
         this.publicKeyComponent = publicKeyComponent;
         this.messageComponents = messageComponents;
     }

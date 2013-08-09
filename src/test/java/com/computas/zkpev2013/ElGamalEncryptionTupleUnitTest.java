@@ -23,14 +23,15 @@
 package com.computas.zkpev2013;
 
 import org.apache.commons.lang.StringUtils;
+import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
+import java.util.ArrayList;
 
 
 /**
@@ -78,7 +79,7 @@ public class ElGamalEncryptionTupleUnitTest {
         assertEquals(touple,
             new ElGamalEncryptionTuple(
                 (PUBLIC_KEY_COMPONENT + "#" +
-                StringUtils.join(MESSAGE_COMPONENTS, "#")+"#").getBytes()));
+                StringUtils.join(MESSAGE_COMPONENTS, "#") + "#").getBytes()));
     }
 
     /**
