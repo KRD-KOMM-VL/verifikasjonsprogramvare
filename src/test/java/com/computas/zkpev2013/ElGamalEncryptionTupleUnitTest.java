@@ -47,14 +47,14 @@ public class ElGamalEncryptionTupleUnitTest {
     private static final BigInteger MODULUS = new BigInteger("7919");
     private static final BigInteger MESSAGE_COMPONENT_CONVERTED = new BigInteger(
             "1263");
-    private ElGamalEncryptionTuple touple;
+    private ElGamalEncryptionTuple tuple;
 
     /**
      * Creates an ElGamalEncryptionTuple to run the tests on.
      */
     @BeforeMethod
-    public void createElGamalEncryptionTouple() {
-        touple = new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT,
+    public void createElGamalEncryptiontuple() {
+        tuple = new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT,
                 MESSAGE_COMPONENTS);
     }
 
@@ -63,7 +63,7 @@ public class ElGamalEncryptionTupleUnitTest {
      */
     @Test
     public void constructorMustSetPublicKeyComponentCorrectly() {
-        assertEquals(touple.getPublicKeyComponent(), PUBLIC_KEY_COMPONENT);
+        assertEquals(tuple.getPublicKeyComponent(), PUBLIC_KEY_COMPONENT);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ElGamalEncryptionTupleUnitTest {
      */
     @Test
     public void constructorWithStringBehavesWell() {
-        assertEquals(touple,
+        assertEquals(tuple,
             new ElGamalEncryptionTuple(
                 (PUBLIC_KEY_COMPONENT + "#" +
                 StringUtils.join(MESSAGE_COMPONENTS, "#") + "#").getBytes()));
@@ -82,7 +82,7 @@ public class ElGamalEncryptionTupleUnitTest {
      */
     @Test
     public void constructorMustSetMessageComponentCorrectly() {
-        assertEquals(touple.getMessageComponents(), MESSAGE_COMPONENTS);
+        assertEquals(tuple.getMessageComponents(), MESSAGE_COMPONENTS);
     }
 
     /**
@@ -90,7 +90,7 @@ public class ElGamalEncryptionTupleUnitTest {
      */
     @Test
     public void mustBeEqualToItself() {
-        assertEquals(touple, touple);
+        assertEquals(tuple, tuple);
     }
 
     /**
@@ -98,7 +98,7 @@ public class ElGamalEncryptionTupleUnitTest {
      */
     @Test
     public void mustHaveSameHashCodeAsItself() {
-        assertEquals(touple.hashCode(), touple.hashCode());
+        assertEquals(tuple.hashCode(), tuple.hashCode());
     }
 
     /**
@@ -107,7 +107,7 @@ public class ElGamalEncryptionTupleUnitTest {
     @Test
     public void mustNotBeEqualToNull() {
         Object nullObject = null;
-        assertFalse(touple.equals(nullObject));
+        assertFalse(tuple.equals(nullObject));
     }
 
     /**
@@ -115,15 +115,15 @@ public class ElGamalEncryptionTupleUnitTest {
      */
     @Test
     public void mustNotBeEqualToAnObjectOfAnotherClass() {
-        assertFalse(touple.equals(this));
+        assertFalse(tuple.equals(this));
     }
 
     /**
      * Verifies that a pair is equal to another pair having the same components.
      */
     @Test
-    public void mustBeEqualToAnotherElGamalEncryptionToupleWithTheSameComponents() {
-        assertEquals(touple,
+    public void mustBeEqualToAnotherElGamalEncryptiontupleWithTheSameComponents() {
+        assertEquals(tuple,
             new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT, MESSAGE_COMPONENTS));
     }
 
@@ -131,8 +131,8 @@ public class ElGamalEncryptionTupleUnitTest {
      * Verifies that a pair has the same hash code as another pair with the same components.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherElGamalEncryptionToupleWithTheSameComponents() {
-        assertEquals(touple.hashCode(),
+    public void mustHaveSameHashCodeAsAnotherElGamalEncryptiontupleWithTheSameComponents() {
+        assertEquals(tuple.hashCode(),
             new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT, MESSAGE_COMPONENTS).hashCode());
     }
 
@@ -140,8 +140,8 @@ public class ElGamalEncryptionTupleUnitTest {
      * Verifies that a pair is not equal to another pair with another different public key component.
      */
     @Test
-    public void mustNotBeEqualToAnotherElGamalEncryptionToupleWithAnotherPublicKeyComponent() {
-        assertFalse(touple.equals(
+    public void mustNotBeEqualToAnotherElGamalEncryptiontupleWithAnotherPublicKeyComponent() {
+        assertFalse(tuple.equals(
                 new ElGamalEncryptionTuple(BigInteger.ONE, MESSAGE_COMPONENTS)));
     }
 
@@ -149,18 +149,18 @@ public class ElGamalEncryptionTupleUnitTest {
      * Verifies that a pair is not equal to another pair with another different message component.
      */
     @Test
-    public void mustNotBeEqualToAnotherElGamalEncryptionToupleWithAnotherMessageComponent() {
-        assertFalse(touple.equals(
+    public void mustNotBeEqualToAnotherElGamalEncryptiontupleWithAnotherMessageComponent() {
+        assertFalse(tuple.equals(
                 new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT,
                     Arrays.asList(BigInteger.ONE))));
     }
 
     /**
-     * Verifies that a touple correctly converts to an ElgamalEncryptionPair.
+     * Verifies that a tuple correctly converts to an ElgamalEncryptionPair.
      */
     @Test
     public void convertToElGamalEncryptionPairCalculation() {
-        assertEquals(touple.convertToPair(MODULUS),
+        assertEquals(tuple.convertToPair(MODULUS),
             new ElGamalEncryptionPair(PUBLIC_KEY_COMPONENT,
                 MESSAGE_COMPONENT_CONVERTED));
     }
