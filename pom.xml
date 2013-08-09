@@ -213,7 +213,7 @@
       <plugin>
         <groupId>org.pitest</groupId>
         <artifactId>pitest-maven</artifactId>
-        <version>0.29</version>
+        <version>0.30</version>
         <configuration>
           <targetClasses>
             <param>com.computas.zkpev.*</param>
@@ -221,14 +221,15 @@
           <targetTests>
             <param>com.computas.zkpev.*</param>
           </targetTests>
+          <mutationThreshold>80</mutationThreshold>
         </configuration>
-        <!-- executions>
+        <executions>
           <execution>
             <goals>
               <goal>mutationCoverage</goal>
             </goals>
           </execution>
-        </executions -->
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
