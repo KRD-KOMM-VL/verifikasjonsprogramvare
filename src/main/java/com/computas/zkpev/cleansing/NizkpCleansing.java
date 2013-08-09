@@ -93,8 +93,9 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
 
         for (VcsEncryptedVoteRetentionCounter vcsEncryptedVoteRetentionCounter : vcsEncryptedVotes.values()) {
             checkVcsEncryptedVoteRetentionCounter(vcsEncryptedVoteRetentionCounter);
+            noOfVcsEncryptedVoteRetentionCounterChecked++;
 
-            if ((++noOfVcsEncryptedVoteRetentionCounterChecked % TICKS_TO_LOG_NO_OF_VCS_ENCRYPTED_VOTE_RETENTION_COUNTERS_CHECKED) == 0) {
+            if ((noOfVcsEncryptedVoteRetentionCounterChecked % TICKS_TO_LOG_NO_OF_VCS_ENCRYPTED_VOTE_RETENTION_COUNTERS_CHECKED) == 0) {
                 NizkpCleansing.getLogger()
                               .info(String.format(
                         "Checked %d cleansed votes against the encrypted votes from the VCS so far.",
@@ -112,8 +113,9 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
         for (CleansedVote cleansedVote : cleansedEncryptedVotes) {
             checkCleansedVoteAgainstVcsEncryptedVotes(cleansedVote,
                 vcsEncryptedVotes, areas, modulus);
+            noOfCleansedVotesChecked++;
 
-            if ((++noOfCleansedVotesChecked % TICKS_TO_LOG_NO_OF_CLEANSED_VOTES_CHECKED) == 0) {
+            if ((noOfCleansedVotesChecked % TICKS_TO_LOG_NO_OF_CLEANSED_VOTES_CHECKED) == 0) {
                 NizkpCleansing.getLogger()
                               .info(String.format(
                         "Checked %d cleansed votes against the encrypted votes from the VCS so far.",

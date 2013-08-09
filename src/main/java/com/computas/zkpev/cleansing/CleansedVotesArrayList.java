@@ -50,8 +50,9 @@ public class CleansedVotesArrayList extends ArrayList<CleansedVote>
 
             if (nextLine != null) {
                 addCleansedVoteOrCreateIncident(line, results);
+                noOfLines++;
 
-                if ((++noOfLines % TICKS_TO_LOG_NO_OF_LINES_READ) == 0) {
+                if ((noOfLines % TICKS_TO_LOG_NO_OF_LINES_READ) == 0) {
                     NizkpCleansing.getLogger()
                                   .info(String.format(
                             "Read in %d cleansed votes so far.", noOfLines));

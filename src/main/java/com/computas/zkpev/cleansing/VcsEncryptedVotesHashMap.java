@@ -59,8 +59,9 @@ public class VcsEncryptedVotesHashMap extends HashMap<String, VcsEncryptedVoteRe
 
         while (line != null) {
             addVcsEncryptedVoteOrAddIncident(line, results);
+            noOfLines++;
 
-            if ((++noOfLines % TICKS_TO_LOG_NO_OF_LINES_READ) == 0) {
+            if ((noOfLines % TICKS_TO_LOG_NO_OF_LINES_READ) == 0) {
                 NizkpCleansing.getLogger()
                               .info(String.format(
                         "Read in %d encrypted votes from the VCS so far.",
