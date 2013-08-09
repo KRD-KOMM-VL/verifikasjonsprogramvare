@@ -22,8 +22,6 @@
      http://www.gnu.org/licenses/. -->
 <module name="Checker">
   <module name="TreeWalker">
-    <!-- The following property is needed because of bug MCHECKSTYLE-159 -->
-    <property name="cacheFile" value="${cacheFile}"/> 
     <module name="EmptyBlock"/>
     <module name="NeedBraces"/>
     <module name="AvoidNestedBlocks"/>

@@ -167,13 +167,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.7</version>
+        <version>2.10</version>
         <configuration>
           <configLocation>checkstyle.xml</configLocation>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <excludes>com/scytl/**/*.java</excludes>
-          <!-- The following propertyExpansion is needed because of bug MCHECKSTYLE-159 -->
-          <propertyExpansion>cacheFile=${project.build.directory}/checkstyle-cachefile</propertyExpansion>         
         </configuration>
         <executions>
           <execution>
