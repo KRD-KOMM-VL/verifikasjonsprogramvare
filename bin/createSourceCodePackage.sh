@@ -28,10 +28,10 @@
 #
 #
 
-VERSION="1.1"
-TMPDIR="zkpev-source-${VERSION}"
-TARFILE="zkpev-source-${VERSION}.tgz"
-ZIPFILE="zkpev-source-${VERSION}.zip"
+VERSION="1.0a1"
+TMPDIR="zkpev2013-source-${VERSION}"
+TARFILE="zkpev2013-source-${VERSION}.tgz"
+ZIPFILE="zkpev2013-source-${VERSION}.zip"
 
 echo
 echo "Packing all source code together..."
@@ -45,15 +45,11 @@ mkdir $TMPDIR
 # Move into the temporary directory
 cd $TMPDIR
 
-# Check out the trunk from Subversion
-svn --quiet co https://submarine.computas.com/ZKPEV/trunk/
+# Clone the repository from GitHub
+git clone --quiet https://github.com/KRD-KOMM-VL/verifikasjonsprogramvare.git
 
-# Eliminate all .svn directories
-rm -rf `find . -name .svn`
-
-# Eliminate trunk
-mv trunk/* .
-rmdir trunk
+# Eliminate all .git directories
+rm -f .git
 
 # Move back to the main directory
 cd ..

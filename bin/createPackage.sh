@@ -28,11 +28,11 @@
 #
 #
 
-VERSION="1.1"
-TMPDIR="zkpev-${VERSION}"
+VERSION="1.0a1"
+TMPDIR="zkpev2013-${VERSION}"
 TMPLIBDIR="$TMPDIR/lib"
-TARFILE="zkpev-${VERSION}.tgz"
-ZIPFILE="zkpev-${VERSION}.zip"
+TARFILE="zkpev2013-${VERSION}.tgz"
+ZIPFILE="zkpev2013-${VERSION}.zip"
 
 mvn clean install
 

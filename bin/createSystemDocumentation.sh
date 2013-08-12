@@ -28,10 +28,10 @@
 #
 #
 
-VERSION="1.1"
-TMPDIR="zkpev-sysdoc-${VERSION}"
-TARFILE="zkpev-sysdoc-${VERSION}.tgz"
-ZIPFILE="zkpev-sysdoc-${VERSION}.zip"
+VERSION="1.0a1"
+TMPDIR="zkpev2013-sysdoc-${VERSION}"
+TARFILE="zkpev2013-sysdoc-${VERSION}.tgz"
+ZIPFILE="zkpev2013-sysdoc-${VERSION}.zip"
 
 mvn clean site:site
 

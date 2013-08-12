@@ -28,11 +28,11 @@
 #
 #
 
-VERSION="1.1"
+VERSION="1.0a1"
 MVNREPDIR="${HOME}/.m2/repository"
 TMPMVNREPDIR="${HOME}/.m2/repository-tmp-$(date +%s)"
-TARFILE="zkpev-mvnrep-${VERSION}.tgz"
-ZIPFILE="zkpev-mvnrep-${VERSION}.zip"
+TARFILE="zkpev2013-mvnrep-${VERSION}.tgz"
+ZIPFILE="zkpev2013-mvnrep-${VERSION}.zip"
 
 echo
 echo "Creating a fresh Maven repository..."
