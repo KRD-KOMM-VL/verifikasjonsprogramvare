@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Zero-Knowledge Protocols for E-Vote (ZKPEV).
 #
@@ -22,36 +22,21 @@
 #
 
 #
-# Script to run all the checks between the Return Code Generator (RCG) and
-# the Vote Collector Server (VCS).
+# Script to cut two CSV files, sort them and then run diff on them. The output
+# of diff is sent to an output file.
 #
 
-RCG_VOTES=$1
-RCG_RECEIPTS=$2
-VCS_VOTES=$3
-VCS_RECEIPTS=$4
-VCS_VOTES_REDUCED=$5
-VCS_RECEIPTS_REDUCED=$6
-BULLETIN_BOARD_RECEIPTS=$7
+INPUT_FILE1=$1
+FIELDS_LIST1=$2
+INPUT_FILE2=$3
+FIELDS_LIST2=$4
+OUTPUT_FILE=$5
 
-function assert_empty {
-	if [[ -s $1 ]] ; then
-		echo "ERR"
-	else
-		echo "OK"
-	fi ;
-}
+TEMP1="$(mktemp)"
+TEMP2="$(mktemp)"
 
-echo "Comparing RCG and VCS votes..."
-cut_sort_diff.sh $RCG_VOTES 1-17 $VCS_VOTES 1-17 rcg_vcs_diff.log
-assert_empty rcg_vcs_diff.log
-
-echo "Comparing VCS votes with reduced file..."
-cut_sort_diff.sh $VCS_VOTES 1-16 $VCS_VOTES_REDUCED 1-16  vcs_vcs_reduced_diff.log
-assert_empty vcs_vcs_reduced_diff.log
-
-echo "Comparing VCS and BB receipts..."
-cut_sort_diff.sh $VCS_RECEIPTS_REDUCED 1-2,4-9 $BULLETIN_BOARD_RECEIPTS 1-8 vcs_bb_diff.log
-assert_empty vcs_bb_diff.log
-
-echo "Done."
+cut -d, -f$FIELDS_LIST1 $INPUT_FILE1 | sort > $TEMP1
+cut -d, -f$FIELDS_LIST2 $INPUT_FILE2 | sort > $TEMP2
+diff $TEMP1 $TEMP2 > $OUTPUT_FILE
+rm $TEMP1
+rm $TEMP2
