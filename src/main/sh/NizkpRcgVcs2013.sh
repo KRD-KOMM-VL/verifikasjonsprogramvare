@@ -27,4 +27,4 @@
 #
 #
 
-java -Xmx2048m -cp lib/bsh-2.0b4.jar:lib/commons-codec-1.5.jar:lib/commons-lang-2.6.jar:lib/jcommander-1.12.jar:lib/junit-3.8.1.jar:lib/log4j-1.2.16.jar:lib/snakeyaml-1.6.jar:lib/testng-6.0.1.jar:lib/zkpev-1.1.jar com.computas.zkpev2013.rcgvcs.NizkpRcgVcs $@
+java -Xmx2048m -cp lib/bsh-2.0b4.jar:lib/commons-codec-1.5.jar:lib/commons-lang-2.6.jar:lib/jcommander-1.12.jar:lib/junit-3.8.1.jar:lib/log4j-1.2.16.jar:lib/snakeyaml-1.6.jar:lib/testng-6.0.1.jar:lib/zkpev2013-1.0a1.jar com.computas.zkpev2013.rcgvcs.NizkpRcgVcs $@
