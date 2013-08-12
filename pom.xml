@@ -25,13 +25,13 @@
       xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.computas.zkpev</groupId>
-  <artifactId>zkpev</artifactId>
+  <artifactId>zkpev2013</artifactId>
   <packaging>jar</packaging>
-  <version>1.1</version>
+  <version>1.0a1</version>
   <name>Zero-Knowledge Protocols for E-Vote</name>
   <description>
     Software component to perform the zero-knowledge protocols for the Norwegian
-    E-Vote 2011 project.
+    E-Vote 2013 project.
   </description>
   <developers>
     <developer>
