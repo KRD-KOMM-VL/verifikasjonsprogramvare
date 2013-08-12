@@ -53,8 +53,10 @@ cp target/*.jar $TMPLIBDIR
 cp target/dependency/*.jar $TMPLIBDIR
 
 # Move the shell scripts to the temporary directory
-cp src/main/sh/NizkpRcgVcs.sh $TMPDIR
-chmod a+x $TMPDIR/NizkpRcgVcs.sh
+cp src/main/sh/NizkpRcgVcs2013.sh $TMPDIR
+chmod a+x $TMPDIR/NizkpRcgVcs2013.sh
+cp src/main/sh/cut_sort_diff.sh $TMPDIR
+chmod a+x $TMPDIR/cut_sort_diff.sh
 cp src/main/sh/NizkpCleansing.sh $TMPDIR
 chmod a+x $TMPDIR/NizkpCleansing.sh
 cp src/main/sh/UnpackCleansedFiles.sh $TMPDIR
