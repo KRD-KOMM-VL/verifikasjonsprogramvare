@@ -60,15 +60,24 @@ function assert_empty {
 	fi ;
 }
 
-echo "Comparing RCG and VCS votes..."
+function file_length {
+	echo `wc -l < $1`
+}
+
+RCG_VOTES_SIZE=`file_length $RCG_VOTES`
+VCS_VOTES_SIZE=`file_length $VCS_VOTES`
+echo "Comparing RCG and VCS votes ($RCG_VOTES_SIZE - $VCS_VOTES_SIZE)..."
 cut_sort_diff $RCG_VOTES 2-17 $VCS_VOTES 2-17 rcg_vcs_diff.log
 assert_empty rcg_vcs_diff.log
 
-echo "Comparing VCS votes with reduced file..."
+VCS_VOTES_REDUCED_SIZE=`file_length $VCS_VOTES_REDUCED`
+echo "Comparing VCS votes with reduced file ($VCS_VOTES_SIZE - $VCS_VOTES_REDUCED_SIZE)..."
 cut_sort_diff $VCS_VOTES 2-16 $VCS_VOTES_REDUCED 2-16  vcs_vcs_reduced_diff.log
 assert_empty vcs_vcs_reduced_diff.log
 
-echo "Comparing VCS and BB receipts..."
+VCS_RECEIPTS_REDUCED_SIZE=`file_length $VCS_RECEIPTS_REDUCED`
+BULLETIN_BOARD_RECEIPTS_SIZE=`file_length $BULLETIN_BOARD_RECEIPTS`
+echo "Comparing VCS and BB receipts ($VCS_RECEIPTS_REDUCED_SIZE - $BULLETIN_BOARD_RECEIPTS_SIZE)..."
 cut_sort_diff $VCS_RECEIPTS_REDUCED 1-2,4-9 $BULLETIN_BOARD_RECEIPTS 1-8 vcs_bb_diff.log
 assert_empty vcs_bb_diff.log
 
