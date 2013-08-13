@@ -61,7 +61,7 @@ function assert_empty {
 }
 
 function file_length {
-	echo `wc -l < $1`
+	echo "$(wc -l < $1)"
 }
 
 RCG_VOTES_SIZE=`file_length $RCG_VOTES`
