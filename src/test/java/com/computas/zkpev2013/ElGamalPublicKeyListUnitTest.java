@@ -22,14 +22,15 @@
  */
 package com.computas.zkpev2013;
 
+import static org.testng.Assert.assertEquals;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static org.testng.Assert.assertEquals;
 
 
 /**
