@@ -22,12 +22,14 @@
  */
 package com.computas.zkpev2013;
 
-import static org.testng.Assert.assertEquals;
-
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.testng.Assert.assertEquals;
 
 
 /**
@@ -39,6 +41,8 @@ public class ElGamalPublicKeyListUnitTest {
     static final BigInteger SAMPLE_KEY_2 = new BigInteger("20");
     static final BigInteger SAMPLE_MODULUS = new BigInteger("113");
     static final BigInteger SAMPLE_AGGREGATE_KEY = new BigInteger("79");
+    private static final ArrayList<BigInteger> SAMPLE_ARRAYLIST = new ArrayList<BigInteger>(Arrays.asList(
+                new BigInteger("100"), new BigInteger("20")));
     private ElGamalPublicKeyList publicKeyList;
 
     /**
@@ -50,6 +54,14 @@ public class ElGamalPublicKeyListUnitTest {
         publicKeyList.add(SAMPLE_KEY_1);
         publicKeyList.add(SAMPLE_KEY_2);
         publicKeyList.calculateAggregateKey(SAMPLE_MODULUS);
+    }
+
+    /**
+     * Verifies alternative constructor.
+     */
+    @Test
+    public void alternativeConstructorWorks() {
+        assertEquals(publicKeyList, new ElGamalPublicKeyList(SAMPLE_ARRAYLIST));
     }
 
     /**
