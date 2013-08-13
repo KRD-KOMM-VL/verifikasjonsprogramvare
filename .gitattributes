@@ -19,4 +19,19 @@
 # http://www.gnu.org/licenses/.
 #
 
+# Default behaviour is to have LF only (Unix).
 * text eol=lf
+
+# Explicit declaration of text file types we always want to be normalized on
+# checkout.
+*.apt text
+*.csv text
+*.html text
+*.java text
+*.properties text
+*.sh text
+*.svg text
+*.xml text
+
+# Explicit declaration of binary files that should not be modified.
+*.png binary
