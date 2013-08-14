@@ -34,7 +34,6 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * Unit tests on ElGamalEncryptionTuple.
  *
@@ -53,7 +52,7 @@ public class ElGamalEncryptionTupleUnitTest {
      * Creates an ElGamalEncryptionTuple to run the tests on.
      */
     @BeforeMethod
-    public void createElGamalEncryptiontuple() {
+    public void createElGamalEncryptionTuple() {
         tuple = new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT,
                 MESSAGE_COMPONENTS);
     }
@@ -122,7 +121,7 @@ public class ElGamalEncryptionTupleUnitTest {
      * Verifies that a pair is equal to another pair having the same components.
      */
     @Test
-    public void mustBeEqualToAnotherElGamalEncryptiontupleWithTheSameComponents() {
+    public void mustBeEqualToAnotherElGamalEncryptionTupleWithTheSameComponents() {
         assertEquals(tuple,
             new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT, MESSAGE_COMPONENTS));
     }
@@ -131,7 +130,7 @@ public class ElGamalEncryptionTupleUnitTest {
      * Verifies that a pair has the same hash code as another pair with the same components.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherElGamalEncryptiontupleWithTheSameComponents() {
+    public void mustHaveSameHashCodeAsAnotherElGamalEncryptionTupleWithTheSameComponents() {
         assertEquals(tuple.hashCode(),
             new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT, MESSAGE_COMPONENTS).hashCode());
     }
@@ -140,7 +139,7 @@ public class ElGamalEncryptionTupleUnitTest {
      * Verifies that a pair is not equal to another pair with another different public key component.
      */
     @Test
-    public void mustNotBeEqualToAnotherElGamalEncryptiontupleWithAnotherPublicKeyComponent() {
+    public void mustNotBeEqualToAnotherElGamalEncryptionTupleWithAnotherPublicKeyComponent() {
         assertFalse(tuple.equals(
                 new ElGamalEncryptionTuple(BigInteger.ONE, MESSAGE_COMPONENTS)));
     }
@@ -149,7 +148,7 @@ public class ElGamalEncryptionTupleUnitTest {
      * Verifies that a pair is not equal to another pair with another different message component.
      */
     @Test
-    public void mustNotBeEqualToAnotherElGamalEncryptiontupleWithAnotherMessageComponent() {
+    public void mustNotBeEqualToAnotherElGamalEncryptionTupleWithAnotherMessageComponent() {
         assertFalse(tuple.equals(
                 new ElGamalEncryptionTuple(PUBLIC_KEY_COMPONENT,
                     Arrays.asList(BigInteger.ONE))));

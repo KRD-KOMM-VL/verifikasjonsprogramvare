@@ -32,7 +32,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
 /**
  * Unit tests on ElGamalPublicKeyList.
  *
@@ -43,7 +42,7 @@ public class ElGamalPublicKeyListUnitTest {
     static final BigInteger SAMPLE_MODULUS = new BigInteger("113");
     static final BigInteger SAMPLE_AGGREGATE_KEY = new BigInteger("79");
     private static final ArrayList<BigInteger> SAMPLE_ARRAYLIST = new ArrayList<BigInteger>(Arrays.asList(
-                new BigInteger("100"), new BigInteger("20")));
+                SAMPLE_KEY_1, SAMPLE_KEY_2));
     private ElGamalPublicKeyList publicKeyList;
 
     /**
