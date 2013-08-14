@@ -37,23 +37,58 @@ NIZKP RCG-VCS
   votes and the list of receipts to be sent to the Cleanings module by the VCS,
   and the list of receipts posted to the external Bulletin Board.
 
-  The following two figures illustrate the relation of this proof to the
-  architecture of the E-vote system architecture, and the relation between the
-  seven files involved in this proof.
+  The following figure illustrates the relation of this proof to the
+  architecture of the E-vote system architecture.
   
 [images/NIZKP_RCG-VCS.png] The relation of NIZKP RCG-VCS to the architecture of
                            the E-vote system architecture.
 
+* Basic Algorithm
+
+  The following figure illustrates the relationships between the seven CSV files
+  involved in this proof. Each of the relationships should be verified, with the
+  most important relationships to be verified marked using a darker color, and
+  the less important one marked using a lighter color.
+
 [images/NIZKP_RCG-VCS_Files.png] The relation between the seven CSV files
                                  involved in this proof.
 
-* Basic Algorithm
+  Notice that the algorithm can be broken down in two main types of verifications: a
+  line-by-line and field-by-field verification between CSV files, implemented
+  using the Linux commands <<<cut>>>, <<<sort>>> and <<<diff>>>, and a line-by-line verification
+  of SHA-256 hash values from one CSV file to another, implemented in Java. The
+  following table gives an overview over all the verifications involved in this
+  proof.
+
+*----------------------------------------------------*------------------*---------------*----------------------------------------*
+| <<CSV File Pair>>                                  | <<Verification>> | <<Priority>>  | <<Comments>>                           |
+*----------------------------------------------------+------------------+---------------+----------------------------------------+
+| RCG Votes-RCG Receipts                             | SHA-256          | Must          |                                        |
+*----------------------------------------------------+------------------+---------------+----------------------------------------+
+| RCG Votes-VCS Votes                                | Cut-sort-diff    | Must          | RCG can contain more votes than VCS    |
+*----------------------------------------------------+------------------+---------------+----------------------------------------+
+| VCS Votes-VCS Receipts                             | SHA-256          | Should        |                                        |
+*----------------------------------------------------+------------------+---------------+----------------------------------------+
+| RCG Receipts-VCS Receipts                          | Cut-sort-diff    | Should        | RCG can contain more receipts than VCS |
+*----------------------------------------------------+------------------+---------------+----------------------------------------+
+| VCS Votes-VCS Votes for Cleansing                  | Cut-sort-diff    | Must          |                                        |
+*----------------------------------------------------+------------------+---------------+----------------------------------------+
+| VCS Votes for Cleansing-VCS Receipts for Cleansing | SHA-256          | Should        |                                        |
+*----------------------------------------------------+------------------+---------------+----------------------------------------+
+| VCS Receipts-VCS Receipts for Cleansing            | Cut-sort-diff    | Should        |                                        |
+*----------------------------------------------------+------------------+---------------+----------------------------------------+
+| VCS Receipts for Cleansing-Bulletin Board Receipts | Cut-sort-diff    | Could         |                                        |
+*----------------------------------------------------+------------------+---------------+----------------------------------------+
+
+* Cut-sort-diff
+
+* SHA-256 Hash Value Verification
 
   This proof requires the following two inputs:
 
-  * The voting receipts from the RCG
+  * A list with encrypted votes
   
-  * The encrypted votes from the VCS
+  * A list with receipts
   
   []
   
@@ -65,9 +100,9 @@ NIZKP RCG-VCS
   
   The following pseudocode outlines the basic algorithm for this proof.
 
-    [[1]] <VotingReceipts> := Load voting receipts from RCG, setting all matches to 0
+    [[1]] <VotingReceipts> := Load voting receipts, setting all matches to 0
   
-    [[]] <Votes File> := Open the file with the encrypted votes from the VCS
+    [[]] <Votes File> := Open the file with the encrypted votes
   
     [[]] <Log File> := Open a log file 
   
@@ -85,7 +120,7 @@ NIZKP RCG-VCS
          [[]] <<Else>>
        
               [[1]] Log to <Log File> the <VotingReceipt>, the <Vote>, and a message that
-                    the list of voting receipts from the RCG didn't contain a matching voting receipt
+                    the list of voting receipts didn't contain a matching voting receipt
              
     [[]] Close the <Votes File> 
 
@@ -94,13 +129,13 @@ NIZKP RCG-VCS
          [[1]] <<If>> the number of matches for <VotingReceipt> = 0 <<then>>
            
                [[1]] Log to <Log File> the <VotingReceipt> and a message that no encrypted
-                     vote from the VCS generated a matching voting receipt
+                     vote generated a matching voting receipt
        
          [[]] <<If>> the number of matches for <VotingReceipt> > 1 <<then>>
   
-              [[1]] Log to <Log File> the <VotingReceipt>, the encrypted votes from the VCS
+              [[1]] Log to <Log File> the <VotingReceipt>, the encrypted votes
                     that generated the matching voting receipts, and a message that more
-                    than one encrypted from from the VCS generated a matching voting receipt
+                    than one encrypted vote generated a matching voting receipt
                   
     [[]] Close the <Log File>
   
@@ -130,70 +165,40 @@ NIZKP RCG-VCS
 
 * Running the Program
 
-  The program can be run using the script <<<NizkpRcgVcs.sh>>>. A correct
+  The program can be run using the script <<<NizkpRcgVcs2013.sh>>>. A correct
   invocation of the script looks like this:
   
 -----------------------------------------------------------  
-NizkpRcgVcs.sh <RcgFileName> <VcsFileName> [<ResultsFileName>]  
+NizkpRcgVcs.sh <RcgVotesFileName> <RcgReceiptsFileName> <VcsVotesFileName> <VcsReceiptsFileName> <VcsVotesForCleansingFileName> <VcsReceiptsForCleansingFileName> <BulletinBoardReceiptsFileName>  
 -----------------------------------------------------------
 
   The arguments are as follows:
   
-    * <<<RcgFileName>>>, the name of the file where the program can find the RCG voting receipts.
+    * <<<RcgVotesFileName>>>, the name of the file where the program can find the encrypted votes from the RCG.
+
+    * <<<RcgReceiptsFileName>>>, the name of the file where the program can find the RCG voting receipts.
   
-    * <<<VcsFileName>>>, the name of the file where the program can find the encrypted
-    votes from the VCS.
-  
-    * <<<ResultsFileName>>>, the name of the file where the program can write the results
-    to. This argument is optional; if it is not provided, no results will be
-    written to a file.
+    * <<<VcsVotesFileName>>>, the name of the file where the program can find the encrypted votes from the VCS.
+
+    * <<<VcsReceiptsFileName>>>, the name of the file where the program can find the VCS voting receipts.
+
+    * <<<VcsVotesForCleansingFileName>>>, the name of the file where the program can find the encrypted votes from the VCS as they will be sent to the Cleansing module.
+
+    * <<<VcsReceiptsForCleansingFileName>>>, the name of the file where the program can find the VCS voting receipts as they will be sent to the Cleansing module.
+
+    * <<<BulletinBoardReceiptsFileName>>>, the name of the file where the program can find the voting receipts posted to the external Bulletin Board.
   
   The following is an example of a correct invocation of the program:
   
 ----------------------------------------------------------------------------------------------------------------  
-NizkpRcgVcs.sh NizkpRcgVcsFunctionalTestRcgVotingReceipts.csv NizkpRcgVcsFunctionalTestVcsEncryptedVotes.csv Results.csv
+NizkpRcgVcs2013.sh NizkpRcgVcs2013FunctionalTestRcgVotes.csv NizkpRcgVcs2013FunctionalTestRcgReceipts.csv NizkpRcgVcs2013FunctionalTestVcsVotes.csv NizkpRcgVcs2013FunctionalTestVcsReceipts.csv NizkpRcgVcs2013FunctionalTestVcsVotesForCleansing.csv NizkpRcgVcs2013FunctionalTestVcsReceiptsForCleansing.csv NizkpRcgVcs2013FunctionalTestBulletinBoardReceipts.csv
 ----------------------------------------------------------------------------------------------------------------
-
-  The following invocation will do the same thing, but will not write the 
-  results to a file:
-
-----------------------------------------------------------------------------------------------------
-NizkpRcgVcs.sh NizkpRcgVcsFunctionalTestRcgVotingReceipts.csv NizkpRcgVcsFunctionalTestVcsEncryptedVotes.csv
-----------------------------------------------------------------------------------------------------
 
 * Input
 
-** RCG Voting Receipts
+** RCG Encrypted Votes, VCS Encrypted Votes 
 
-   The first input file is a comma-separated values (CSV) file, with the
-   following fields in the following order:
-
-     * <<<UUID>>>: Unique identifier of the receipt at database. (<<<String>>>)
-     
-     * <<<AUTHTOKENID>>>: Unique identifier for the authentication token. 
-     (<<<String>>>)
-     
-     * <<<FULLVOTINGRECEIPT>>>: The serialization of the receipt. (<<<byte[]>>>)
-     
-     * <<<INTERNALAUTHTOKENID>>>: The ballot's internal assertion identifier. 
-     (<<<String>>>)
-     
-     * <<<RCGID>>>: The identifier of the RCG. (<<<Long>>>)
-     
-     * <<<VOTINGRECEIPT>>>: Bitwise concatenation of encrypted vote and the auth
-     token. (<<<byte[]>>>)
-     
-     * <<<CONTESTID>>>: The contest of the receipt. (<<<String>>>)
-     
-     * <<<ELECTIONID>>>: The election of the receipt. (<<<String>>>)
-     
-     * <<<ELECTIONEVENTID>>>: The election event of the receipt. (<<<String>>>)
-     
-     * <<<VOTERAREA>>>: The voter area path related to the voter of the receipt. 
-
-** VCS Encrypted Votes
-
-   The second input file is a comma-separated values (CSV) file, with the
+   The encrypted votes file is a comma-separated values (CSV) file, with the
    following fields in the following order:
 
      * <<<UUID>>>: Unique identifier of the vote at database. (<<<String>>>)
@@ -232,6 +237,34 @@ NizkpRcgVcs.sh NizkpRcgVcsFunctionalTestRcgVotingReceipts.csv NizkpRcgVcsFunctio
      
      * <<<CHANNELID>>>: The channel through witch the vote is cast
      (<<<CHANNEL_ID_CONTROLLED>>>, <<<CHANNEL_ID_UNCONTROLLED>>>) (<<<String>>>)
+
+** RCG Voting Receipts and VCS Voting Receipts
+
+   The first input file is a comma-separated values (CSV) file, with the
+   following fields in the following order:
+
+     * <<<UUID>>>: Unique identifier of the receipt at database. (<<<String>>>)
+     
+     * <<<AUTHTOKENID>>>: Unique identifier for the authentication token. 
+     (<<<String>>>)
+     
+     * <<<FULLVOTINGRECEIPT>>>: The serialization of the receipt. (<<<byte[]>>>)
+     
+     * <<<INTERNALAUTHTOKENID>>>: The ballot's internal assertion identifier. 
+     (<<<String>>>)
+     
+     * <<<RCGID>>>: The identifier of the RCG. (<<<Long>>>)
+     
+     * <<<VOTINGRECEIPT>>>: Bitwise concatenation of encrypted vote and the auth
+     token. (<<<byte[]>>>)
+     
+     * <<<CONTESTID>>>: The contest of the receipt. (<<<String>>>)
+     
+     * <<<ELECTIONID>>>: The election of the receipt. (<<<String>>>)
+     
+     * <<<ELECTIONEVENTID>>>: The election event of the receipt. (<<<String>>>)
+     
+     * <<<VOTERAREA>>>: The voter area path related to the voter of the receipt. 
 
 * Output
 
