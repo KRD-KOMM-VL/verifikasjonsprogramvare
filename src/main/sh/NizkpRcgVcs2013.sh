@@ -54,10 +54,16 @@ function cut_sort_diff {
 function assert_empty {
 	FILE=$1
 	if [[ -s $FILE ]] ; then
-		echo "ERR -- see $FILE for more information"
+		echo -e "\e[1;31mERR -- see $FILE for more information\e[0m"
 	else
 		echo "OK"
 	fi ;
+}
+
+function assert_deletions_only {
+	FILE=$1
+	echo -e "\e[33mASSERT_DELETIONS_ONLY NOT IMPLEMENTED YET -- REDIRECTING TO ASSERT_EMPTY\e[0m"
+	assert_empty $FILE
 }
 
 function file_length {
@@ -67,18 +73,39 @@ function file_length {
 RCG_VOTES_SIZE=`file_length $RCG_VOTES`
 VCS_VOTES_SIZE=`file_length $VCS_VOTES`
 echo "Comparing RCG and VCS votes ($RCG_VOTES_SIZE - $VCS_VOTES_SIZE)..."
-cut_sort_diff $RCG_VOTES 2-17 $VCS_VOTES 2-17 rcg_vcs_diff.log
-assert_empty rcg_vcs_diff.log
+cut_sort_diff $RCG_VOTES 2-17 $VCS_VOTES 2-17 rcg_vcs_votes_diff.log
+assert_deletions_only rcg_vcs_votes_diff.log
+
+RCG_RECEIPTS_SIZE=`file_length $RCG_RECEIPTS`
+VCS_RECEIPTS_SIZE=`file_length $VCS_RECEIPTS`
+echo "Comparing RCG and VCS receipts ($RCG_RECEIPTS_SIZE - $VCS_RECEIPTS_SIZE)..."
+cut_sort_diff $RCG_RECEIPTS 2-9 $VCS_RECEIPTS 2-9 rcg_vcs_receipts_diff.log
+assert_deletions_only rcg_vcs_receipts_diff.log
 
 VCS_VOTES_REDUCED_SIZE=`file_length $VCS_VOTES_REDUCED`
 echo "Comparing VCS votes with reduced file ($VCS_VOTES_SIZE - $VCS_VOTES_REDUCED_SIZE)..."
-cut_sort_diff $VCS_VOTES 2-16 $VCS_VOTES_REDUCED 2-16  vcs_vcs_reduced_diff.log
-assert_empty vcs_vcs_reduced_diff.log
+cut_sort_diff $VCS_VOTES 2-16 $VCS_VOTES_REDUCED 2-16  vcs_vcs_reduced_votes_diff.log
+assert_empty vcs_vcs_reduced_votes_diff.log
 
 VCS_RECEIPTS_REDUCED_SIZE=`file_length $VCS_RECEIPTS_REDUCED`
+echo "Comparing VCS receipts with reduced file ($RCG_RECEIPTS_SIZE - $VCS_RECEIPTS_REDUCED_SIZE)..."
+echo -e "\e[33mCOMPARISON OF FULL_VOTING_RECEIPT NOT IMPLEMENTED YET\e[0m"
+echo -e "\e[33mCOMPARISON OF VOTING_RECEIPT NOT IMPLEMENTED YET\e[0m"
+cut_sort_diff $VCS_RECEIPTS 2,4-5,7-9 $VCS_RECEIPTS_REDUCED 2,4-5,7-9 vcs_vcs_reduced_receipts_diff.log
+assert_empty vcs_vcs_reduced_receipts_diff.log
+
 BULLETIN_BOARD_RECEIPTS_SIZE=`file_length $BULLETIN_BOARD_RECEIPTS`
 echo "Comparing VCS and BB receipts ($VCS_RECEIPTS_REDUCED_SIZE - $BULLETIN_BOARD_RECEIPTS_SIZE)..."
-cut_sort_diff $VCS_RECEIPTS_REDUCED 1-2,4-9 $BULLETIN_BOARD_RECEIPTS 1-8 vcs_bb_diff.log
+cut_sort_diff $VCS_RECEIPTS_REDUCED 1-2,4-9 $BULLETIN_BOARD_RECEIPTS 1-8 vcs_bb_receipts_diff.log
 assert_empty vcs_bb_diff.log
+
+echo "Comparing RCG receipts against RCG votes..."
+echo -e "\e[33mCOMPARISON OF RCG RECEIPTS AGAINST RCG VOTES NOT IMPLEMENTED YET\e[0m"
+
+echo "Comparing VCS receipts against VCS votes..."
+echo -e "\e[33mCOMPARISON OF VCS RECEIPTS AGAINST VCS VOTES NOT IMPLEMENTED YET\e[0m"
+
+echo "Comparing reduced VCS receipts against reduced VCS votes..."
+echo -e "\e[33mCOMPARISON OF VCS REDUCED RECEIPTS AGAINST VCS REDUCED VOTES NOT IMPLEMENTED YET\e[0m"
 
 echo "Done."
