@@ -97,7 +97,7 @@ assert_empty vcs_vcs_reduced_receipts_diff.log
 BULLETIN_BOARD_RECEIPTS_SIZE=`file_length $BULLETIN_BOARD_RECEIPTS`
 echo "Comparing VCS and BB receipts ($VCS_RECEIPTS_REDUCED_SIZE - $BULLETIN_BOARD_RECEIPTS_SIZE)..."
 cut_sort_diff $VCS_RECEIPTS_REDUCED 1-2,4-9 $BULLETIN_BOARD_RECEIPTS 1-8 vcs_bb_receipts_diff.log
-assert_empty vcs_bb_diff.log
+assert_empty vcs_bb_receipts_diff.log
 
 echo "Comparing RCG receipts against RCG votes..."
 echo -e "\e[33mCOMPARISON OF RCG RECEIPTS AGAINST RCG VOTES NOT IMPLEMENTED YET\e[0m"
