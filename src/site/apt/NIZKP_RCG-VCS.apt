@@ -43,7 +43,7 @@ NIZKP RCG-VCS
 [images/NIZKP_RCG-VCS.png] The relation of NIZKP RCG-VCS to the architecture of
                            the E-vote system architecture.
 
-* Basic Algorithm
+* Breakdown into Subproofs
 
   The following figure illustrates the relationships between the seven CSV files
   involved in this proof. Each of the relationships should be verified, with the
@@ -53,38 +53,72 @@ NIZKP RCG-VCS
 [images/NIZKP_RCG-VCS_Files.png] The relation between the seven CSV files
                                  involved in this proof.
 
-  Notice that the algorithm can be broken down in two main types of verifications: a
-  line-by-line and field-by-field verification between CSV files, implemented
+  Notice that the proof can be broken down in two main types of subproofs: a
+  line-by-line and field-by-field comparison between CSV files, implemented
   using the Linux commands <<<cut>>>, <<<sort>>> and <<<diff>>>, and a line-by-line verification
   of SHA-256 hash values from one CSV file to another, implemented in Java. The
-  following table gives an overview over all the verifications involved in this
+  following table gives an overview over all the subproofs involved in this
   proof.
 
-*----------------------------------------------------*------------------*---------------*----------------------------------------*
-| <<CSV File Pair>>                                  | <<Verification>> | <<Priority>>  | <<Comments>>                           |
-*----------------------------------------------------+------------------+---------------+----------------------------------------+
-| RCG Votes-RCG Receipts                             | SHA-256          | Must          |                                        |
-*----------------------------------------------------+------------------+---------------+----------------------------------------+
-| RCG Votes-VCS Votes                                | Cut-sort-diff    | Must          | RCG can contain more votes than VCS    |
-*----------------------------------------------------+------------------+---------------+----------------------------------------+
-| VCS Votes-VCS Receipts                             | SHA-256          | Should        |                                        |
-*----------------------------------------------------+------------------+---------------+----------------------------------------+
-| RCG Receipts-VCS Receipts                          | Cut-sort-diff    | Should        | RCG can contain more receipts than VCS |
-*----------------------------------------------------+------------------+---------------+----------------------------------------+
-| VCS Votes-VCS Votes for Cleansing                  | Cut-sort-diff    | Must          |                                        |
-*----------------------------------------------------+------------------+---------------+----------------------------------------+
-| VCS Votes for Cleansing-VCS Receipts for Cleansing | SHA-256          | Should        |                                        |
-*----------------------------------------------------+------------------+---------------+----------------------------------------+
-| VCS Receipts-VCS Receipts for Cleansing            | Cut-sort-diff    | Should        |                                        |
-*----------------------------------------------------+------------------+---------------+----------------------------------------+
-| VCS Receipts for Cleansing-Bulletin Board Receipts | Cut-sort-diff    | Could         |                                        |
-*----------------------------------------------------+------------------+---------------+----------------------------------------+
+*----------------------------------------------------*-------------------*---------------*----------------------------------------*
+| <<CSV File Pair>>                                  | <<Subproof Type>> | <<Priority>>  | <<Comments>>                           |
+*----------------------------------------------------+-------------------+---------------+----------------------------------------+
+| RCG Votes-RCG Receipts                             | SHA-256           | Must          |                                        |
+*----------------------------------------------------+-------------------+---------------+----------------------------------------+
+| RCG Votes-VCS Votes                                | Cut-sort-diff     | Must          | RCG can contain more votes than VCS    |
+*----------------------------------------------------+-------------------+---------------+----------------------------------------+
+| VCS Votes-VCS Receipts                             | SHA-256           | Should        |                                        |
+*----------------------------------------------------+-------------------+---------------+----------------------------------------+
+| RCG Receipts-VCS Receipts                          | Cut-sort-diff     | Should        | RCG can contain more receipts than VCS |
+*----------------------------------------------------+-------------------+---------------+----------------------------------------+
+| VCS Votes-VCS Votes for Cleansing                  | Cut-sort-diff     | Must          |                                        |
+*----------------------------------------------------+-------------------+---------------+----------------------------------------+
+| VCS Votes for Cleansing-VCS Receipts for Cleansing | SHA-256           | Should        |                                        |
+*----------------------------------------------------+-------------------+---------------+----------------------------------------+
+| VCS Receipts-VCS Receipts for Cleansing            | Cut-sort-diff     | Should        |                                        |
+*----------------------------------------------------+-------------------+---------------+----------------------------------------+
+| VCS Receipts for Cleansing-Bulletin Board Receipts | Cut-sort-diff     | Could         |                                        |
+*----------------------------------------------------+-------------------+---------------+----------------------------------------+
 
 * Cut-sort-diff
 
+  This type of subproof requires the following four inputs:
+
+  * The first CSV file
+
+  * A specification of which fields should be extracted from the first file
+
+  * The second CSV file
+
+  * A specification of which fields should be extracted from the second file
+
+  []
+
+  The subproof produces only one output:
+
+  * A log file containing the output from the <<<diff>>> tool
+
+  []
+
+  The following pseudocode outlines the basic algorithm for this type of subproof.
+
+    [[1]] Extract the specified fields from the first CSV file
+
+    [[]] Sort the results alphabetically
+
+    [[]] Write the result to a first temporary file
+
+    [[]] Extract the specified fields from the second CSV file
+
+    [[]] Sort the results alphabetically
+
+    [[]] Write the result to a second temporary file
+
+    [[]] Compare the first and the second temporary file and log the result
+
 * SHA-256 Hash Value Verification
 
-  This proof requires the following two inputs:
+  This type of subproof requires the following two inputs:
 
   * A list with encrypted votes
   
@@ -92,13 +126,13 @@ NIZKP RCG-VCS
   
   []
   
-  The algorithm produces only one output:
+  This type of subproof produces only one output:
 
   * A log file containing a message for every violation found
   
   []
   
-  The following pseudocode outlines the basic algorithm for this proof.
+  The following pseudocode outlines the basic algorithm for this type of subproof.
 
     [[1]] <VotingReceipts> := Load voting receipts, setting all matches to 0
   
