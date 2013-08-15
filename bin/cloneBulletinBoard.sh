@@ -63,4 +63,21 @@ else
 	echo "Skipping the verification of the authenticity of the list with receipts."
 fi
 
+cd "$TARGET_DIR"
+PREVIOUS=`find . -maxdepth 1 -type d | grep -e '\./[0-9]\{8\}T[0-9]\{4\}' | sort | tail -2 | head -1 | cut -c3-`
+echo "Verifying against $PREVIOUS that receipts have only been added, not deleted..."
+TEMP1="$(mktemp)"
+TEMP2="$(mktemp)"
+tail -n +2 $PREVIOUS/evalg/bulletin_130001.txt | sort > $TEMP1
+tail -n +2 $NOW/evalg/bulletin_130001.txt | sort > $TEMP2
+comm -23 $TEMP1 $TEMP2 > $NOW/comm-$NOW.log
+if [[ -s $NOW/comm-$NOW.log ]]
+then
+	echo "Verification Failure -- see $NOW/comm-$NOW.log for more information"
+else
+	echo "Verified OK"
+fi
+rm $TEMP1
+rm $TEMP2
+
 echo "Done."
