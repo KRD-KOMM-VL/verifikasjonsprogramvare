@@ -62,7 +62,8 @@ function assert_empty {
 
 function assert_deletions_only {
 	FILE=$1
-	echo -e "\e[33mASSERT_DELETIONS_ONLY NOT IMPLEMENTED YET -- REDIRECTING TO ASSERT_EMPTY\e[0m"
+	sed -i -e'/^< .*$/d' $FILE
+	sed -i -e'/^[0-9]\+d[0-9]*$/d' $FILE
 	assert_empty $FILE
 }
 
