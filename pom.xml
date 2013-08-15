@@ -216,10 +216,10 @@
         <version>0.30</version>
         <configuration>
           <targetClasses>
-            <param>com.computas.zkpev.*</param>
+            <param>com.computas.zkpev2013.*</param>
           </targetClasses>
           <targetTests>
-            <param>com.computas.zkpev.*</param>
+            <param>com.computas.zkpev2013.*</param>
           </targetTests>
           <mutationThreshold>80</mutationThreshold>
         </configuration>
