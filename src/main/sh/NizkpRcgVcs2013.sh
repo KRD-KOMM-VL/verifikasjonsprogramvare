@@ -70,6 +70,18 @@ function file_length {
 	echo "$(wc -l < $1)"
 }
 
+function base64_decode_voting_receipts {
+	INPUT=$1
+	OUTPUT=$2
+	cat $INPUT | while read LINE
+	do
+		VOTING_RECEIPT=`echo $LINE | cut -d, -f6`
+		DECODED_VOTING_RECEIPT=`echo $VOTING_RECEIPT | base64 --decode`
+		LINE_WITH_DECODED_VOTING_RECEIPT=$(sed "s#$VOTING_RECEIPT#$DECODED_VOTING_RECEIPT#g" <<< $LINE)
+		echo $LINE_WITH_DECODED_VOTING_RECEIPT >> $OUTPUT
+	done
+}
+
 RCG_VOTES_SIZE=`file_length $RCG_VOTES`
 VCS_VOTES_SIZE=`file_length $VCS_VOTES`
 echo "Comparing RCG and VCS votes ($RCG_VOTES_SIZE - $VCS_VOTES_SIZE)..."
@@ -88,11 +100,14 @@ cut_sort_diff $VCS_VOTES 2-16 $VCS_VOTES_REDUCED 2-16  vcs_vcs_reduced_votes_dif
 assert_empty vcs_vcs_reduced_votes_diff.log
 
 VCS_RECEIPTS_REDUCED_SIZE=`file_length $VCS_RECEIPTS_REDUCED`
+echo "Base64 decoding the voting receipts in the reduced receipts file ($VCS_RECEIPTS_REDUCED_SIZE)..."
+VCS_RECEIPTS_REDUCED_DECODED="$(mktemp)"
+base64_decode_voting_receipts $VCS_RECEIPTS_REDUCED $VCS_RECEIPTS_REDUCED_DECODED
 echo "Comparing VCS receipts with reduced file ($RCG_RECEIPTS_SIZE - $VCS_RECEIPTS_REDUCED_SIZE)..."
 echo -e "\e[33mCOMPARISON OF FULL_VOTING_RECEIPT NOT IMPLEMENTED YET\e[0m"
-echo -e "\e[33mCOMPARISON OF VOTING_RECEIPT NOT IMPLEMENTED YET\e[0m"
-cut_sort_diff $VCS_RECEIPTS 2,4-5,7-9 $VCS_RECEIPTS_REDUCED 2,4-5,7-9 vcs_vcs_reduced_receipts_diff.log
+cut_sort_diff $VCS_RECEIPTS 2,4-9 $VCS_RECEIPTS_REDUCED_DECODED 2,4-9 vcs_vcs_reduced_receipts_diff.log
 assert_empty vcs_vcs_reduced_receipts_diff.log
+rm $VCS_RECEIPTS_REDUCED_DECODED
 
 BULLETIN_BOARD_RECEIPTS_SIZE=`file_length $BULLETIN_BOARD_RECEIPTS`
 echo "Comparing VCS and BB receipts ($VCS_RECEIPTS_REDUCED_SIZE - $BULLETIN_BOARD_RECEIPTS_SIZE)..."
