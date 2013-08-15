@@ -53,6 +53,8 @@ cp target/*.jar $TMPLIBDIR
 cp target/dependency/*.jar $TMPLIBDIR
 
 # Move the shell scripts to the temporary directory
+cp src/main/sh/cloneBulletinBoard.sh $TMPDIR
+chmod a+x $TMPDIR/cloneBulletinBoard.sh
 cp src/main/sh/NizkpRcgVcs2013.sh $TMPDIR
 chmod a+x $TMPDIR/NizkpRcgVcs2013.sh
 cp src/main/sh/cut_sort_diff.sh $TMPDIR
