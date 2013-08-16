@@ -1,6 +1,6 @@
 /**
  * Source Code, High Level Architecture Documentation and Common Criteria
- * Documentation Copyright (C) 2010-2011 and ownership belongs to The Norwegian
+ * Documentation Copyright (C) 2013 and ownership belongs to The Norwegian
  * Ministry of Local Government and Regional Development and Scytl Secure
  * Electronic Voting SA ("Licensor").
  *
@@ -37,7 +37,10 @@
  */
 package com.scytl.evote.protocol.integration.voting.model;
 
-import com.scytl.evote.protocol.integration.voting.exception.FatalProtocolException;
+import com.scytl.evote.protocol.exceptions.FatalProtocolException;
+import com.scytl.evote.protocol.integration.eraser.Erasable;
+
+import com.scytl.jbasis.erase.Eraser;
 
 import org.apache.commons.lang.ArrayUtils;
 
@@ -48,7 +51,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Contains the information to identify a voter.
  */
-public class VoterIdentifier implements Serializable, KeepMembers {
+public class VoterIdentifier implements Serializable, KeepMembers, Erasable {
     protected static final String UTF_8 = "UTF-8";
     private static final long serialVersionUID = -3837446936105024906L;
     private final String _voterId;
@@ -93,10 +96,10 @@ public class VoterIdentifier implements Serializable, KeepMembers {
         try {
             voteData = ArrayUtils.addAll(voteData, _voterId.getBytes(UTF_8));
 
-            if (_spareId != null) {
-                voteData = ArrayUtils.addAll(voteData, _spareId.getBytes(UTF_8));
-            } else {
+            if (_spareId == null) {
                 voteData = ArrayUtils.addAll(voteData, "null".getBytes(UTF_8));
+            } else {
+                voteData = ArrayUtils.addAll(voteData, _spareId.getBytes(UTF_8));
             }
         } catch (UnsupportedEncodingException e1) {
             throw new FatalProtocolException(e1);
@@ -126,5 +129,15 @@ public class VoterIdentifier implements Serializable, KeepMembers {
     public String toString() {
         return "VoterIdentifier [_spareId=" + _spareId + ", _voterId=" +
         _voterId + "]";
+    }
+
+    /**
+     * @see com.scytl.evote.protocol.integration.eraser.Erasable#erase()
+     */
+    @Override
+    public void erase() {
+        Eraser eraser = Eraser.get(this.getClass());
+        eraser.erase(_voterId);
+        eraser.erase(_spareId);
     }
 }

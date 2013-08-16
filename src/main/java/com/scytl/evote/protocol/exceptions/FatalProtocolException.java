@@ -1,6 +1,6 @@
 /**
  * Source Code, High Level Architecture Documentation and Common Criteria
- * Documentation Copyright (C) 2010-2011 and ownership belongs to The Norwegian
+ * Documentation Copyright (C) 2013 and ownership belongs to The Norwegian
  * Ministry of Local Government and Regional Development and Scytl Secure
  * Electronic Voting SA ("Licensor").
  *
@@ -35,100 +35,45 @@
  * by any third party is subject to Scytl Secure Electronic Voting SA's prior
  * written approval.
  */
-package com.scytl.evote.protocol.integration.voting.model;
-
-import com.scytl.evote.protocol.integration.voting.exception.FatalProtocolException;
-
-import org.apache.commons.lang.ArrayUtils;
-
-import java.io.UnsupportedEncodingException;
+package com.scytl.evote.protocol.exceptions;
 
 
 /**
- * MinID/IDPorten identification service internal token.
+ * A fatal protocol exception that cannot be resolved and is to be informed to
+ * the system.
  */
-public class MinIDToken implements InternalToken {
-    private static final long serialVersionUID = -2245446752247623771L;
-    private final String _id;
-    private final String _voterId;
-    private final long _ts;
-    private final String _info;
+public class FatalProtocolException extends RuntimeException {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2617726891708451347L;
 
     /**
-     * @param voterId
-     * @param ts
-     * @param info
+     *
      */
-    public MinIDToken(final String id, final String voterId, final long ts,
-        final String info) {
+    public FatalProtocolException() {
         super();
-        _id = id;
-        _voterId = voterId;
-        _ts = ts;
-        _info = info;
     }
 
     /**
-     * @return Returns the id.
+     * @param message
+     * @param cause
      */
-    public String getId() {
-        return _id;
+    public FatalProtocolException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 
     /**
-     * @return Returns the voterId.
+     * @param message
      */
-    public String getVoterId() {
-        return _voterId;
+    public FatalProtocolException(final String message) {
+        super(message);
     }
 
     /**
-     * @return Returns the ts.
+     * @param cause
      */
-    public long getTs() {
-        return _ts;
-    }
-
-    /**
-     * @return Returns the info.
-     */
-    public String getInfo() {
-        return _info;
-    }
-
-    /**
-     * @see com.scytl.evote.protocol.integration.voting.model.InternalToken#toByteArray()
-     */
-    @Override
-    public byte[] toByteArray() {
-        byte[] voteData = null;
-
-        try {
-            // id
-            voteData = ArrayUtils.addAll(voteData, _id.getBytes(UTF_8));
-
-            // ts
-            voteData = ArrayUtils.addAll(voteData,
-                    String.valueOf(_ts).getBytes(UTF_8));
-
-            // voterId
-            voteData = ArrayUtils.addAll(voteData, _voterId.getBytes(UTF_8));
-
-            // info
-            voteData = ArrayUtils.addAll(voteData, _info.getBytes(UTF_8));
-        } catch (UnsupportedEncodingException e1) {
-            throw new FatalProtocolException(e1);
-        }
-
-        return voteData;
-    }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "MinIDToken [_id=" + _id + ", _info=" + _info + ", _ts=" + _ts +
-        ", _voterId=" + _voterId + "]";
+    public FatalProtocolException(final Throwable cause) {
+        super(cause);
     }
 }

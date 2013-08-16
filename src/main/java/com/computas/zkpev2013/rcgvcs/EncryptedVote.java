@@ -66,6 +66,10 @@ public class EncryptedVote extends CsvLineParseable {
                 EncryptedVoteCsvIndex.ELECTION_EVENT_ID);
     }
 
+    String getVotingReceipt() {
+        return null;
+    }
+
     /**
      * Indexes of the various fields in the CSV file.
      */

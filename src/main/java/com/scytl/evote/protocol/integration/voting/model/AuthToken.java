@@ -1,6 +1,6 @@
 /**
  * Source Code, High Level Architecture Documentation and Common Criteria
- * Documentation Copyright (C) 2010-2011 and ownership belongs to The Norwegian
+ * Documentation Copyright (C) 2013 and ownership belongs to The Norwegian
  * Ministry of Local Government and Regional Development and Scytl Secure
  * Electronic Voting SA ("Licensor").
  *
@@ -37,11 +37,19 @@
  */
 package com.scytl.evote.protocol.integration.voting.model;
 
-import com.scytl.evote.protocol.integration.voting.exception.FatalProtocolException;
+import com.scytl.evote.protocol.exceptions.FatalProtocolException;
+import com.scytl.evote.protocol.integration.eraser.Erasable;
 import com.scytl.evote.protocol.integration.voting.impl.saml.InternalAssertionType;
+
+import com.scytl.jbasis.erase.Eraser;
 
 import org.apache.commons.lang.ArrayUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
@@ -54,30 +62,34 @@ import java.util.List;
  * allows the other components that the users has the right to vote for a given
  * contest.
  */
-public class AuthToken implements Serializable, KeepMembers {
+public class AuthToken implements Serializable, KeepMembers, Erasable {
     private static final long serialVersionUID = -216635408449851701L;
     public static final int DEFAULT_EXPIRATION_TIME = 30;
+    private static final String CANNOT_DESERIALIZE_BYTE_BEAN = "Cannot deserialize bean";
     protected static final String UTF_8 = "UTF-8";
-    private final String _id;
+    private String _id;
     private String _electionEventId;
     @Deprecated
-    private final String _electionId;
-    private final List<AllowedContest> _contests;
-    private final long _ts;
-    private final int _expirationTimeInMinutes;
-    private final VoterIdentifier _voterIdentifier;
-    private final String _intTokenEntityProvider;
-    private final InternalToken _intToken;
-    private final String _voterFirstName;
-    private final String _voterLastName;
-    private final String _voterCommId;
-    private final String _voterArea;
+    private String _electionId;
+    private List<AllowedContest> _contests;
+    private long _ts;
+    private int _expirationTimeInMinutes;
+    private VoterIdentifier _voterIdentifier;
+    private String _intTokenEntityProvider;
+    private InternalToken _intToken;
+    private String _voterFirstName;
+    private String _voterLastName;
+    private String _voterCommId;
+    private String _voterArea;
     private String _controlledReturncodesType;
     private String _uncontrolledReturncodesType;
     private byte[] _authServiceSig;
     private long _asId;
-    private final List<ElectionVotingMode> _votingModes;
-    private final PollingPlace _pollingPlace;
+    private List<ElectionVotingMode> _votingModes;
+    private PollingPlace _pollingPlace;
+    private int _afterClosingTimeInSeconds = 0;
+    private int _advanceOfExpirationTimeInMinutes = 0;
+    private String _ip;
 
     /**
      * Creates an auth token instance.
@@ -107,8 +119,8 @@ public class AuthToken implements Serializable, KeepMembers {
      * @param voterArea
      *            The voter's area provided by the electoral roll.
      * @param voterCommId
-     *            true if the voter cell number could be retrieved, false
-     *            elsewhere.
+     *            true if the voter consents to share its info and false
+     *            otherwise.
      * @param expirationTimeInMinutes
      *            The expiration time of the token.
      * @param controlled
@@ -122,6 +134,12 @@ public class AuthToken implements Serializable, KeepMembers {
      *            both.
      * @param pollingPlace
      *            The polling place where the voter has to paper vote.
+     * @param ip
+     *            The voter ip.
+     * @param afterClosingTimeInSeconds
+     *            The grace period
+     * @param advanceOfExpirationTimeInMinutes
+     *            The time to warn expiring session
      */
     public AuthToken(final long asId, final String id,
         final String electionEventId, final String electionId,
@@ -134,7 +152,9 @@ public class AuthToken implements Serializable, KeepMembers {
         final ReturnCodesType controlledReturncodesType,
         final ReturnCodesType uncontrolledReturncodesType,
         final List<ElectionVotingMode> votingModes,
-        final PollingPlace pollingPlace) {
+        final PollingPlace pollingPlace, final String ip,
+        final int afterClosingTimeInSeconds,
+        final int advanceOfExpirationTimeInMinutes) {
         super();
         _asId = asId;
         _id = id;
@@ -153,7 +173,20 @@ public class AuthToken implements Serializable, KeepMembers {
         _controlledReturncodesType = controlledReturncodesType.name();
         _uncontrolledReturncodesType = uncontrolledReturncodesType.name();
         _votingModes = votingModes;
-        _pollingPlace = (pollingPlace != null) ? pollingPlace : new PollingPlace();
+        _afterClosingTimeInSeconds = afterClosingTimeInSeconds;
+        _advanceOfExpirationTimeInMinutes = advanceOfExpirationTimeInMinutes;
+
+        _pollingPlace = pollingPlace;
+
+        if (pollingPlace == null) {
+            _pollingPlace = new PollingPlace();
+        }
+
+        _ip = ip;
+
+        if (ip == null) {
+            _ip = "unknown";
+        }
     }
 
     /**
@@ -217,7 +250,7 @@ public class AuthToken implements Serializable, KeepMembers {
      * @return Returns the authServiceSig.
      */
     public byte[] getAuthServiceSig() {
-        return _authServiceSig;
+        return cloneByteArray(_authServiceSig);
     }
 
     /**
@@ -225,11 +258,7 @@ public class AuthToken implements Serializable, KeepMembers {
      *            The authServiceSig to set.
      */
     public void setAuthServiceSig(final byte[] authServiceSig) {
-        if (authServiceSig != null) {
-            _authServiceSig = authServiceSig.clone();
-        } else {
-            _authServiceSig = null;
-        }
+        _authServiceSig = cloneByteArray(authServiceSig);
     }
 
     /**
@@ -298,33 +327,46 @@ public class AuthToken implements Serializable, KeepMembers {
 
             // voter first name
             if (_voterFirstName != null) {
-                ArrayUtils.addAll(voteData, _voterFirstName.getBytes(UTF_8));
+                voteData = ArrayUtils.addAll(voteData,
+                        _voterFirstName.getBytes(UTF_8));
             }
 
             // voter last name
             if (_voterLastName != null) {
-                ArrayUtils.addAll(voteData, _voterLastName.getBytes(UTF_8));
+                voteData = ArrayUtils.addAll(voteData,
+                        _voterLastName.getBytes(UTF_8));
             }
 
             // voter area
             if (_voterArea != null) {
-                ArrayUtils.addAll(voteData, _voterArea.getBytes(UTF_8));
+                voteData = ArrayUtils.addAll(voteData,
+                        _voterArea.getBytes(UTF_8));
             }
 
             // voter communication id
             if (_voterCommId != null) {
-                ArrayUtils.addAll(voteData, _voterCommId.getBytes(UTF_8));
+                voteData = ArrayUtils.addAll(voteData,
+                        _voterCommId.getBytes(UTF_8));
             }
 
             // expiration time in minutes
-            ArrayUtils.addAll(voteData,
-                String.valueOf(_expirationTimeInMinutes).getBytes(UTF_8));
+            voteData = ArrayUtils.addAll(voteData,
+                    String.valueOf(_expirationTimeInMinutes).getBytes(UTF_8));
+
+            // grace time in seconds
+            voteData = ArrayUtils.addAll(voteData,
+                    String.valueOf(_afterClosingTimeInSeconds).getBytes(UTF_8));
+
+            // time in advance to alert user in minutes
+            voteData = ArrayUtils.addAll(voteData,
+                    String.valueOf(_advanceOfExpirationTimeInMinutes)
+                          .getBytes(UTF_8));
 
             // rc types
-            ArrayUtils.addAll(voteData,
-                _uncontrolledReturncodesType.getBytes(UTF_8));
-            ArrayUtils.addAll(voteData,
-                _controlledReturncodesType.getBytes(UTF_8));
+            voteData = ArrayUtils.addAll(voteData,
+                    _uncontrolledReturncodesType.getBytes(UTF_8));
+            voteData = ArrayUtils.addAll(voteData,
+                    _controlledReturncodesType.getBytes(UTF_8));
 
             // voting modes
             if (_votingModes != null) {
@@ -336,6 +378,16 @@ public class AuthToken implements Serializable, KeepMembers {
             if (_pollingPlace != null) {
                 voteData = ArrayUtils.addAll(voteData,
                         _pollingPlace.toByteArray());
+            }
+
+            // ip
+            if (_ip != null) {
+                voteData = ArrayUtils.addAll(voteData, _ip.getBytes(UTF_8));
+            }
+
+            if (_intTokenEntityProvider != null) {
+                voteData = ArrayUtils.addAll(voteData,
+                        _intTokenEntityProvider.getBytes(UTF_8));
             }
         } catch (UnsupportedEncodingException e1) {
             throw new FatalProtocolException(e1);
@@ -349,19 +401,63 @@ public class AuthToken implements Serializable, KeepMembers {
      */
     @Override
     public String toString() {
-        return "AuthToken [_asId=" + _asId + ", _authServiceSig=" +
-        Arrays.toString(_authServiceSig) + ", _contests=" + _contests +
+        return "AuthToken [_id=" + _id + ", _electionEventId=" +
+        _electionEventId + ", _electionId=" + _electionId + ", _contests=" +
+        _contests + ", _ts=" + _ts + ", _expirationTimeInMinutes=" +
+        _expirationTimeInMinutes + ", _voterIdentifier=" + _voterIdentifier +
+        ", _intTokenEntityProvider=" + _intTokenEntityProvider +
+        ", _intToken=" + _intToken + ", _voterFirstName=" + _voterFirstName +
+        ", _voterLastName=" + _voterLastName + ", _voterCommId=" +
+        _voterCommId + ", _voterArea=" + _voterArea +
         ", _controlledReturncodesType=" + _controlledReturncodesType +
-        ", _electionEventId=" + _electionEventId + ", _electionId=" +
-        _electionId + ", _expirationTimeInMinutes=" + _expirationTimeInMinutes +
-        ", _id=" + _id + ", _intToken=" + _intToken +
-        ", _intTokenEntityProvider=" + _intTokenEntityProvider + ", _ts=" +
-        _ts + ", _uncontrolledReturncodesType=" + _uncontrolledReturncodesType +
-        ", _voterArea=" + _voterArea + ", _voterCommId=" + _voterCommId +
-        ", _voterFirstName=" + _voterFirstName + ", _voterIdentifier=" +
-        _voterIdentifier + ", _voterLastName=" + _voterLastName +
-        ", _votingModes=" + _votingModes + ", _pollingPlace=" + _pollingPlace +
-        "]";
+        ", _uncontrolledReturncodesType=" + _uncontrolledReturncodesType +
+        ", _authServiceSig=" + Arrays.toString(_authServiceSig) + ", _asId=" +
+        _asId + ", _votingModes=" + _votingModes + ", _pollingPlace=" +
+        _pollingPlace + ", _afterClosingTimeInSeconds=" +
+        _afterClosingTimeInSeconds + ", _advanceOfExpirationTimeInMinutes=" +
+        _advanceOfExpirationTimeInMinutes + ", _ip=" + _ip + "]";
+    }
+
+    /**
+     * Converts a byte[] representing an AuthToken into an object
+     *
+     * @param data
+     * @return
+     */
+    public static AuthToken deserialize(final byte[] data) {
+        Object o = null;
+
+        try {
+            o = new ObjectInputStream(new ByteArrayInputStream(data)).readObject();
+        } catch (IOException ioe) {
+            throw new FatalProtocolException(CANNOT_DESERIALIZE_BYTE_BEAN, ioe);
+        } catch (ClassNotFoundException ioe) {
+            throw new FatalProtocolException(CANNOT_DESERIALIZE_BYTE_BEAN, ioe);
+        }
+
+        return (AuthToken) o;
+    }
+
+    /**
+     * Serializes an AuthToken object
+     *
+     * @return
+     */
+    public byte[] encode() {
+        byte[] token = null;
+
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(this);
+            oos.flush();
+            oos.close();
+            token = baos.toByteArray();
+        } catch (IOException e1) {
+            throw new FatalProtocolException(e1);
+        }
+
+        return token;
     }
 
     /**
@@ -454,5 +550,198 @@ public class AuthToken implements Serializable, KeepMembers {
      */
     public PollingPlace getPollingPlace() {
         return _pollingPlace;
+    }
+
+    /**
+     * Returns the optional after time that will be applied to voters that have
+     * been authentication before the closing time and vote after it (the grace
+     * period)
+     *
+     * @return Returns the afterClosingTimeInSeconds.
+     */
+    public int getAfterClosingTimeInSeconds() {
+        return _afterClosingTimeInSeconds;
+    }
+
+    /**
+     * @param afterClosingTimeInSeconds
+     *            The afterClosingTimeInSeconds to set.
+     */
+    public void setAfterClosingTimeInSeconds(
+        final int afterClosingTimeInSeconds) {
+        _afterClosingTimeInSeconds = afterClosingTimeInSeconds;
+    }
+
+    /**
+     * @return Returns the ip.
+     */
+    public String getIp() {
+        return _ip;
+    }
+
+    /**
+     * @see com.scytl.evote.protocol.integration.eraser.Erasable#erase()
+     */
+    @Override
+    public void erase() {
+        Eraser eraser = Eraser.get(this.getClass());
+        eraser.erase(_voterIdentifier);
+        eraser.erase(_intTokenEntityProvider);
+        eraser.erase(_intToken);
+    }
+
+    /**
+     * @param electionId
+     *            The electionId to set.
+     */
+    public void setElectionId(final String electionId) {
+        _electionId = electionId;
+    }
+
+    /**
+     * @param contests
+     *            The contests to set.
+     */
+    public void setContests(final List<AllowedContest> contests) {
+        _contests = contests;
+    }
+
+    /**
+     * @param ts
+     *            The ts to set.
+     */
+    public void setTs(final long ts) {
+        _ts = ts;
+    }
+
+    /**
+     * @param expirationTimeInMinutes
+     *            The expirationTimeInMinutes to set.
+     */
+    public void setExpirationTimeInMinutes(final int expirationTimeInMinutes) {
+        _expirationTimeInMinutes = expirationTimeInMinutes;
+    }
+
+    /**
+     * @param voterIdentifier
+     *            The voterIdentifier to set.
+     */
+    public void setVoterIdentifier(final VoterIdentifier voterIdentifier) {
+        _voterIdentifier = voterIdentifier;
+    }
+
+    /**
+     * @param intTokenEntityProvider
+     *            The intTokenEntityProvider to set.
+     */
+    public void setIntTokenEntityProvider(final String intTokenEntityProvider) {
+        _intTokenEntityProvider = intTokenEntityProvider;
+    }
+
+    /**
+     * @param intToken
+     *            The intToken to set.
+     */
+    public void setIntToken(final InternalToken intToken) {
+        _intToken = intToken;
+    }
+
+    /**
+     * @param voterFirstName
+     *            The voterFirstName to set.
+     */
+    public void setVoterFirstName(final String voterFirstName) {
+        _voterFirstName = voterFirstName;
+    }
+
+    /**
+     * @param voterLastName
+     *            The voterLastName to set.
+     */
+    public void setVoterLastName(final String voterLastName) {
+        _voterLastName = voterLastName;
+    }
+
+    /**
+     * @param voterCommId
+     *            The voterCommId to set.
+     */
+    public void setVoterCommId(final String voterCommId) {
+        _voterCommId = voterCommId;
+    }
+
+    /**
+     * @param voterArea
+     *            The voterArea to set.
+     */
+    public void setVoterArea(final String voterArea) {
+        _voterArea = voterArea;
+    }
+
+    /**
+     * @param votingModes
+     *            The votingModes to set.
+     */
+    public void setVotingModes(final List<ElectionVotingMode> votingModes) {
+        _votingModes = votingModes;
+    }
+
+    /**
+     * @param pollingPlace
+     *            The pollingPlace to set.
+     */
+    public void setPollingPlace(final PollingPlace pollingPlace) {
+        _pollingPlace = pollingPlace;
+    }
+
+    /**
+     * @param ip
+     *            The ip to set.
+     */
+    public void setIp(final String ip) {
+        _ip = ip;
+    }
+
+    /**
+     * @param id
+     *            The id to set.
+     */
+    public void setId(final String id) {
+        _id = id;
+    }
+
+    /**
+     * @return Returns the Time in advance to alert the voter when the
+     *         expiration time or grace period is to come
+     */
+    public int getAdvanceOfExpirationTimeInMinutes() {
+        return _advanceOfExpirationTimeInMinutes;
+    }
+
+    /**
+     * @param advanceOfExpirationTimeInMinutes
+     *            Time in advance to alert the voter when the expiration time or
+     *            grace period is to come
+     */
+    public void setAdvanceOfExpirationTimeInMinutes(
+        final int advanceOfExpirationTimeInMinutes) {
+        _advanceOfExpirationTimeInMinutes = advanceOfExpirationTimeInMinutes;
+    }
+
+    /**
+     * Clones a byte array testing if the toBeClone parameter are different of
+     * null
+     *
+     * @param toBeClone
+     * @return cloned toBeClone array
+     */
+    private byte[] cloneByteArray(final byte[] toBeClone) {
+        byte[] result = null;
+
+        if (toBeClone != null) {
+            result = toBeClone.clone();
+        }
+
+        return result;
     }
 }

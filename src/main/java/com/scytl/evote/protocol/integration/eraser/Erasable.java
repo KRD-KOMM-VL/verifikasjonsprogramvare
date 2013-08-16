@@ -1,6 +1,6 @@
 /**
  * Source Code, High Level Architecture Documentation and Common Criteria
- * Documentation Copyright (C) 2010-2011 and ownership belongs to The Norwegian
+ * Documentation Copyright (C) 2013 and ownership belongs to The Norwegian
  * Ministry of Local Government and Regional Development and Scytl Secure
  * Electronic Voting SA ("Licensor").
  *
@@ -35,45 +35,12 @@
  * by any third party is subject to Scytl Secure Electronic Voting SA's prior
  * written approval.
  */
-package com.scytl.evote.protocol.integration.voting.exception;
+package com.scytl.evote.protocol.integration.eraser;
 
 
 /**
- * A fatal protocol exception that cannot be resolved and is to be informed to
- * the system.
+ * Object should erase all the private data it receives and the work data.
  */
-public class FatalProtocolException extends RuntimeException {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 2617726891708451347L;
-
-    /**
-     *
-     */
-    public FatalProtocolException() {
-        super();
-    }
-
-    /**
-     * @param message
-     * @param cause
-     */
-    public FatalProtocolException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * @param message
-     */
-    public FatalProtocolException(final String message) {
-        super(message);
-    }
-
-    /**
-     * @param cause
-     */
-    public FatalProtocolException(final Throwable cause) {
-        super(cause);
-    }
+public interface Erasable {
+    void erase();
 }

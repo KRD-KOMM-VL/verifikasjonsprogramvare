@@ -1,6 +1,6 @@
 /**
  * Source Code, High Level Architecture Documentation and Common Criteria
- * Documentation Copyright (C) 2010-2011 and ownership belongs to The Norwegian
+ * Documentation Copyright (C) 2013 and ownership belongs to The Norwegian
  * Ministry of Local Government and Regional Development and Scytl Secure
  * Electronic Voting SA ("Licensor").
  *
