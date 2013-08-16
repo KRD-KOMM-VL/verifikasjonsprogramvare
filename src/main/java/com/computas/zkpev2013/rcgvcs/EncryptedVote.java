@@ -32,10 +32,25 @@ import com.computas.zkpev2013.CsvLineParseable;
  * object.
  */
 public class EncryptedVote extends CsvLineParseable {
+    private String contestId;
+    private String electionId;
+    private String electionEventId;
     private String uuid;
 
     EncryptedVote(String line) {
         super(line);
+    }
+
+    String getContestId() {
+        return contestId;
+    }
+
+    String getElectionEventId() {
+        return electionEventId;
+    }
+
+    String getElectionId() {
+        return electionId;
     }
 
     String getUuid() {
@@ -45,11 +60,27 @@ public class EncryptedVote extends CsvLineParseable {
     @Override
     protected void setAttributes(String[] attributes) throws Exception {
         uuid = getAttribute(attributes, EncryptedVoteCsvIndex.UUID);
+        contestId = getAttribute(attributes, EncryptedVoteCsvIndex.CONTEST_ID);
+        electionId = getAttribute(attributes, EncryptedVoteCsvIndex.ELECTION_ID);
+        electionEventId = getAttribute(attributes,
+                EncryptedVoteCsvIndex.ELECTION_EVENT_ID);
     }
 
     /**
      * Indexes of the various fields in the CSV file.
      */
-    private enum EncryptedVoteCsvIndex {UUID;
+    private enum EncryptedVoteCsvIndex {UUID,
+        AUTH_TOKEN,
+        AUTH_TOKEN_ID,
+        ENC_VOTE_OPT_IDS,
+        ENC_VOTE_SIG,
+        INTERNAL_AUTH_TOKEN_ID,
+        ELECTION_TYPE,
+        VOTE_TIMESTAMP,
+        VOTER_CERTIFICATE,
+        VOTER_AREA,
+        CONTEST_ID,
+        ELECTION_ID,
+        ELECTION_EVENT_ID;
     }
 }
