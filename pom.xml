@@ -189,6 +189,7 @@
           <instrumentation>
             <excludes>
               <exclude>com/scytl/**/*.class</exclude>
+              <exclude>com/computas/zkpev/**/*.class</exclude>
             </excludes>
           </instrumentation>
           <check>
