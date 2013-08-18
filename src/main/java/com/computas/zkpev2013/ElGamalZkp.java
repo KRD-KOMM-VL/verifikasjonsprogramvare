@@ -28,7 +28,6 @@ import java.io.IOException;
 
 import java.math.BigInteger;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -48,7 +47,7 @@ public abstract class ElGamalZkp extends ZeroKnowledgeProof {
     private BigInteger p;
     private BigInteger q;
     private BigInteger g;
-    private List<BigInteger> h;
+    private ElGamalPublicKeyList h;
 
     protected ElGamalZkp(String[] arguments) {
         super(arguments);
@@ -88,7 +87,7 @@ public abstract class ElGamalZkp extends ZeroKnowledgeProof {
 
     protected void loadElGamalPublicKeys() throws IOException {
         Properties properties = loadProperties(elGamalPublicKeysFileName);
-        h = getBigIntegerListProperty(properties,
+        h = getElGamalPublicKeyListProperty(properties,
                 EL_GAMAL_PUBLIC_KEYS_PROPERTY_NAME);
     }
 
@@ -104,17 +103,17 @@ public abstract class ElGamalZkp extends ZeroKnowledgeProof {
         return new BigInteger(properties.getProperty(key));
     }
 
-    private List<BigInteger> getBigIntegerListProperty(Properties properties,
-        String key) {
+    private ElGamalPublicKeyList getElGamalPublicKeyListProperty(
+        Properties properties, String key) {
         List<String> stringList = Arrays.asList(properties.getProperty(key)
                                                           .split(","));
-        List<BigInteger> bigIntegerList = new ArrayList<BigInteger>();
+        ElGamalPublicKeyList pkList = new ElGamalPublicKeyList();
 
         for (String str : stringList) {
-            bigIntegerList.add(new BigInteger(str));
+            pkList.add(new BigInteger(str));
         }
 
-        return bigIntegerList;
+        return pkList;
     }
 
     protected BigInteger getP() {
@@ -129,7 +128,7 @@ public abstract class ElGamalZkp extends ZeroKnowledgeProof {
         return g;
     }
 
-    protected List<BigInteger> getH() {
+    protected ElGamalPublicKeyList getH() {
         return h;
     }
 }

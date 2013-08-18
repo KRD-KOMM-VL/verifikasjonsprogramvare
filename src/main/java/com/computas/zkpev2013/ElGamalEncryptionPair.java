@@ -37,14 +37,13 @@ public class ElGamalEncryptionPair {
     * Constructor taking a byte array as input. It assumes that the byte array
     * represents a String containing two BigIntegers separated by a pipe ("|").
     *
-    * @param encoded ElGamal encryption pair encoded as a byte array.
+    * @param encodedPublicKeyComponent BigInteger publicKeyComponent encoded as a byte array.
+    * @param encodedMessageComponent   BigInteger messageComponent encoded as a byte array.
     */
-    public ElGamalEncryptionPair(byte[] encoded) {
-        String[] elements = new String(encoded).split("\\|");
-
-        publicKeyComponent = new BigInteger(elements[0]);
-
-        messageComponent = new BigInteger(elements[1]);
+    public ElGamalEncryptionPair(byte[] encodedPublicKeyComponent,
+        byte[] encodedMessageComponent) {
+        publicKeyComponent = new BigInteger(encodedPublicKeyComponent);
+        messageComponent = new BigInteger(encodedMessageComponent);
     }
 
     /**

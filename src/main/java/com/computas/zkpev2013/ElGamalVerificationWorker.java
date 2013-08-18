@@ -24,8 +24,6 @@ package com.computas.zkpev2013;
 
 import java.math.BigInteger;
 
-import java.util.List;
-
 
 /**
  * Superclass for verification workers using ElGamal.
@@ -34,10 +32,10 @@ import java.util.List;
 public class ElGamalVerificationWorker extends Thread {
     private final BigInteger p;
     private final BigInteger g;
-    private final List<BigInteger> h;
+    private final ElGamalPublicKeyList h;
 
     protected ElGamalVerificationWorker(BigInteger p, BigInteger g,
-        List<BigInteger> h) {
+        ElGamalPublicKeyList h) {
         this.p = p;
         this.g = g;
         this.h = h;
@@ -47,7 +45,7 @@ public class ElGamalVerificationWorker extends Thread {
         return p;
     }
 
-    protected List<BigInteger> getH() {
+    protected ElGamalPublicKeyList getH() {
         return h;
     }
 

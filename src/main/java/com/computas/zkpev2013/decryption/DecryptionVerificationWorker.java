@@ -22,13 +22,12 @@
  */
 package com.computas.zkpev2013.decryption;
 
+import com.computas.zkpev2013.ElGamalPublicKeyList;
 import com.computas.zkpev2013.ElGamalVerificationWorker;
 
 import java.math.BigInteger;
 
 import java.security.NoSuchAlgorithmException;
-
-import java.util.List;
 
 
 /**
@@ -39,7 +38,7 @@ public class DecryptionVerificationWorker extends ElGamalVerificationWorker {
     private final NizkpDecryption master;
 
     protected DecryptionVerificationWorker(NizkpDecryption master,
-        BigInteger p, BigInteger g, List<BigInteger> h) {
+        BigInteger p, BigInteger g, ElGamalPublicKeyList h) {
         super(p, g, h);
         this.master = master;
     }
@@ -77,7 +76,9 @@ public class DecryptionVerificationWorker extends ElGamalVerificationWorker {
 
     private void verifyDecryptionLineProof(DecryptionLine decryptionLine)
         throws NoSuchAlgorithmException {
-        if (!decryptionLine.verifyProof(getP(), getG(), getH().get(0))) {
+        getH().calculateAggregateKey(getP());
+
+        if (!decryptionLine.verifyProof(getP(), getG(), getH().getAggregateKey())) {
             master.addResult(new DecryptionLineWithIncorrectProofIncident(
                     decryptionLine));
         }

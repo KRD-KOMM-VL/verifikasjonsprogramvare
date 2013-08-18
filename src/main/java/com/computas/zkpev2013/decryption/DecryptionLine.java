@@ -26,6 +26,8 @@ import com.computas.zkpev.CsvLineParseable;
 
 import com.computas.zkpev2013.ElGamalEncryptionPair;
 
+import org.postgresql.util.Base64;
+
 import java.math.BigInteger;
 
 import java.security.MessageDigest;
@@ -103,9 +105,20 @@ public class DecryptionLine extends CsvLineParseable {
         electionId = getAttribute(attributes, DecryptionLineCsvIndex.ELECTION_ID);
         contestId = getAttribute(attributes, DecryptionLineCsvIndex.CONTEST_ID);
 
-        byte[] encodedVotingOptionIdsProductByteArray = getAttributeAsMultilinedByteArray(attributes,
-                DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
-        encodedVotingOptionsIdsProduct = new ElGamalEncryptionPair(encodedVotingOptionIdsProductByteArray);
+        String[] encodedVotingOptionIdsProductStrings = getAttributeAsString(attributes,
+                DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS).split("#");
+
+        if (encodedVotingOptionIdsProductStrings.length != 2) {
+            throw new IllegalArgumentException(
+                "INVALID FORMAT FOR ENCODED VOTE OPTIONS");
+        }
+
+        BigInteger encodedVotingOptionIdsProductPublicKeyComponent = new BigInteger(Base64.decode(
+                    encodedVotingOptionIdsProductStrings[0]));
+        BigInteger encodedVotingOptionIdsProductMessageComponent = new BigInteger(Base64.decode(
+                    encodedVotingOptionIdsProductStrings[1]));
+        encodedVotingOptionsIdsProduct = new ElGamalEncryptionPair(encodedVotingOptionIdsProductPublicKeyComponent,
+                encodedVotingOptionIdsProductMessageComponent);
         encryptedVotingOptionsIdsProductString = getAttribute(attributes,
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
 
