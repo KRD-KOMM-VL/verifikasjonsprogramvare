@@ -22,6 +22,11 @@
  */
 package com.computas.zkpev2013;
 
+import org.apache.commons.codec.binary.Base64;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Abstract superclass for domain objects that can be parsed in from a CSV
@@ -34,6 +39,7 @@ public abstract class CsvLineParseable {
         try {
             parseLineAndSetAttributes(line);
         } catch (Exception e) {
+            System.out.println(e);
             throw new IllegalArgumentException(String.format(
                     "Could not parse the line '%s'.", line), e);
         }
@@ -51,5 +57,29 @@ public abstract class CsvLineParseable {
 
     protected String getAttribute(String[] attributes, Enum index) {
         return new String(attributes[index.ordinal()]);
+    }
+
+    protected long getAttributeAsLong(String[] attributes, Enum index) {
+        return Long.parseLong(getAttribute(attributes, index));
+    }
+
+    protected byte[] getAttributeAsByteArray(String[] attributes, Enum index) {
+        return Base64.decodeBase64(getAttribute(attributes, index));
+    }
+
+    protected byte[][] getAttributeAsByteArrayArray(String[] attributes,
+        Enum index) {
+        String byteArrayArrayString = getAttribute(attributes, index)
+                                          .replace("#n#", "\n");
+
+        List<byte[]> byteArrayList = new ArrayList<byte[]>();
+
+        String[] byteArrayStrings = byteArrayArrayString.split("#");
+
+        for (String byteArrayString : byteArrayStrings) {
+            byteArrayList.add(Base64.decodeBase64(byteArrayString));
+        }
+
+        return byteArrayList.toArray(new byte[][] {  });
     }
 }
