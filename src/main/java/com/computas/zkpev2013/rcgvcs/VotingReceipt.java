@@ -24,9 +24,12 @@ package com.computas.zkpev2013.rcgvcs;
 
 import com.computas.zkpev2013.CsvLineParseable;
 
-
+/**
+ * Domain object holding all information about an voting receipt.
+ *
+ */
 public class VotingReceipt extends CsvLineParseable {
-    private String votingReceipt;
+    private String votingReceiptValue;
     private String contestId;
     private String electionId;
     private String electionEventId;
@@ -37,7 +40,7 @@ public class VotingReceipt extends CsvLineParseable {
 
     @Override
     protected void setAttributes(String[] attributes) throws Exception {
-        votingReceipt = getAttribute(attributes,
+        votingReceiptValue = getAttribute(attributes,
                 VotingReceiptCsvIndex.VOTING_RECEIPT);
         contestId = getAttribute(attributes, VotingReceiptCsvIndex.CONTEST_ID);
         electionId = getAttribute(attributes, VotingReceiptCsvIndex.ELECTION_ID);
@@ -46,7 +49,7 @@ public class VotingReceipt extends CsvLineParseable {
     }
 
     String getVotingReceipt() {
-        return votingReceipt;
+        return votingReceiptValue;
     }
 
     String getContestId() {

@@ -32,7 +32,7 @@ public abstract class Incident implements Result {
 
     @Override
     public final String toString() {
-        return null;
+        return "Not implemented";
     }
 
     protected abstract String[] getValuesForCsvLine();

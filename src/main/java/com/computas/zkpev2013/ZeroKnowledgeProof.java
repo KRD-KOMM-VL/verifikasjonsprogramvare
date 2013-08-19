@@ -22,9 +22,6 @@
  */
 package com.computas.zkpev2013;
 
-import com.computas.zkpev2013.ResultsArrayList;
-import com.computas.zkpev2013.ResultsList;
-
 
 /**
  * Abstract class supporting zero-knowledge proofs.
