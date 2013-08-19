@@ -39,7 +39,6 @@ public abstract class CsvLineParseable {
         try {
             parseLineAndSetAttributes(line);
         } catch (Exception e) {
-            System.out.println(e);
             throw new IllegalArgumentException(String.format(
                     "Could not parse the line '%s'.", line), e);
         }

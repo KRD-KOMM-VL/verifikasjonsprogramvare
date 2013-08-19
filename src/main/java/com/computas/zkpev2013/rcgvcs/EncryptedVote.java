@@ -112,7 +112,6 @@ public class EncryptedVote extends CsvLineParseable {
                     "The binary AuthToken for encrypted vote %s could not be deserialized to an AuthToken Java object.",
                     thisUuid), e);
         } catch (ClassNotFoundException e) {
-            System.out.println(e);
             throw new IllegalArgumentException(String.format(
                     "The binary AuthToken for encrypted vote %s could not be cast to an AuthToken Java object.",
                     thisUuid), e);
