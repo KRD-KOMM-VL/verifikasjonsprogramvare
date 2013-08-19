@@ -22,7 +22,6 @@
  */
 package com.computas.zkpev2013.rcgvcs;
 
-
 import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.BeforeMethod;
@@ -36,7 +35,6 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Unit tests against the EncryptedVote class.
- *
  */
 public class EncryptedVoteUnitTest {
     private static final String COMMA = ",";
