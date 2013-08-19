@@ -147,9 +147,6 @@ public class EncryptedVoteUnitTest {
     @Test
     public void mustCalculateVotingReceiptCorrectly()
         throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
-    	System.out.println(encryptedVote.getVotingReceipt());
-    	System.out.println(encryptedVote.getVotingReceipt().length());
-    	System.out.println(GIVEN_VOTING_RECEIPT.length());
         assertEquals(encryptedVote.getVotingReceipt(), GIVEN_VOTING_RECEIPT);
     }
 }
