@@ -91,14 +91,30 @@ public class EncryptedVote extends CsvLineParseable {
         byte[] encGamma = encGammaAndVoteOptIds[0];
         byte[][] encVoteOptIds = Arrays.copyOfRange(encGammaAndVoteOptIds, 1,
                 encGammaAndVoteOptIds.length);
+        long voteTimestamp = getAttributeAsLong(attributes,
+                EncryptedVoteCsvIndex.VOTE_TIMESTAMP);
+        byte[] voteZKProofSig = getAttributeAsByteArray(attributes,
+                EncryptedVoteCsvIndex.VOTE_Z_K_PROOF_SIG);
+        String voterId = getAttribute(attributes, EncryptedVoteCsvIndex.VOTER_ID);
+        String voterCertificate = getAttributeAsString(attributes,
+                EncryptedVoteCsvIndex.VOTER_CERTIFICATE);
+        String electionType = getAttribute(attributes,
+                EncryptedVoteCsvIndex.ELECTION_TYPE);
 
         AuthToken authToken = deserializeAuthToken(getAttributeAsByteArray(
                     attributes, EncryptedVoteCsvIndex.AUTH_TOKEN), uuid);
         VoteBean voteBean = new VoteBean.VoteBeanBuilder().setEncGamma(encGamma)
                                                           .setEncVoteOptIDs(encVoteOptIds)
+                                                          .setVoteZKProofSig(voteZKProofSig)
+                                                          .setVoterId(voterId)
+                                                          .setElectionId(electionId)
+                                                          .setElectionEventId(electionEventId)
+                                                          .setContestId(contestId)
+                                                          .setTs(voteTimestamp)
+                                                          .setAuthTokenId(authToken.getId())
+                                                          .setCertificate(voterCertificate)
+                                                          .setElectionType(electionType)
                                                           .build();
-        long voteTimestamp = getAttributeAsLong(attributes,
-                EncryptedVoteCsvIndex.VOTE_TIMESTAMP);
         votingReceipt = calculateVotingReceipt(authToken, voteBean,
                 voteTimestamp);
     }
@@ -177,6 +193,10 @@ public class EncryptedVote extends CsvLineParseable {
         VOTER_AREA,
         CONTEST_ID,
         ELECTION_ID,
-        ELECTION_EVENT_ID;
+        ELECTION_EVENT_ID,
+        VOTER_ID,
+        CHANNEL_ID,
+        RECEIPT_TIMESTAMP,
+        VOTE_Z_K_PROOF_SIG;
     }
 }

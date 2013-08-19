@@ -62,14 +62,19 @@ public abstract class CsvLineParseable {
         return Long.parseLong(getAttribute(attributes, index));
     }
 
+    protected String getAttributeAsString(String[] attributes, Enum index) {
+        return decodeNewLines(getAttribute(attributes, index)
+                                  .replace("#r#", "\r"));
+    }
+
     protected byte[] getAttributeAsByteArray(String[] attributes, Enum index) {
         return Base64.decodeBase64(getAttribute(attributes, index));
     }
 
     protected byte[][] getAttributeAsByteArrayArray(String[] attributes,
         Enum index) {
-        String byteArrayArrayString = getAttribute(attributes, index)
-                                          .replace("#n#", "\n");
+        String byteArrayArrayString = decodeNewLines(getAttribute(attributes,
+                    index));
 
         List<byte[]> byteArrayList = new ArrayList<byte[]>();
 
@@ -80,5 +85,9 @@ public abstract class CsvLineParseable {
         }
 
         return byteArrayList.toArray(new byte[][] {  });
+    }
+
+    private String decodeNewLines(String s) {
+        return s.replace("#n#", "\n");
     }
 }
