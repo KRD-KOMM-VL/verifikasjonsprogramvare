@@ -49,6 +49,7 @@ import java.util.Arrays;
  * object.
  */
 public class EncryptedVote extends CsvLineParseable {
+    static final String UTF_8 = "UTF-8";
     private static final String HASHING_ALGORITHM = "SHA-256";
     private static final VoteBeanToJson VOTE_BEAN_TO_JSON = new VoteBeanToJson();
     private static final AuthTokenJsonParser AUTH_TOKEN_JSON_PARSER = new AuthTokenJsonParserImpl();
