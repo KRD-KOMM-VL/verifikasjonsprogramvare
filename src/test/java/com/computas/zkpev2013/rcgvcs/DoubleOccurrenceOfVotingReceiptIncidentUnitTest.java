@@ -103,6 +103,15 @@ public class DoubleOccurrenceOfVotingReceiptIncidentUnitTest {
     }
 
     /**
+     * Verifies that the incident doesn't have the same hashCode as another incident with another voting receipt.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherDoubleOccurrenceOfVotingReceiptIncidentWithAnotherVotingReceipt() {
+        assertFalse(incident.hashCode() == new DoubleOccurrenceOfVotingReceiptIncident(
+                new VotingReceipt(OTHER_SAMPLE_LINE)).hashCode());
+    }
+
+    /**
      * Verifies that the incident is not equal to another incident with another voting receipt.
      */
     @Test
