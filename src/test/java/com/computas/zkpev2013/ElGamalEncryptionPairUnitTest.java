@@ -22,14 +22,13 @@
  */
 package com.computas.zkpev2013;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 
 /**
  * Unit tests on ElGamalEncryptionPair.
@@ -76,8 +75,7 @@ public class ElGamalEncryptionPairUnitTest {
     @Test
     public void constructorWithStringBehavesWell() {
         assertEquals(pair,
-            new ElGamalEncryptionPair(
-                (PUBLIC_KEY_COMPONENT + "|" + MESSAGE_COMPONENT).getBytes()));
+            new ElGamalEncryptionPair(PUBLIC_KEY_COMPONENT, MESSAGE_COMPONENT));
     }
 
     /**
