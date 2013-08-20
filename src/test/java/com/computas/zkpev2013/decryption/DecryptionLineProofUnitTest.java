@@ -22,13 +22,14 @@
  */
 package com.computas.zkpev2013.decryption;
 
+import static org.testng.Assert.*;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 
-import static org.testng.Assert.*;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Unit test against a decryption line dealing with the zero-knowledge proof specifically.
