@@ -94,6 +94,8 @@ public class EncryptedVote extends CsvLineParseable {
                 encGammaAndVoteOptIds.length);
         long voteTimestamp = getAttributeAsLong(attributes,
                 EncryptedVoteCsvIndex.VOTE_TIMESTAMP);
+        long receiptTimestamp = getAttributeAsLong(attributes,
+                EncryptedVoteCsvIndex.RECEIPT_TIMESTAMP);
         byte[] voteZKProofSig = getAttributeAsByteArray(attributes,
                 EncryptedVoteCsvIndex.VOTE_Z_K_PROOF_SIG);
         String voterId = getAttribute(attributes, EncryptedVoteCsvIndex.VOTER_ID);
@@ -117,7 +119,7 @@ public class EncryptedVote extends CsvLineParseable {
                                                           .setElectionType(electionType)
                                                           .build();
         votingReceipt = calculateVotingReceipt(authToken, voteBean,
-                voteTimestamp);
+                receiptTimestamp);
     }
 
     private AuthToken deserializeAuthToken(byte[] binaryAuthToken,
@@ -148,20 +150,21 @@ public class EncryptedVote extends CsvLineParseable {
     }
 
     private String calculateVotingReceipt(AuthToken authToken,
-        VoteBean voteBean, long voteTimestamp) throws NoSuchAlgorithmException {
-        byte[] message = calculateMessage(authToken, voteBean, voteTimestamp);
+        VoteBean voteBean, long receiptTimestamp)
+        throws NoSuchAlgorithmException {
+        byte[] message = calculateMessage(authToken, voteBean, receiptTimestamp);
         byte[] binaryVotingReceipt = hash(message);
 
         return encodeBase64(binaryVotingReceipt);
     }
 
     private byte[] calculateMessage(AuthToken authToken, VoteBean voteBean,
-        long voteTimestamp) {
+        long receiptTimestamp) {
         String authTokenAsJson = AUTH_TOKEN_JSON_PARSER.toJson(authToken);
         String voteAsJson = VOTE_BEAN_TO_JSON.voteToJson(voteBean);
-        String voteTimestampAsString = String.valueOf(voteTimestamp);
+        String receiptTimestampAsString = String.valueOf(receiptTimestamp);
 
-        return (authTokenAsJson + voteAsJson + voteTimestampAsString).getBytes();
+        return (authTokenAsJson + voteAsJson + receiptTimestampAsString).getBytes();
     }
 
     static String encodeBase64(byte[] binaryVotingReceipt) {

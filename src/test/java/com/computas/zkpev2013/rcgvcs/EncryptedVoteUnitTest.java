@@ -136,8 +136,6 @@ public class EncryptedVoteUnitTest {
      * Verifies that the voting receipt is calculated correctly on an encrypted
      * vote.
      *
-     * TODO: Unit test under construction.
-     *
      * @throws NoSuchAlgorithmException Algorithm set to version that should be
      * provided, and should therefore never be thrown.
      * @throws ClassNotFoundException Sample line should be in line with provided
@@ -145,7 +143,7 @@ public class EncryptedVoteUnitTest {
      * @throws IOException Sample line should be fine to read from, and should
      * therefore never be thrown.
      */
-    @Test(enabled = false)
+    @Test
     public void mustCalculateVotingReceiptCorrectly()
         throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
         assertEquals(encryptedVote.getVotingReceipt(), GIVEN_VOTING_RECEIPT);
