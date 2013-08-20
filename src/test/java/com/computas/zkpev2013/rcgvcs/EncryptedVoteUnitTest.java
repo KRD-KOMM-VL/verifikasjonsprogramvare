@@ -28,13 +28,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import java.security.NoSuchAlgorithmException;
 
 
 /**
  * Unit tests against the EncryptedVote class.
- *
  */
 public class EncryptedVoteUnitTest {
     private static final String COMMA = ",";
@@ -47,7 +47,14 @@ public class EncryptedVoteUnitTest {
         COMMA + GIVEN_CONTEST_ID + COMMA + GIVEN_ELECTION_ID + COMMA +
         GIVEN_ELECTION_EVENT_ID + COMMA +
         "01024132990,CHANNEL_ID_UNCONTROLLED,1375768580765,NTc5OTI3ODI5Mzk3MjY3Mzg2NDg5MTMxMDA5MTc1MDA5MzY3MjA5NTkzNDg5NTU2NTEzODc0MzY5MzI3OTkxNzU2MDEzNjU4MjU4NTZ8NTM1OTAwNTIwNDA4NjY4MzUyNjQyNjM2Mzc5ODAyMjMxNDEwMjQ3NDc3NzAyMDgwNzk1NjM3ODUwMTI3NTUzOTE5NjA1MDYyOTExODgzMDg4NDI2NDU0NDE4ODcyODQ3NTE3NjUzMzMwNDQ2OTcxMjc1ODAyNTc3MDc3NTA2MzQ5NjExNzA5Nzg4MDU1OTYxNzA5MzE0NzA1Mjk0NjAwMzY2MzI1MDcwMzE1OTkxNjcwODExODI3NjI1NjUyNzI5NzUzNDQ4MTA2ODMyMjkwMDk4ODM1OTQ4NjgyMTgxOTk0ODUwNzc2NzA1MDY3MjUzOTA2MzUzNjQ0MjAyNzEwOTMyMjUwODY0MTg5MTQyOTI4ODEzMjMxNTQ5MzUwMDM5ODU4ODkxMjU2NjQ2MjE5ODUzNDI0MDAwMjQ5NjUyNTAwOTI4MDY1NzE2MDQ2MjkxNjM0MjY5NzUwMzI5NjgxNzI3Mzc5Mzk5MjYyMjIyNzc2ODg4MjQxNDA5ODIwMDc1MjE3MzE4ODk0NjQyNzg2NDI3NjYwNzU0NjE3OTQ5NTk3NDIzNjA2MjkzNzQyMTI2MzAyODk5MjU4MDA4NjYwNzg2NTcwOTcxNzI1NzIxMDkxMDM5Mzg2MTkwMzk4NjkxOTM0MDMzNzQzODY0NzI1MDY0Nzc5NDM4NTQ5NzMwMTMzOTQxNzE5NTA0MzU2OTgzMTA4NjA5MjEyMzE3NDY0MTEyOTg0NTM2OTcxNDAzODEyMDI1MTk5OTE5NTI3MDQ0Mzk5NTY0MTMzNjI2NTIyOTAyMzM5ODgxMDkwOTA0NTQ1OTE4NDQ2NHxudWxs";
-    private static final String GIVEN_VOTING_RECEIPT = "rO0ABXNyAD1jb20uc2N5dGwuZXZvdGUucHJvdG9jb2wuaW50ZWdyYXRpb24udm90aW5nLm1vZGVsLlJlY2VpcHRCZWFuw7/82u7t7McCAApKAAZfcmNnSURKAApfdGltZXN0YW1wSgAGX3Zjc0lETAAKX2NvbnRlc3RJZHQAEkxqYXZhL2xhbmcvU3RyaW5nO0wAEF9lbGVjdGlvbkV2ZW50SWRxAH4AAUwAC19lbGVjdGlvbklkcQB+AAFbABRfcmVjZWlwdFNpZ25hdHVyZVJDR3QAAltCWwAUX3JlY2VpcHRTaWduYXR1cmVWQ1NxAH4AAkwAE19yZXR1cm5Db2Rlc01lc3NhZ2VxAH4AAVsADl92b3RpbmdSZWNlaXB0cQB+AAJ4cAAAAAAAAB+cAAABQFIykp0AAAAAAAAAAHQABjAwMDAxOHQABjczMDA3MXQAAjAxdXIAAltCrPMX+AYIVOACAAB4cAAAAQB+xHkHj5yiOnRUOjNgHlAcbraUfO9gaaUxdVJX3eUruirmh5XfPwS8Na+btvq+pXBc5QVVsu83iHYSymjYDQBBLv9m3MbKku23xj2MNQDvCDaC2thxt8GIQRl66WwtsOvKT8i57602N71QMwbxFTd6VIjvR+w3LSVkb2M91TxRKi19DFf9DEoe2rUezzNSMUKKGXF89qOgDv6DrjUTygsbInssz3cJBVEP+YfRZphpzUe3kifNuVCfSzZFwgKgJngrvCkPPdl4w3+NUj9youmpAHiWn0GpIFjvyn3wG5pSwzLwSaUk2z7HQ11zf0xSVSOjYUPehXJiUT9ZVFFx+ieDdXEAfgAHAAABAHF9BM0CkwHL4hp/tOSc4/yUFGE8M+dbb/fRBZlygckJNItPFC0YLlXgrIUQIKn90ILMlMDIT4a98qBbVSmS0j9gzTIlmFO85RQ2+CDNh5zMEmOn04sgEIUv+CDyBkbbDOy30hasinnMrQdRCRSXUsttKKD4B/CWq/ylHFg53b5Vu7aJaSpBxMj5+Z+ieQ3c4GcjC4QXEyp2C81mx5kpEtYpSooQGSuxzsW60MKLgqGJ+VxX6eC8CW9K/qR2BG+14hcW9zmA+qNGpyapyg4Y9JYTcJi+9ZiJ9PbchDNrpm8X8b6TXc0lfWc0vvKjb/TRD4uNc0qBgHhi1kaZOTF5Q5FwdXEAfgAHAAAALEVTUmNpQXdHNE03MVVXcElZSVcwUlc3UkY0ZVNEWUNUMVY5WmF0bTF3c009";
+    private static final String GIVEN_VOTING_RECEIPT = "ESRciAwG4M71UWpIYIW0RW7RF4eSDYCT1V9Zatm1wsM=";
+    private static final byte[] EXPECTED_SHA_256 = new byte[] {
+            (byte) 227, (byte) 176, (byte) 196, 66, (byte) 152, (byte) 252, 28,
+            20, (byte) 154, (byte) 251, (byte) 244, (byte) 200, (byte) 153, 111,
+            (byte) 185, 36, 39, (byte) 174, 65, (byte) 228, 100, (byte) 155,
+            (byte) 147, 76, (byte) 164, (byte) 149, (byte) 153, 27, 120, 82,
+            (byte) 184, 85
+        };
     private EncryptedVote encryptedVote;
 
     /**
@@ -95,16 +102,48 @@ public class EncryptedVoteUnitTest {
     }
 
     /**
+     * Verifies that the Base64 encoding is done correctly. The example is taken
+     * from Wikipedia.
+     *
+     * @throws UnsupportedEncodingException Encoding set to UTF-8, and should
+     * therefore not be thrown.
+     */
+    @Test
+    public void mustEncodeBase64() throws UnsupportedEncodingException {
+        assertEquals(EncryptedVote.encodeBase64(
+                "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.".getBytes(
+                    EncryptedVote.UTF_8)),
+            "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=");
+    }
+
+    /**
+     * Verifies that digesting is done correctly. The example is taken from
+     * Wikipedia.
+     *
+     * @throws UnsupportedEncodingException Encoding set to UTF-8, and should
+     * therefore not be thrown.
+     * @throws NoSuchAlgorithmException Algorithm set to version that should be
+     * provided, and should therefore never be thrown.
+     */
+    @Test
+    public void mustDigestCorrectly()
+        throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        byte[] actual = EncryptedVote.hash("".getBytes(EncryptedVote.UTF_8));
+        assertEquals(actual, EXPECTED_SHA_256);
+    }
+
+    /**
      * Verifies that the voting receipt is calculated correctly on an encrypted
      * vote.
+     *
+     * TODO: Unit test under construction.
+     *
      * @throws NoSuchAlgorithmException Algorithm set to version that should be
      * provided, and should therefore never be thrown.
      * @throws ClassNotFoundException Sample line should be in line with provided
      * version of AuthToken, and should therefore never be thrown.
      * @throws IOException Sample line should be fine to read from, and should
      * therefore never be thrown.
-     *
-     * TODO: Not implemented yet.
      */
     @Test(enabled = false)
     public void mustCalculateVotingReceiptCorrectly()
