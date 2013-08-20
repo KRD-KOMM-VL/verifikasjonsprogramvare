@@ -65,6 +65,25 @@ public class VotingReceipt extends CsvLineParseable {
         return electionEventId;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof VotingReceipt &&
+        privateEqual((VotingReceipt) other);
+    }
+
+    private boolean privateEqual(VotingReceipt other) {
+        return votingReceiptValue.equals(other.getVotingReceipt()) &&
+        contestId.equals(other.getContestId()) &&
+        electionId.equals(other.getElectionId()) &&
+        electionEventId.equals(other.getElectionEventId());
+    }
+
+    @Override
+    public int hashCode() {
+        return votingReceiptValue.hashCode() + contestId.hashCode() +
+        electionId.hashCode() + electionEventId.hashCode();
+    }
+
     /**
      * Indexes of the various fields in the CSV file.
      */

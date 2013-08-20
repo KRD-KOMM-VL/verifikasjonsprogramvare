@@ -32,7 +32,15 @@ public abstract class Incident implements Result {
 
     @Override
     public final String toString() {
-        return "Not implemented";
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(this.getClass().getSimpleName());
+
+        for (String value : getValuesForCsvLine()) {
+            buffer.append(COMMA);
+            buffer.append(value);
+        }
+
+        return buffer.toString();
     }
 
     protected abstract String[] getValuesForCsvLine();
