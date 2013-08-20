@@ -22,11 +22,25 @@
  */
 package com.computas.zkpev2013;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import java.net.URL;
+
 
 /**
  * Abstract class supporting zero-knowledge proofs.
  */
 public abstract class ZeroKnowledgeProof {
+    protected static final Logger LOGGER = initializeLogger();
+    private static final String LOG4J_PROPERTIES = "log4j.properties";
     protected final ResultsList results;
     private String resultsFileName;
 
@@ -38,6 +52,21 @@ public abstract class ZeroKnowledgeProof {
     protected abstract void parseArguments(String[] arguments);
 
     protected abstract void run() throws Exception;
+
+    private static Logger initializeLogger() {
+        URL configurationFile = getResource(LOG4J_PROPERTIES);
+        PropertyConfigurator.configure(configurationFile);
+
+        return Logger.getLogger(ZeroKnowledgeProof.class);
+    }
+
+    private static URL getResource(String resourceName) {
+        return getClassLoader().getResource(resourceName);
+    }
+
+    private static ClassLoader getClassLoader() {
+        return ZeroKnowledgeProof.class.getClassLoader();
+    }
 
     protected void checkNoOfParameters(String[] arguments,
         int minimalNumberOfParameters) {
@@ -79,5 +108,83 @@ public abstract class ZeroKnowledgeProof {
      */
     public boolean isLoggingOfResultsRequired() {
         return resultsFileName != null;
+    }
+
+    /**
+     * Opens the file to which the results should be logged, if logging
+     * to a file is required.
+     */
+    public void openResultsFileIfRequired() {
+        if (isLoggingOfResultsRequired()) {
+            openResultsFile();
+            LOGGER.info(String.format("Results file %s opened for writing.",
+                    resultsFileName));
+        } else {
+            LOGGER.info(
+                "No results file name provided -- results will not be saved to file.");
+        }
+    }
+
+    private void openResultsFile() {
+        ResultWriter writer = createAutoFlushingResultPrintWriter();
+        results.setWriter(writer);
+    }
+
+    private ResultWriter createAutoFlushingResultPrintWriter() {
+        try {
+            return tryToCreateAutoFlushingResultPrintWriter();
+        } catch (FileNotFoundException e) {
+            LOGGER.warn(String.format(
+                    "Could not open %s to write the results to.",
+                    resultsFileName), e);
+
+            return null;
+        }
+    }
+
+    private ResultWriter tryToCreateAutoFlushingResultPrintWriter()
+        throws FileNotFoundException {
+        return new AutoFlushingResultPrintWriter(resultsFileName);
+    }
+
+    protected void closeResultsFileIfNeeded() {
+        if (results.hasWriter()) {
+            closeResultsFile();
+            LOGGER.info(String.format(
+                    "Results file %s closed for writing; wrote %d events to it.",
+                    resultsFileName, results.size()));
+        }
+    }
+
+    private void closeResultsFile() {
+        try {
+            results.closeWriter();
+        } catch (IOException e) {
+            LOGGER.warn("An exception occurred while trying to clode the results file.",
+                e);
+        }
+    }
+
+    protected void addFileContentToCollection(String fileName,
+        Collection collection) throws IOException {
+        InputStream stream = getFileAsStream(fileName);
+        InputStreamReader reader = new InputStreamReader(stream);
+        BufferedReader bufferedReader = new BufferedReader(reader);
+
+        try {
+            collection.addReaderContent(bufferedReader, results);
+        } finally {
+            bufferedReader.close();
+            reader.close();
+            stream.close();
+        }
+    }
+
+    protected InputStream getFileAsStream(String fileName) {
+        try {
+            return new FileInputStream(fileName);
+        } catch (FileNotFoundException e) {
+            return getClassLoader().getResourceAsStream(fileName);
+        }
     }
 }

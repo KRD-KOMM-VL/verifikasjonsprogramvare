@@ -22,7 +22,19 @@
  */
 package com.computas.zkpev2013.rcgvcs;
 
+import com.computas.zkpev.rcgvcs.RcgVotingReceiptCollisionIncident;
+import com.computas.zkpev.rcgvcs.RcgVotingReceiptCounter;
+import com.computas.zkpev.rcgvcs.RcgVotingReceiptWithoutVcsEncryptedVoteIncident;
+import com.computas.zkpev.rcgvcs.RcgVotingReceiptsHashMap;
+import com.computas.zkpev.rcgvcs.RcgVotingReceiptsMap;
+import com.computas.zkpev.rcgvcs.VcsEncryptedVote;
+import com.computas.zkpev.rcgvcs.VcsEncryptedVoteNotRegisteredByRcgIncident;
+import com.computas.zkpev.rcgvcs.VcsEncryptedVotesArrayList;
+import com.computas.zkpev.rcgvcs.VcsEncryptedVotesList;
+
 import com.computas.zkpev2013.ZeroKnowledgeProof;
+
+import java.io.IOException;
 
 
 /**
@@ -58,7 +70,73 @@ public class NizkpRcgVcs extends ZeroKnowledgeProof {
     }
 
     @Override
-    protected void run() throws Exception {
-        // TODO Auto-generated method stub
+    protected void run() throws IOException {
+        openResultsFileIfRequired();
+
+        VotingReceiptsMap votingReceipts = loadVotingReceipts();
+        EncryptedVotesList encryptedVotes = loadEncryptedVotes();
+
+        for (EncryptedVote encryptedVote : encryptedVotes) {
+            checkEncryptedVoteAgainstHashes(encryptedVote, votingReceipts);
+        }
+
+        for (VotingReceiptCounter votingReceiptCounter : votingReceipts.values()) {
+            checkVotingReceiptCounter(votingReceiptCounter);
+        }
+
+        closeResultsFileIfNeeded();
+    }
+
+    VotingReceiptsMap loadVotingReceipts() throws IOException {
+        LOGGER.info(String.format("Loading the voting receipts from %s.",
+                receiptsFileName));
+
+        VotingReceiptsMap votingReceipts = new VotingReceiptsHashMap();
+        addFileContentToCollection(receiptsFileName, votingReceipts);
+        LOGGER.info("All voting receipts loaded.");
+
+        return votingReceipts;
+    }
+
+    EncryptedVotesList loadEncryptedVotes() throws IOException {
+        LOGGER.info(String.format("Loading the encrypted votes from %s.",
+                encryptedVotesFileName));
+
+        EncryptedVotesList encryptedVotes = new EncryptedVotesArrayList();
+        addFileContentToCollection(encryptedVotesFileName, encryptedVotes);
+        LOGGER.info("All encrypted votes loaded.");
+
+        return encryptedVotes;
+    }
+
+    private void checkEncryptedVoteAgainstHashes(EncryptedVote encryptedVote,
+        VotingReceiptsMap votingReceipts) {
+        String votingReceipt = encryptedVote.getVotingReceipt();
+
+        if (votingReceipts.containsVotingReceipt(votingReceipt,
+                    encryptedVote.getContestId(),
+                    encryptedVote.getElectionId(),
+                    encryptedVote.getElectionEventId())) {
+            VotingReceiptCounter votingReceiptCounter = votingReceipts.get(votingReceipt,
+                    encryptedVote.getContestId(),
+                    encryptedVote.getElectionId(),
+                    encryptedVote.getElectionEventId());
+            votingReceiptCounter.addEncryptedVote(encryptedVote);
+        } else {
+            results.add(new EncryptedVoteWithoutVotingReceiptIncident(
+                    encryptedVote));
+        }
+    }
+
+    private void checkVotingReceiptCounter(
+        VotingReceiptCounter votingReceiptCounter) {
+        if (votingReceiptCounter.getNoOfMatches() == 0) {
+            results.add(new VotingReceiptWithoutEncryptedVoteIncident(
+                    votingReceiptCounter.getVotingReceipt()));
+        } else if (votingReceiptCounter.getNoOfMatches() > 1) {
+            results.add(new VotingReceiptCollisionIncident(
+                    votingReceiptCounter.getVotingReceipt(),
+                    votingReceiptCounter.getEncryptedVotes()));
+        }
     }
 }
