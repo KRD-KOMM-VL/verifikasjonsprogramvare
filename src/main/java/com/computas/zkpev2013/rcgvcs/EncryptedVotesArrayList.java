@@ -42,7 +42,6 @@ public class EncryptedVotesArrayList extends ArrayList<EncryptedVote>
         String line = readNextLine(bufferedReader);
 
         while (line != null) {
-            System.out.println("EncryptedVotesArrayList << " + line);
             addEncryptedVoteOrCreateIncident(line, results);
             line = readNextLine(bufferedReader);
         }
