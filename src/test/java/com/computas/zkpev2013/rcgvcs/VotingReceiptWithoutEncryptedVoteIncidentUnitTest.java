@@ -110,13 +110,13 @@ public class VotingReceiptWithoutEncryptedVoteIncidentUnitTest {
                 new VotingReceiptWithoutEncryptedVoteIncident(
                     new VotingReceipt(OTHER_SAMPLE_LINE))));
     }
-    
+
     /**
      * Verifies that the incident doesn't have the same hashCode as another incident with another voting receipt.
      */
     @Test
     public void mustNotHaveSameHashCodeAsAnotherVotingReceiptWithoutEncryptedVoteIncidentWithAnotherVotingReceipt() {
-    	assertFalse(incident.hashCode() == new VotingReceiptWithoutEncryptedVoteIncident(
+        assertFalse(incident.hashCode() == new VotingReceiptWithoutEncryptedVoteIncident(
                 new VotingReceipt(OTHER_SAMPLE_LINE)).hashCode());
     }
 
