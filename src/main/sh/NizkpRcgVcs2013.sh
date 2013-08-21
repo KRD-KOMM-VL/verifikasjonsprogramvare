@@ -83,6 +83,14 @@ function base64_decode_voting_receipts {
 	done
 }
 
+function compare_encrypted_votes_with_receipts {
+	VOTES=$1
+	RECEIPTS=$2
+	LOG=$3
+	CLASSPATH=lib/bsh-2.0b4.jar:lib/commons-codec-1.8.jar:lib/commons-lang-2.6.jar:lib/jackson-core-asl-1.9.2.jar:lib/jackson-mapper-asl-1.9.2.jar:lib/jcommander-1.27.jar:lib/junit-4.10.jar:lib/log4j-1.2.17.jar:lib/snakeyaml-1.6.jar:lib/testng-6.8.5.jar:lib/zkpev2013-1.0a1.jar
+	java -Xmx2048m -cp $CLASSPATH com.computas.zkpev2013.rcgvcs.NizkpRcgVcs $VOTES $RECEIPTS $LOG
+}
+
 RCG_VOTES_SIZE=`file_length $RCG_VOTES`
 VCS_VOTES_SIZE=`file_length $VCS_VOTES`
 echo "Comparing RCG and VCS votes ($RCG_VOTES_SIZE - $VCS_VOTES_SIZE)..."
@@ -116,10 +124,10 @@ cut_sort_diff $VCS_RECEIPTS_REDUCED 1-2,4-9 $BULLETIN_BOARD_RECEIPTS 1-8 vcs_bb_
 assert_empty vcs_bb_receipts_diff.log
 
 echo "Comparing RCG receipts against RCG votes..."
-echo -e "\e[33mCOMPARISON OF RCG RECEIPTS AGAINST RCG VOTES NOT IMPLEMENTED YET\e[0m"
+compare_encrypted_votes_with_receipts $RCG_VOTES $RCG_RECEIPTS rcg_votes_receipts.log
 
 echo "Comparing VCS receipts against VCS votes..."
-echo -e "\e[33mCOMPARISON OF VCS RECEIPTS AGAINST VCS VOTES NOT IMPLEMENTED YET\e[0m"
+compare_encrypted_votes_with_receipts $VCS_VOTES $VCS_RECEIPTS vcs_votes_receipts.log
 
 echo "Comparing reduced VCS receipts against reduced VCS votes..."
 echo -e "\e[33mCOMPARISON OF VCS REDUCED RECEIPTS AGAINST VCS REDUCED VOTES NOT IMPLEMENTED YET\e[0m"
