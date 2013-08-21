@@ -51,6 +51,24 @@ public class NizkpRcgVcs extends ZeroKnowledgeProof {
         setOptionalResultsFileName(arguments, MIN_NO_OF_PARAMETERS_ALLOWED);
     }
 
+    /**
+    * Main entry method.
+    *
+    * @param arguments The arguments to be passed to the constructor.
+    */
+    public static void main(String[] arguments) {
+        try {
+            NizkpRcgVcs nizkp = new NizkpRcgVcs(arguments);
+            nizkp.run();
+            LOGGER.info("Done.");
+        } catch (IllegalArgumentException iae) {
+            LOGGER.fatal(
+                "Could not parse the arguments provided.\nCorrect usage:\n\tNizkpRcgVcs <EncryptedVotesFileName> <ReceiptsFileName> [<ResultsFileName>]");
+        } catch (Exception exception) {
+            LOGGER.fatal("A fatal error occurred.", exception);
+        }
+    }
+
     String getEncryptedVotesFileName() {
         return encryptedVotesFileName;
     }
