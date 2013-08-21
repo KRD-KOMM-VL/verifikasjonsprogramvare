@@ -60,8 +60,7 @@ public class VotingReceiptCounterUnitTest {
      */
     @Test
     public void noOfMatchesShouldBeOneAfterAddingAnEncryptedVote() {
-        counter.addEncryptedVote(new EncryptedVote(
-                SAMPLE_ENCRYPTED_VOTE_LINE));
+        counter.addEncryptedVote(new EncryptedVote(SAMPLE_ENCRYPTED_VOTE_LINE));
         assertEquals(counter.getNoOfMatches(), 1);
     }
 
@@ -78,8 +77,7 @@ public class VotingReceiptCounterUnitTest {
      */
     @Test
     public void mustReturnTheEncryptedVoteAfterItHasBeenAdded() {
-        counter.addEncryptedVote(new EncryptedVote(
-                SAMPLE_ENCRYPTED_VOTE_LINE));
+        counter.addEncryptedVote(new EncryptedVote(SAMPLE_ENCRYPTED_VOTE_LINE));
         assertTrue(counter.getEncryptedVotes()
                           .contains(new EncryptedVote(
                     SAMPLE_ENCRYPTED_VOTE_LINE)));
