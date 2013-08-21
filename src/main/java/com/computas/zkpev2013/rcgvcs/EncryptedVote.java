@@ -96,8 +96,7 @@ public class EncryptedVote extends CsvLineParseable {
                 EncryptedVoteCsvIndex.VOTE_TIMESTAMP);
         long receiptTimestamp = getAttributeAsLong(attributes,
                 EncryptedVoteCsvIndex.RECEIPT_TIMESTAMP);
-        byte[] voteZKProofSig = getAttributeAsByteArray(attributes,
-                EncryptedVoteCsvIndex.VOTE_Z_K_PROOF_SIG);
+
         String voterId = getAttribute(attributes, EncryptedVoteCsvIndex.VOTER_ID);
         String voterCertificate = getAttributeAsString(attributes,
                 EncryptedVoteCsvIndex.VOTER_CERTIFICATE);
@@ -108,7 +107,6 @@ public class EncryptedVote extends CsvLineParseable {
                     attributes, EncryptedVoteCsvIndex.AUTH_TOKEN), uuid);
         VoteBean voteBean = new VoteBean.VoteBeanBuilder().setEncGamma(encGamma)
                                                           .setEncVoteOptIDs(encVoteOptIds)
-                                                          .setVoteZKProofSig(voteZKProofSig)
                                                           .setVoterId(voterId)
                                                           .setElectionId(electionId)
                                                           .setElectionEventId(electionEventId)
@@ -223,7 +221,6 @@ public class EncryptedVote extends CsvLineParseable {
         ELECTION_EVENT_ID,
         VOTER_ID,
         CHANNEL_ID,
-        RECEIPT_TIMESTAMP,
-        VOTE_Z_K_PROOF_SIG;
+        RECEIPT_TIMESTAMP;
     }
 }
