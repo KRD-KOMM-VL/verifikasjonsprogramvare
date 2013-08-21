@@ -20,12 +20,12 @@
  * /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
  * http://www.gnu.org/licenses/.
  */
-package com.computas.zkpev.rcgvcs;
+package com.computas.zkpev2013.rcgvcs;
 
-import com.computas.zkpev.MemoryConsumptionAssertions;
-import static com.computas.zkpev.MemoryConsumptionAssertions.assertDoesNotConsumeMoreMemoryThanAllowed;
-import com.computas.zkpev.ResultsArrayList;
-import com.computas.zkpev.ResultsList;
+import com.computas.zkpev2013.MemoryConsumptionAssertions;
+import static com.computas.zkpev2013.MemoryConsumptionAssertions.assertDoesNotConsumeMoreMemoryThanAllowed;
+import com.computas.zkpev2013.ResultsArrayList;
+import com.computas.zkpev2013.ResultsList;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -33,21 +33,21 @@ import org.testng.annotations.Test;
 
 
 /**
- * Class testing the memory usage of the creation of the VCS encrypted votes.
+ * Class testing the memory usage of the creation of the encrypted votes.
  *
  */
-public class VcsEncryptedVotesMemoryConsumptionTest {
+public class EncryptedVotesMemoryConsumptionTest {
     private static final int ALLOWED_MEMORY_CONSUMPTION = 10000;
-    private VcsEncryptedVoteLineGenerator vcsEncryptedVoteLineGenerator;
-    private VcsEncryptedVotesList list;
+    private EncryptedVoteLineGenerator encryptedVoteLineGenerator;
+    private EncryptedVotesList list;
     private ResultsList results;
 
     /**
-     * Creates a VcsEncryptedVotesList for the tests.
+     * Creates a EncryptedVotesList for the tests.
      */
     @BeforeClass(alwaysRun = true)
-    public void createVcsEncryptedVotesArrayList() {
-        list = new VcsEncryptedVotesArrayList();
+    public void createEncryptedVotesArrayList() {
+        list = new EncryptedVotesArrayList();
     }
 
     /**
@@ -59,12 +59,12 @@ public class VcsEncryptedVotesMemoryConsumptionTest {
     }
 
     /**
-     * Creates a new VCS encrypted vote line generator. Since such a generator
+     * Creates a new encrypted vote line generator. Since such a generator
      * does not have state, it can be generated once for the whole class.
      */
     @BeforeClass(alwaysRun = true)
-    public void createVcsEncryptedVoteLineGenerator() {
-        vcsEncryptedVoteLineGenerator = new VcsEncryptedVoteLineGenerator();
+    public void createEncryptedVoteLineGenerator() {
+        encryptedVoteLineGenerator = new EncryptedVoteLineGenerator();
     }
 
     /**
@@ -76,21 +76,19 @@ public class VcsEncryptedVotesMemoryConsumptionTest {
     }
 
     /**
-     * Checks a number of times whether the creation of a VCS encrypted vote
+     * Checks a number of times whether the creation of an encrypted vote
      * consumes more memory than allowed.
-     *
-     * Disabled because of incompatibilities with the new source code from Scytl.
      */
-    @Test(enabled = false)
+    @Test
     public void mustNotConsumeMoreMemoryThanAllowed() {
         assertDoesNotConsumeMoreMemoryThanAllowed(ALLOWED_MEMORY_CONSUMPTION,
             new Runnable() {
                 @Override
                 public void run() {
-                    String vcsEncryptedVoteLine = vcsEncryptedVoteLineGenerator.generateVcsEncryptedVoteLine();
-                    list.addEncryptedVoteOrCreateIncident(vcsEncryptedVoteLine,
+                    String encryptedVoteLine = encryptedVoteLineGenerator.generateEncryptedVoteLine();
+                    list.addEncryptedVoteOrCreateIncident(encryptedVoteLine,
                         results);
-                    vcsEncryptedVoteLine = null;
+                    encryptedVoteLine = null;
                 }
             });
     }
