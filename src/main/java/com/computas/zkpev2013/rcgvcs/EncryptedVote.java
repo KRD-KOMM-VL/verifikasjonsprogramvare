@@ -22,6 +22,8 @@
  */
 package com.computas.zkpev2013.rcgvcs;
 
+import com.computas.zkpev.rcgvcs.VcsEncryptedVote;
+
 import com.computas.zkpev2013.CsvLineParseable;
 
 import com.scytl.evote.protocol.integration.voting.model.AuthToken;
@@ -180,6 +182,29 @@ public class EncryptedVote extends CsvLineParseable {
 
     String getVotingReceipt() {
         return votingReceipt;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof EncryptedVote &&
+        privateEqual((EncryptedVote) other);
+    }
+
+    private boolean privateEqual(EncryptedVote other) {
+        return uuid.equals(other.getUuid()) && electionIdsEqual(other) &&
+        votingReceipt.equals(other.getVotingReceipt());
+    }
+
+    private boolean electionIdsEqual(EncryptedVote other) {
+        return contestId.equals(other.getContestId()) &&
+        electionId.equals(other.getElectionId()) &&
+        electionEventId.equals(other.getElectionEventId());
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode() + contestId.hashCode() + electionId.hashCode() +
+        electionEventId.hashCode() + votingReceipt.hashCode();
     }
 
     /**

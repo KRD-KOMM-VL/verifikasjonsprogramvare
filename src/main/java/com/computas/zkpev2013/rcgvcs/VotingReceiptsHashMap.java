@@ -62,6 +62,7 @@ public class VotingReceiptsHashMap extends HashMap<String, VotingReceiptCounter>
         String line = readNextLine(bufferedReader);
 
         while (line != null) {
+            System.out.println("VotingReceiptsHashMap << " + line);
             addVotingReceiptOrAddIncident(line, results);
 
             line = readNextLine(bufferedReader);

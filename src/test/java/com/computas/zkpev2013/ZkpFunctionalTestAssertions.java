@@ -42,6 +42,12 @@ public final class ZkpFunctionalTestAssertions {
      */
     public static void assertZkpContainsIncident(ZeroKnowledgeProof zkp,
         Incident incident) {
+        System.out.println("ZKP Results must contain " + incident + ":");
+
+        for (Result r : zkp.getResults()) {
+            System.out.println("\t" + r);
+        }
+
         assertTrue(zkp.getResults().contains(incident));
     }
 
