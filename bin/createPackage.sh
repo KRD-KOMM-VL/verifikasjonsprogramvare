@@ -53,8 +53,6 @@ cp target/*.jar $TMPLIBDIR
 cp target/dependency/*.jar $TMPLIBDIR
 
 # Move the shell scripts to the temporary directory
-cp src/main/sh/cloneBulletinBoard.sh $TMPDIR
-chmod a+x $TMPDIR/cloneBulletinBoard.sh
 cp src/main/sh/NizkpRcgVcs2013.sh $TMPDIR
 chmod a+x $TMPDIR/NizkpRcgVcs2013.sh
 cp src/main/sh/cut_sort_diff.sh $TMPDIR
@@ -69,8 +67,8 @@ cp src/main/sh/NizkpDecryption.sh $TMPDIR
 chmod a+x $TMPDIR/NizkpDecryption.sh
 
 # Move some sample files to the temporary directory
-cp src/test/resources/NizkpRcgVcsFunctionalTestRcgVotingReceipts.csv $TMPDIR
-cp src/test/resources/NizkpRcgVcsFunctionalTestVcsEncryptedVotes.csv $TMPDIR
+cp src/test/resources/NizkpRcgVcs2013FunctionalTestEncryptedVotes.csv $TMPDIR
+cp src/test/resources/NizkpRcgVcs2013FunctionalTestVotingReceipts.csv $TMPDIR
 cp src/test/resources/NizkpCleansingFunctionalTestElGamalProperties.properties $TMPDIR
 cp src/test/resources/NizkpCleansingFunctionalTestAreas.csv $TMPDIR
 cp src/test/resources/NizkpCleansingFunctionalTestVcsEncryptedVotes.csv $TMPDIR
