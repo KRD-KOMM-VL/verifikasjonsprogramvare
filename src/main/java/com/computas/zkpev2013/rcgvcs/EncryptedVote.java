@@ -22,8 +22,6 @@
  */
 package com.computas.zkpev2013.rcgvcs;
 
-import com.computas.zkpev.rcgvcs.VcsEncryptedVote;
-
 import com.computas.zkpev2013.CsvLineParseable;
 
 import com.scytl.evote.protocol.integration.voting.model.AuthToken;

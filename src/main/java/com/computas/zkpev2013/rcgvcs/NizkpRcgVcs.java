@@ -22,16 +22,6 @@
  */
 package com.computas.zkpev2013.rcgvcs;
 
-import com.computas.zkpev.rcgvcs.RcgVotingReceiptCollisionIncident;
-import com.computas.zkpev.rcgvcs.RcgVotingReceiptCounter;
-import com.computas.zkpev.rcgvcs.RcgVotingReceiptWithoutVcsEncryptedVoteIncident;
-import com.computas.zkpev.rcgvcs.RcgVotingReceiptsHashMap;
-import com.computas.zkpev.rcgvcs.RcgVotingReceiptsMap;
-import com.computas.zkpev.rcgvcs.VcsEncryptedVote;
-import com.computas.zkpev.rcgvcs.VcsEncryptedVoteNotRegisteredByRcgIncident;
-import com.computas.zkpev.rcgvcs.VcsEncryptedVotesArrayList;
-import com.computas.zkpev.rcgvcs.VcsEncryptedVotesList;
-
 import com.computas.zkpev2013.ZeroKnowledgeProof;
 
 import java.io.IOException;
