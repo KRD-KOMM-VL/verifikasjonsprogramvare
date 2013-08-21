@@ -130,6 +130,7 @@ echo "Comparing VCS receipts against VCS votes..."
 compare_encrypted_votes_with_receipts $VCS_VOTES $VCS_RECEIPTS vcs_votes_receipts.log
 
 echo "Comparing reduced VCS receipts against reduced VCS votes..."
-echo -e "\e[33mCOMPARISON OF VCS REDUCED RECEIPTS AGAINST VCS REDUCED VOTES NOT IMPLEMENTED YET\e[0m"
+compare_encrypted_votes_with_receipts $VCS_VOTES_REDUCED $VCS_RECEIPTS_REDUCED vcs_votes_receipts_reduced.log
+#echo -e "\e[33mCOMPARISON OF VCS REDUCED RECEIPTS AGAINST VCS REDUCED VOTES NOT IMPLEMENTED YET\e[0m"
 
 echo "Done."
