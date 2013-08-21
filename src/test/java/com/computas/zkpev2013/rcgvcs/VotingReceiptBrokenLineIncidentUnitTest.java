@@ -20,7 +20,7 @@
  * /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
  * http://www.gnu.org/licenses/.
  */
-package com.computas.zkpev.rcgvcs;
+package com.computas.zkpev2013.rcgvcs;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -30,22 +30,21 @@ import org.testng.annotations.Test;
 
 
 /**
- * Unit tests on the RcgVotingReceiptBrokenLineIncident class.
- *
+ * Unit tests on the VotingReceiptBrokenLineIncident class.
  */
-public class RcgVotingReceiptBrokenLineIncidentUnitTest {
+public class VotingReceiptBrokenLineIncidentUnitTest {
     private static final String SAMPLE_LINE = "*";
     private static final String OTHER_SAMPLE_LINE = "?";
     private static final String LONG_BROKEN_LINE_WITH_COMMAS = "4028806a2fde07b5012fde439de0000a,7a75e04b-6e7e-4430-b0d3-ae5637c2f08d,rO0ABXNyAD1jb20uc2N5dGwuZXZvdGUucHJvdG9jb2wuaW50ZWdyYXRpb24udm90aW5nLm1vZGVsLlJlY2VpcHRCZWFuw7/82u7t7McCAAhKAA";
     private static final String SHORTENED_LONG_BROKEN_LINE_WITH_COMMAS = "4028806a2fde07b5012fde439de0000a'7a75e04b-6e7e-4430-b0d3-ae5637c2f08d'rO0ABXNyAD";
-    private RcgVotingReceiptBrokenLineIncident incident;
+    private VotingReceiptBrokenLineIncident incident;
 
     /**
     * Creates an incident to test against.
     */
     @BeforeMethod
     public void createRcgVotingReceiptBrokenLineIncident() {
-        incident = new RcgVotingReceiptBrokenLineIncident(SAMPLE_LINE);
+        incident = new VotingReceiptBrokenLineIncident(SAMPLE_LINE);
     }
 
     /**
@@ -85,27 +84,26 @@ public class RcgVotingReceiptBrokenLineIncidentUnitTest {
      * Verifies that the incident is equal to another incident with the same broken line.
      */
     @Test
-    public void mustBeEqualToAnotherRcgVotingReceiptBrokenLineIncidentWithTheSameLine() {
-        assertEquals(incident,
-            new RcgVotingReceiptBrokenLineIncident(SAMPLE_LINE));
+    public void mustBeEqualToAnotherVotingReceiptBrokenLineIncidentWithTheSameLine() {
+        assertEquals(incident, new VotingReceiptBrokenLineIncident(SAMPLE_LINE));
     }
 
     /**
      * Verifies that the incident has the same hashCode as another incident with the same voting receipt.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherRcgVotingReceiptBrokenLineIncidentWithTheSameLine() {
+    public void mustHaveSameHashCodeAsAnotherVotingReceiptBrokenLineIncidentWithTheSameLine() {
         assertEquals(incident.hashCode(),
-            new RcgVotingReceiptBrokenLineIncident(SAMPLE_LINE).hashCode());
+            new VotingReceiptBrokenLineIncident(SAMPLE_LINE).hashCode());
     }
 
     /**
      * Verifies that the incident is not equal to another incident with another voting receipt.
      */
     @Test
-    public void mustNotBeEqualToAnotherRcgVotingReceiptBrokenLineIncidentWithAnotherLine() {
+    public void mustNotBeEqualToAnotherVotingReceiptBrokenLineIncidentWithAnotherLine() {
         assertFalse(incident.equals(
-                new RcgVotingReceiptBrokenLineIncident(OTHER_SAMPLE_LINE)));
+                new VotingReceiptBrokenLineIncident(OTHER_SAMPLE_LINE)));
     }
 
     /**
@@ -115,7 +113,7 @@ public class RcgVotingReceiptBrokenLineIncidentUnitTest {
     @Test
     public void toStringMustBeCommaSeparatedlineForAShortBrokenLine() {
         assertEquals(incident.toString(),
-            "RcgVotingReceiptBrokenLineIncident," + SAMPLE_LINE);
+            "VotingReceiptBrokenLineIncident," + SAMPLE_LINE);
     }
 
     /**
@@ -124,9 +122,9 @@ public class RcgVotingReceiptBrokenLineIncidentUnitTest {
      */
     @Test
     public void toStringMustBeCommaSeparatedlineForLongBrokenLineWithCommas() {
-        assertEquals(new RcgVotingReceiptBrokenLineIncident(
+        assertEquals(new VotingReceiptBrokenLineIncident(
                 LONG_BROKEN_LINE_WITH_COMMAS).toString(),
-            "RcgVotingReceiptBrokenLineIncident," +
+            "VotingReceiptBrokenLineIncident," +
             SHORTENED_LONG_BROKEN_LINE_WITH_COMMAS);
     }
 }
