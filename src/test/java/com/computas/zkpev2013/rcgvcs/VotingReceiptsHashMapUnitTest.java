@@ -24,7 +24,9 @@ package com.computas.zkpev2013.rcgvcs;
 
 import com.computas.zkpev2013.ResultsArrayList;
 import com.computas.zkpev2013.ResultsList;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.BeforeMethod;
@@ -92,6 +94,15 @@ public class VotingReceiptsHashMapUnitTest {
     public void mustNotContainAGivenSampleVotingReceiptByDefault() {
         assertFalse(map.containsVotingReceipt(GIVEN_VOTING_RECEIPT,
                 GIVEN_CONTEST_ID, GIVEN_ELECTION_ID, GIVEN_ELECTION_EVENT_ID));
+    }
+
+    /**
+     * Verifies that the map returns null for a given sample voting receipt by default.
+     */
+    @Test
+    public void mustReturnNullWhenTryingToGetACounterForAnAbsentVotingReceipt() {
+        assertNull(map.get(GIVEN_VOTING_RECEIPT, GIVEN_CONTEST_ID,
+                GIVEN_ELECTION_ID, GIVEN_ELECTION_EVENT_ID));
     }
 
     /**
@@ -185,6 +196,17 @@ public class VotingReceiptsHashMapUnitTest {
     }
 
     /**
+     * Verifies that the map returns a voting receipt counter for a given sample voting receipt after it has been added.
+     */
+    @Test
+    public void mustReturnVotingReceiptCounterForAGivenSampleVotingReceiptAfterAddingIt() {
+        map.addVotingReceiptOrAddIncident(GIVEN_SAMPLE_LINE, results);
+        assertEquals(map.get(GIVEN_VOTING_RECEIPT, GIVEN_CONTEST_ID,
+                GIVEN_ELECTION_ID, GIVEN_ELECTION_EVENT_ID).getVotingReceipt(),
+            new VotingReceipt(GIVEN_SAMPLE_LINE));
+    }
+
+    /**
      * Verifies that the map does not contain a hash that hasn't been added.
      */
     @Test
@@ -192,5 +214,15 @@ public class VotingReceiptsHashMapUnitTest {
         map.addVotingReceiptOrAddIncident(GIVEN_SAMPLE_LINE, results);
         assertFalse(map.containsVotingReceipt(GIVEN_ABSENT_VOTING_RECEIPT,
                 GIVEN_CONTEST_ID, GIVEN_ELECTION_ID, GIVEN_ELECTION_EVENT_ID));
+    }
+
+    /**
+     * Verifies that the map returns null for a voting receipt that hasn't been added.
+     */
+    @Test
+    public void mustReturnNullForAGivenAbsentVotingReceiptAfterAddingTheGivenVotingReceipt() {
+        map.addVotingReceiptOrAddIncident(GIVEN_SAMPLE_LINE, results);
+        assertNull(map.get(GIVEN_ABSENT_VOTING_RECEIPT, GIVEN_CONTEST_ID,
+                GIVEN_ELECTION_ID, GIVEN_ELECTION_EVENT_ID));
     }
 }
