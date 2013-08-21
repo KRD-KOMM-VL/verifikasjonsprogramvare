@@ -20,7 +20,7 @@
  * /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
  * http://www.gnu.org/licenses/.
  */
-package com.computas.zkpev;
+package com.computas.zkpev2013;
 
 import static org.testng.Assert.assertTrue;
 
