@@ -22,14 +22,16 @@
  */
 package com.computas.zkpev2013.decryption;
 
-import com.computas.zkpev.Incident;
+import com.computas.zkpev2013.Incident;
+import com.computas.zkpev2013.Result;
 
 
 /**
  * Incident representing a decryption line with an incorrect proof.
  *
  */
-public class DecryptionLineWithIncorrectProofIncident extends Incident {
+public class DecryptionLineWithIncorrectProofIncident extends Incident
+    implements Result {
     private final DecryptionLine decryptionLine;
 
     DecryptionLineWithIncorrectProofIncident(DecryptionLine decryptionLine) {
