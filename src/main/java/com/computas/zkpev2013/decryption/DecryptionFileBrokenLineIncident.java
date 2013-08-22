@@ -22,7 +22,7 @@
  */
 package com.computas.zkpev2013.decryption;
 
-import com.computas.zkpev.BrokenLineIncident;
+import com.computas.zkpev2013.BrokenLineIncident;
 
 
 /**
