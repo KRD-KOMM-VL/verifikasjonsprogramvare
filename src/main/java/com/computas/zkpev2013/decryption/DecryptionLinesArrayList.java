@@ -22,7 +22,7 @@
  */
 package com.computas.zkpev2013.decryption;
 
-import com.computas.zkpev.ResultsList;
+import com.computas.zkpev2013.ResultsList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
