@@ -22,7 +22,7 @@
  */
 package com.computas.zkpev2013.decryption;
 
-import com.computas.zkpev.Collection;
+import com.computas.zkpev2013.Collection;
 
 import java.util.List;
 

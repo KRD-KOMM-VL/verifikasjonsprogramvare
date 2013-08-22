@@ -22,9 +22,9 @@
  */
 package com.computas.zkpev2013.decryption;
 
-import com.computas.zkpev.Result;
-
+import com.computas.zkpev2013.Collection;
 import com.computas.zkpev2013.ElGamalZkp;
+import com.computas.zkpev2013.Result;
 
 import org.apache.log4j.Logger;
 
@@ -144,7 +144,8 @@ public class NizkpDecryption extends ElGamalZkp {
                 decryptionFileName));
 
         decryptionLines = new DecryptionLinesArrayList();
-        addFileContentToCollection(decryptionFileName, decryptionLines);
+        addFileContentToCollection(decryptionFileName,
+            (Collection) decryptionLines);
         LOGGER.info("All decryption lines from the Counting Server loaded.");
     }
 
