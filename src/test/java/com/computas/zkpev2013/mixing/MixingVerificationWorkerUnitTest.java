@@ -25,19 +25,22 @@ package com.computas.zkpev2013.mixing;
 import com.computas.zkpev2013.ElGamalPublicKeyList;
 import com.computas.zkpev2013.ResultsArrayList;
 import com.computas.zkpev2013.ResultsList;
+
 import com.scytl.evote.protocol.integration.mixing.base.VoteGroupAffiliations;
 import com.scytl.evote.protocol.signers.SchnorrSignature;
+
 import org.apache.commons.codec.binary.Base64;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+
 import java.math.BigInteger;
+
 import java.security.NoSuchAlgorithmException;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
 
 /**
  * Unit tests on MixingVerificationWorker.

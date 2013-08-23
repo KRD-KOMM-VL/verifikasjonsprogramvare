@@ -22,13 +22,12 @@
  */
 package com.computas.zkpev2013.mixing;
 
+import static org.testng.Assert.*;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-
-import static org.testng.Assert.*;
-
 
 /**
  * Integration tests on the IzkpMixing class.

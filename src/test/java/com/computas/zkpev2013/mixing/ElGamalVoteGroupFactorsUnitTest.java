@@ -22,14 +22,13 @@
  */
 package com.computas.zkpev2013.mixing;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-
 
 /**
  * Unit tests on ElGamalVoteGroupFactors.

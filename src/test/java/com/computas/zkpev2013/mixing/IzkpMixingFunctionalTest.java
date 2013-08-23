@@ -22,11 +22,10 @@
  */
 package com.computas.zkpev2013.mixing;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import static org.testng.Assert.assertEquals;
 
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Functional tests against the IzkpMixing class. These tests require
