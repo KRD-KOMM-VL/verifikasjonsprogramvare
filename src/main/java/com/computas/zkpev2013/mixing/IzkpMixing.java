@@ -183,6 +183,8 @@ public class IzkpMixing extends ElGamalZkp {
     }
 
     private void loadDatabaseContent() {
+        LOGGER.info(
+            "This method for loading database content has not been implemented yet.");
         LOGGER.info(String.format("Loading the mixing data from %s.",
                 databaseName));
         LOGGER.info("All mixing data from the Mixing Server loaded.");
