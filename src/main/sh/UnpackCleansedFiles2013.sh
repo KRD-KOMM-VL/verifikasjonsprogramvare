@@ -25,7 +25,6 @@
 # Script to unpack the result of the cleansing process, and copy all ballot
 # files into one directory.
 #
-#
 
 SOURCEFILE=$1
 TARGETDIR=$2
@@ -33,15 +32,13 @@ TARGETDIR=$2
 echo
 echo "Starting to recursively unzip $SOURCEFILE..."
 
-TMP1DIR="unpack1-$(date +%s)"
-[ -d $TMP1DIR ] && rm -R $TMP1DIR
+TMP1DIR="$(mktemp -d --tmpdir=.)"
 
 echo "Round 1..."
 
 unzip -nq $SOURCEFILE -d $TMP1DIR
 
-TMP2DIR="unpack2-$(date +%s)"
-[ -d $TMP2DIR ] && rm -R $TMP2DIR
+TMP2DIR="$(mktemp -d --tmpdir=.)"
 
 echo "Round 2..."
 
@@ -50,10 +47,9 @@ do
   unzip -nq $zip -d $TMP2DIR
 done
 
-[ -d $TMP1DIR ] && rm -R $TMP1DIR
+rm -R $TMP1DIR
 
-TMP3DIR="unpack3-$(date +%s)"
-[ -d $TMP3DIR ] && rm -R $TMP3DIR
+TMP3DIR="$(mktemp -d --tmpdir=.)"
 
 echo "Round 3..."
 
@@ -62,9 +58,9 @@ do
   unzip -nq $zip -d $TMP3DIR
 done
 
-[ -d $TMP2DIR ] && rm -R $TMP2DIR
+rm -R $TMP2DIR
 
-[ -d $TARGETDIR ] && rm -R $TARGETDIR
+rm -R $TARGETDIR
 
 echo "Round 4..."
 
@@ -75,7 +71,7 @@ do
   mv $TARGETDIR/ballot $TARGETDIR/ballot-$BALLOTID.csv
 done
 
-[ -d $TMP3DIR ] && rm -R $TMP3DIR
+rm -R $TMP3DIR
 
 rm $TARGETDIR/ballot.sig
 
