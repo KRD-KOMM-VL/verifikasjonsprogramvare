@@ -20,7 +20,7 @@
  * /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
  * http://www.gnu.org/licenses/.
  */
-package com.computas.zkpev.rcgvcs;
+package com.computas.zkpev2013.rcgvcs;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,16 +32,16 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Class to generate test files for the NizkRcgVcs class.
- *
  */
 public final class NizkpRcgVcsTestFileGenerator {
     private static final int[] TEST_FILE_LENGTHS = new int[] {
-            3, 10, 30, 100, 300, 1000, 3000, 10000, 30000, 100000
+            3, 10, 30, 100, 300, 1000, 3000, 10000, 20000, 30000, 50000, 100000,
+            150000, 200000
         };
-    private final VcsEncryptedVoteLineGenerator vcsEncryptedVoteLineGenerator;
+    private final EncryptedVoteLineGenerator encryptedVoteLineGenerator;
 
     private NizkpRcgVcsTestFileGenerator() {
-        vcsEncryptedVoteLineGenerator = new VcsEncryptedVoteLineGenerator();
+        encryptedVoteLineGenerator = new EncryptedVoteLineGenerator();
     }
 
     /**
@@ -65,34 +65,35 @@ public final class NizkpRcgVcsTestFileGenerator {
     private void generate(int n)
         throws FileNotFoundException, NoSuchAlgorithmException,
             UnsupportedEncodingException {
-        PrintWriter rcgFile = createPrintWriter(String.format(
-                    "NizkpRcgVcsRcgVotingReceiptsTestFile-%d.csv", n));
-        PrintWriter vcsFile = createPrintWriter(String.format(
-                    "NizkpRcgVcsVcsEncryptedVotesTestFile-%d.csv", n));
+        PrintWriter encryptedVotesFile = createPrintWriter(String.format(
+                    "NizkpRcgVcsEncryptedVotesTestFile-%d.csv", n));
+        PrintWriter votingReceiptsFile = createPrintWriter(String.format(
+                    "NizkpRcgVcsVotingReceiptsTestFile-%d.csv", n));
 
         for (int i = 0; i < n; i++) {
-            addNewElement(i, rcgFile, vcsFile);
+            addNewElement(i, encryptedVotesFile, votingReceiptsFile);
         }
 
-        rcgFile.close();
-        vcsFile.close();
+        encryptedVotesFile.close();
+        votingReceiptsFile.close();
     }
 
-    private void addNewElement(int i, PrintWriter rcgFile, PrintWriter vcsFile)
+    private void addNewElement(int i, PrintWriter encryptedVotesFile,
+        PrintWriter votingReceiptsFile)
         throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        String encryptedVoteLine = vcsEncryptedVoteLineGenerator.generateVcsEncryptedVoteLine(i);
-        vcsFile.println(encryptedVoteLine);
+        String encryptedVoteLine = encryptedVoteLineGenerator.generateEncryptedVoteLine(i);
+        encryptedVotesFile.println(encryptedVoteLine);
 
         String votingReceiptLine = generateVotingReceiptLine(encryptedVoteLine,
                 i);
-        rcgFile.println(votingReceiptLine);
+        votingReceiptsFile.println(votingReceiptLine);
     }
 
     private String generateVotingReceiptLine(String encryptedVoteLine, int i)
         throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        VcsEncryptedVote encryptedVote = new VcsEncryptedVote(encryptedVoteLine);
+        EncryptedVote encryptedVote = new EncryptedVote(encryptedVoteLine);
 
-        return String.format("%d,7a75e04b-6e7e-4430-b0d3-ae5637c2f08d,rO0ABXNyAD1jb20uc2N5dGwuZXZvdGUucHJvdG9jb2wuaW50ZWdyYXRpb24udm90aW5nLm1vZGVsLlJlY2VpcHRCZWFuw7/82u7t7McCAAhKAAZfcmNnSURKAApfdGltZXN0YW1wTAAKX2NvbnRlc3RJZHQAEkxqYXZhL2xhbmcvU3RyaW5nO0wAEF9lbGVjdGlvbkV2ZW50SWRxAH4AAUwAC19lbGVjdGlvbklkcQB+AAFbABFfcmVjZWlwdFNpZ25hdHVyZXQAAltCTAATX3JldHVybkNvZGVzTWVzc2FnZXEAfgABWwAOX3ZvdGluZ1JlY2VpcHRxAH4AAnhwAAAAAAAAH5wAAAEv3kOdknQABjAwMDEwNnQABjIwMDcwMXQAAjA2dXIAAltCrPMX+AYIVOACAAB4cAAAAQArbVBU2jABOoExcUaxZfWRJpSeZUuVdjZG9qWy9dJzHikPfljkVYDSLD36WdTB6D+c3uGgSZsEZilQs9+D8f/k+xIFJLVsfywCl/Exrfjsyn9z/hfJdbzLXD/vxlmWPX7LRyLu0pkt6GeS7pQ/7mvWTu1zrC4Km0rs9A6AYwoDzGCkXUk4LTAC3zY6K3r2Roxnz/XGACEOv+XyzgR5XnG/GP7hpabMknu7bO2PNm/X8UJUrPTlex4mt49p84WRdBRuT4tGlMX+ZIK7H2uWMaeJMp7eMbwmQQjHXqs8Qs46wP+s09nb2m6du3Si2D5IBa/Wu5ppitTmB3wdfqFPq+O8cHVxAH4ABwAAABxrTU5CWXBCOU81VytSeTVsUW9hVGhNL1dRK0E9,eba388f8-a494-4b33-a8f4-b3f98f900885,8092,%s,%s,%s,%s,200701.40.40.40.000000.1",
+        return String.format("%d,cb3f03d5-b7a4-4c02-9ad2-3016289ebbf7,rO0ABXNyAD1jb20uc2N5dGwuZXZvdGUucHJvdG9jb2wuaW50ZWdyYXRpb24udm90aW5nLm1vZGVsLlJlY2VpcHRCZWFuw7/82u7t7McCAApKAAZfcmNnSURKAApfdGltZXN0YW1wSgAGX3Zjc0lETAAKX2NvbnRlc3RJZHQAEkxqYXZhL2xhbmcvU3RyaW5nO0wAEF9lbGVjdGlvbkV2ZW50SWRxAH4AAUwAC19lbGVjdGlvbklkcQB+AAFbABRfcmVjZWlwdFNpZ25hdHVyZVJDR3QAAltCWwAUX3JlY2VpcHRTaWduYXR1cmVWQ1NxAH4AAkwAE19yZXR1cm5Db2Rlc01lc3NhZ2VxAH4AAVsADl92b3RpbmdSZWNlaXB0cQB+AAJ4cAAAAAAAAB+cAAABQFIvPVoAAAAAAAAAAHQABjAwMDAwMXQABjczMDA3MXQAAjAxdXIAAltCrPMX+AYIVOACAAB4cAAAAQAUEg13Zyko+IYIkqbGabqolbpzpuHvErzqSaZzDMDRTUni/6AdbL+13LXufmb8GwPz5nk+lRUrrsiGKi7y/IqFY0rIA2sLoCnU6O3F0yZIi1+CACna3Y14n+PxBZbKVJFMc34MtkEztecoiZQEyeCMAosTMpwsSwBBnwlKffQj8LPH3/edV/zOfyEyY6ia1dIm21NrwnqEr5xAniUKS4xJIfzslX2nx5KpISH98XD45sdEedCAuz86+vqA0cy7OP5zdcRQ7abft4+3D6NkjYO+9GAZWJSVW9zKjGgB9Qx14ts2tK0qr5DGRlqrditsaTJqYjiYc43JSZ93Q/+EoIcRdXEAfgAHAAABAEkpiMiQGEox1TWZutzPDpBvXpzpNoZq21qYMwUO/bUFKZv7M1DE3U+Kv4c+kDmePS3WHKhCVczTaY7VCkh5rZrOrulaUQkUsArwJ9CGqm7rRJ3JLGtXXFaXnKnmtgfOdBuS22pBfCdh32W2ZX4QFBaxG4F1QRc/q1VFuVviO9hlBFau+oo4a1Nl37Wu8oyJwFlq3b5cb4eBPnQHY/7hAAuwVui/FPFlEZqISW9hiAsW+14azBZqozcFRp06mhiZ7fh1zrAjpifTuvaP+DGDVQ9vcYz6a9DHbupO1LRxzMmmYE2UsFSzv4oOUZtu7mYsMozXkGEmaFEP/MgTn7vprPZwdXEAfgAHAAAALFVNQVFRUlJiMTNUclA3T0JhRGlxNEkxQjIwdFhHOTJERTFmVFlGdzQwekk9,75137b09-dd56-4092-be1b-36b4d24bd9e7,8092,%s,%s,%s,%s",
             i, encryptedVote.getVotingReceipt(), encryptedVote.getContestId(),
             encryptedVote.getElectionId(), encryptedVote.getElectionEventId());
     }

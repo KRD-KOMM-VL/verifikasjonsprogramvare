@@ -27,7 +27,6 @@ import java.util.Random;
 
 /**
  * Class to generate random encrypted vote lines.
- *
  */
 public class EncryptedVoteLineGenerator {
     private static final int NO_OF_ELECTION_EVENTS = 3;
