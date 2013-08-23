@@ -22,8 +22,8 @@
  */
 package com.computas.zkpev2013.mixing;
 
-import com.computas.zkpev.CsvLineParseable;
-import com.computas.zkpev.ElGamalEncryptionPair;
+import com.computas.zkpev2013.CsvLineParseable;
+import com.computas.zkpev2013.ElGamalEncryptionPair;
 
 import org.apache.commons.codec.binary.Base64;
 
