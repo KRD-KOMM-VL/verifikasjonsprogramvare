@@ -22,7 +22,7 @@
  */
 package com.computas.zkpev2013.mixing;
 
-import com.computas.zkpev.ElGamalEncryptionPair;
+import com.computas.zkpev2013.ElGamalEncryptionPair;
 
 import java.math.BigInteger;
 
