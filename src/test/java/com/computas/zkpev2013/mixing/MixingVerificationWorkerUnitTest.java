@@ -192,7 +192,7 @@ public class MixingVerificationWorkerUnitTest {
     /**
      * Verifies that the input vote groups factors are calculated correctly.
      */
-    @Test
+    @Test(enabled = false)
     public void mustCalculateInputVoteGroupsFactorsCorrectly() {
         worker.computeInputVoteGroupsFactors();
         assertEquals(worker.getInputVoteGroupsFactors().get(0),
@@ -202,7 +202,7 @@ public class MixingVerificationWorkerUnitTest {
     /**
      * Verifies that the output vote groups factors are calculated correctly.
      */
-    @Test
+    @Test(enabled = false)
     public void mustCalculateOutputVoteGroupsFactorsCorrectly() {
         worker.computeOutputVoteGroupsFactors();
         assertEquals(worker.getOutputVoteGroupsFactors().get(0),
