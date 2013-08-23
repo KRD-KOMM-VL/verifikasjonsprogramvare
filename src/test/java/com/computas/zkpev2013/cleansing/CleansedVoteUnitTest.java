@@ -22,7 +22,6 @@
  */
 package com.computas.zkpev2013.cleansing;
 
-import com.computas.zkpev2013.cleansing.CleansedVote;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
