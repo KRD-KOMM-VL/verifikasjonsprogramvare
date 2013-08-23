@@ -88,7 +88,6 @@ public class IzkpMixing extends ElGamalZkp {
         loadElGamalProperties();
         loadElGamalPublicKeys();
         loadDatabaseProperties();
-        loadDatabaseContent();
 
         verifyMixingProofs();
         closeResultsFileIfNeeded();
@@ -180,14 +179,6 @@ public class IzkpMixing extends ElGamalZkp {
             LOGGER.error("An exception occured while trying to wait for a worker thread to finish",
                 e);
         }
-    }
-
-    private void loadDatabaseContent() {
-        LOGGER.info(
-            "This method for loading database content has not been implemented yet.");
-        LOGGER.info(String.format("Loading the mixing data from %s.",
-                databaseName));
-        LOGGER.info("All mixing data from the Mixing Server loaded.");
     }
 
     String getDatabasePropertiesFileName() {
