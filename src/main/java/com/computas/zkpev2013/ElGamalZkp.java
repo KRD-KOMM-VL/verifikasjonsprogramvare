@@ -22,8 +22,6 @@
  */
 package com.computas.zkpev2013;
 
-import com.computas.zkpev.ZeroKnowledgeProof;
-
 import java.io.IOException;
 
 import java.math.BigInteger;
