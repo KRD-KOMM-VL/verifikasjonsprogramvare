@@ -172,7 +172,7 @@ public abstract class ZeroKnowledgeProof {
         BufferedReader bufferedReader = new BufferedReader(reader);
 
         try {
-            collection.addReaderContent(bufferedReader, results);
+            collection.addReaderContent(bufferedReader, results, LOGGER);
         } finally {
             bufferedReader.close();
             reader.close();

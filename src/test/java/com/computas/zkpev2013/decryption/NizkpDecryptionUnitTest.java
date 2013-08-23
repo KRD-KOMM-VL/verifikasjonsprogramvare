@@ -114,20 +114,4 @@ public class NizkpDecryptionUnitTest {
                 });
         assertFalse(nonLoggingNizkp.isLoggingOfResultsRequired());
     }
-
-    /**
-     * Verifies that getLogger doesn't return null.
-     */
-    @Test
-    public void getLoggerShouldNotBeNull() {
-        assertNotNull(NizkpDecryption.getLogger());
-    }
-
-    /**
-     * Verifies that getLogger returns the same object when called twice.
-     */
-    @Test
-    public void getLoggerReturnsSameObject() {
-        assertEquals(NizkpDecryption.getLogger(), NizkpDecryption.getLogger());
-    }
 }

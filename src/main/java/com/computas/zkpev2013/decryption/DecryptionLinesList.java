@@ -24,6 +24,8 @@ package com.computas.zkpev2013.decryption;
 
 import com.computas.zkpev2013.Collection;
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 
 
@@ -40,5 +42,5 @@ public interface DecryptionLinesList extends List<DecryptionLine>, Collection {
      *
      * @return A new DecryptionLinesList object, representing a batch.
      */
-    DecryptionLinesList popBatch();
+    DecryptionLinesList popBatch(Logger logger);
 }

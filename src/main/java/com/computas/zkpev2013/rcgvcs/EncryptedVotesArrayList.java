@@ -24,6 +24,8 @@ package com.computas.zkpev2013.rcgvcs;
 
 import com.computas.zkpev2013.ResultsList;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -38,12 +40,19 @@ public class EncryptedVotesArrayList extends ArrayList<EncryptedVote>
     implements EncryptedVotesList {
     @Override
     public void addReaderContent(BufferedReader bufferedReader,
-        ResultsList results) throws IOException {
+        ResultsList results, Logger logger) throws IOException {
         String line = readNextLine(bufferedReader);
+        int noOfLines = 1;
 
         while (line != null) {
             addEncryptedVoteOrCreateIncident(line, results);
+
+            if ((noOfLines % 10000) == 0) {
+                logger.info(String.format("Read %d lines so far...", noOfLines));
+            }
+
             line = readNextLine(bufferedReader);
+            noOfLines++;
         }
     }
 

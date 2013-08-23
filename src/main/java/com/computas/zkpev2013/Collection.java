@@ -22,6 +22,8 @@
  */
 package com.computas.zkpev2013;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -32,13 +34,14 @@ import java.io.IOException;
  */
 public interface Collection {
     /**
-     * Adds the content of the BufferedReader to the collection. If any incidents are detected, they
+     * Adds the content of the BufferedReader to the collection while logging progress. If any incidents are detected, they
      * will be added to the list of results.
      *
      * @param bufferedReader The BufferedReader from which to read.
      * @param results The list to which results should be added, typically incidents.
+     * @param logger The Logger to log progress to.
      * @throws IOException Thrown if something goes wrong while reading from the BufferedReader.
      */
-    void addReaderContent(BufferedReader bufferedReader, ResultsList results)
-        throws IOException;
+    void addReaderContent(BufferedReader bufferedReader, ResultsList results,
+        Logger logger) throws IOException;
 }

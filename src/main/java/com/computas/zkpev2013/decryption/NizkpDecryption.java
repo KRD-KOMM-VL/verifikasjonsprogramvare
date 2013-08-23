@@ -114,7 +114,7 @@ public class NizkpDecryption extends ElGamalZkp {
 
     private Thread setUpWorker() {
         Thread worker = new DecryptionVerificationWorker(this, getP(), getG(),
-                getH());
+                getH(), LOGGER);
         worker.start();
 
         return worker;
@@ -154,14 +154,10 @@ public class NizkpDecryption extends ElGamalZkp {
     }
 
     DecryptionLinesList getNextDecryptionLineBatch() {
-        return decryptionLines.popBatch();
+        return decryptionLines.popBatch(LOGGER);
     }
 
     void addResult(Result result) {
         results.add(result);
-    }
-
-    static Logger getLogger() {
-        return LOGGER;
     }
 }

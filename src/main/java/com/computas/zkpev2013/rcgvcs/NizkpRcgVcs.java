@@ -101,7 +101,8 @@ public class NizkpRcgVcs extends ZeroKnowledgeProof {
 
         VotingReceiptsMap votingReceipts = new VotingReceiptsHashMap();
         addFileContentToCollection(receiptsFileName, votingReceipts);
-        LOGGER.info("All voting receipts loaded.");
+        LOGGER.info(String.format("All %d voting receipts loaded.",
+                votingReceipts.size()));
 
         return votingReceipts;
     }
@@ -112,7 +113,8 @@ public class NizkpRcgVcs extends ZeroKnowledgeProof {
 
         EncryptedVotesList encryptedVotes = new EncryptedVotesArrayList();
         addFileContentToCollection(encryptedVotesFileName, encryptedVotes);
-        LOGGER.info("All encrypted votes loaded.");
+        LOGGER.info(String.format("All %d encrypted votes loaded.",
+                encryptedVotes.size()));
 
         return encryptedVotes;
     }

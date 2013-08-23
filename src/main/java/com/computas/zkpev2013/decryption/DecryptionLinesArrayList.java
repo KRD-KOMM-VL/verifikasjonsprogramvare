@@ -24,6 +24,8 @@ package com.computas.zkpev2013.decryption;
 
 import com.computas.zkpev2013.ResultsList;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -40,7 +42,7 @@ public class DecryptionLinesArrayList extends ArrayList<DecryptionLine>
 
     @Override
     public void addReaderContent(BufferedReader bufferedReader,
-        ResultsList results) throws IOException {
+        ResultsList results, Logger logger) throws IOException {
         String line = readNextLine(bufferedReader);
 
         while (line != null) {
@@ -68,9 +70,9 @@ public class DecryptionLinesArrayList extends ArrayList<DecryptionLine>
     }
 
     @Override
-    public DecryptionLinesList popBatch() {
+    public DecryptionLinesList popBatch(Logger logger) {
         synchronized (this) {
-            return popBatch(getBatchSize());
+            return popBatch(getBatchSize(), logger);
         }
     }
 
@@ -78,16 +80,15 @@ public class DecryptionLinesArrayList extends ArrayList<DecryptionLine>
         return (size() >= BATCH_SIZE) ? BATCH_SIZE : size();
     }
 
-    private DecryptionLinesList popBatch(int batchSize) {
+    private DecryptionLinesList popBatch(int batchSize, Logger logger) {
         DecryptionLinesList batch = new DecryptionLinesArrayList();
 
         for (int i = 0; i < batchSize; i++) {
             batch.add(remove(0));
         }
 
-        if (batchSize > 0) {
-            NizkpDecryption.getLogger()
-                           .info(String.format(
+        if ((logger != null) && (batchSize > 0)) {
+            logger.info(String.format(
                     "Popped %d items from the decryption lines list, leaving %d items to be processed later.",
                     batchSize, size()));
         }

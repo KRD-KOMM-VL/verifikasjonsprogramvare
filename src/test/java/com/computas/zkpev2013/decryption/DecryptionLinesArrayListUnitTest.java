@@ -57,7 +57,7 @@ public class DecryptionLinesArrayListUnitTest {
      */
     @Test
     public void mustReturnEmptyBatchIfEmpty() {
-        assertTrue(list.popBatch().isEmpty());
+        assertTrue(list.popBatch(null).isEmpty());
     }
 
     /**
@@ -66,7 +66,7 @@ public class DecryptionLinesArrayListUnitTest {
     @Test
     public void mustReturnABatchOfSize1IfSizeIs1() {
         addDecryptionLines(1);
-        assertEquals(list.popBatch().size(), 1);
+        assertEquals(list.popBatch(null).size(), 1);
     }
 
     /**
@@ -75,7 +75,7 @@ public class DecryptionLinesArrayListUnitTest {
     @Test
     public void mustBeEmptyAfterExtractingABatchOfSize1() {
         addDecryptionLines(1);
-        list.popBatch();
+        list.popBatch(null);
         assertTrue(list.isEmpty());
     }
 
@@ -85,7 +85,8 @@ public class DecryptionLinesArrayListUnitTest {
     @Test
     public void mustReturnABatchOfSizeBatchSizeIfSizeIsBatchSize() {
         addDecryptionLines(DecryptionLinesArrayList.BATCH_SIZE);
-        assertEquals(list.popBatch().size(), DecryptionLinesArrayList.BATCH_SIZE);
+        assertEquals(list.popBatch(null).size(),
+            DecryptionLinesArrayList.BATCH_SIZE);
     }
 
     /**
@@ -95,7 +96,7 @@ public class DecryptionLinesArrayListUnitTest {
     @Test
     public void mustBeEmptyAfterExtractingABatchOfSizeBatchSizeIfSizeIsBatchSize() {
         addDecryptionLines(DecryptionLinesArrayList.BATCH_SIZE);
-        list.popBatch();
+        list.popBatch(null);
         assertTrue(list.isEmpty());
     }
 
@@ -105,7 +106,8 @@ public class DecryptionLinesArrayListUnitTest {
     @Test
     public void mustReturnABatchOfSizeBatchSizeIfSizeIsBatchSizePlus1() {
         addDecryptionLines(DecryptionLinesArrayList.BATCH_SIZE + 1);
-        assertEquals(list.popBatch().size(), DecryptionLinesArrayList.BATCH_SIZE);
+        assertEquals(list.popBatch(null).size(),
+            DecryptionLinesArrayList.BATCH_SIZE);
     }
 
     /**
@@ -115,7 +117,7 @@ public class DecryptionLinesArrayListUnitTest {
     @Test
     public void mustHaveSize1AfterExtractingABatchOfSizeBatchSizeIfSizeIsBatchSizePlus1() {
         addDecryptionLines(DecryptionLinesArrayList.BATCH_SIZE + 1);
-        list.popBatch();
+        list.popBatch(null);
         assertEquals(list.size(), 1);
     }
 
