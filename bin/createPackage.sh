@@ -59,8 +59,8 @@ cp src/main/sh/cut_sort_diff.sh $TMPDIR
 chmod a+x $TMPDIR/cut_sort_diff.sh
 cp src/main/sh/NizkpCleansing.sh $TMPDIR
 chmod a+x $TMPDIR/NizkpCleansing.sh
-cp src/main/sh/UnpackCleansedFiles.sh $TMPDIR
-chmod a+x $TMPDIR/UnpackCleansedFiles.sh
+cp src/main/sh/UnpackCleansedFiles2013.sh $TMPDIR
+chmod a+x $TMPDIR/UnpackCleansedFiles2013.sh
 cp src/main/sh/IzkpMixing.sh $TMPDIR
 chmod a+x $TMPDIR/IzkpMixing.sh
 cp src/main/sh/NizkpDecryption.sh $TMPDIR
