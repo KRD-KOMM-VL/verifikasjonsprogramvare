@@ -38,6 +38,8 @@ import java.util.ArrayList;
  */
 public class EncryptedVotesArrayList extends ArrayList<EncryptedVote>
     implements EncryptedVotesList {
+    private static final int TICKS_TO_LOG_NO_OF_ENCRYPTED_VOTE_LINES_READ = 10000;
+
     @Override
     public void addReaderContent(BufferedReader bufferedReader,
         ResultsList results, Logger logger) throws IOException {
@@ -47,7 +49,7 @@ public class EncryptedVotesArrayList extends ArrayList<EncryptedVote>
         while (line != null) {
             addEncryptedVoteOrCreateIncident(line, results);
 
-            if ((noOfLines % 10000) == 0) {
+            if ((noOfLines % TICKS_TO_LOG_NO_OF_ENCRYPTED_VOTE_LINES_READ) == 0) {
                 logger.info(String.format("Read %d lines so far...", noOfLines));
             }
 
