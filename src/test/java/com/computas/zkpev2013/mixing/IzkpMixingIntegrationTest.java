@@ -22,12 +22,12 @@
  */
 package com.computas.zkpev2013.mixing;
 
-import static org.testng.Assert.*;
-
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+
+import static org.testng.Assert.*;
 
 
 /**
@@ -35,10 +35,10 @@ import java.io.IOException;
  *
  */
 public class IzkpMixingIntegrationTest {
-    private static final String ELGAMAL_PROPERTIES_FILE_NAME = "IzkpMixingIntegrationTestElGamalProperties.properties";
-    private static final String ELGAMAL_PUBLIC_KEY_FILE_NAME = "IzkpMixingIntegrationTestElGamalPublicKey.properties";
-    private static final String DATABASE_PROPERTIES_FILE_NAME = "IzkpMixingIntegrationTestDatabaseProperties.properties";
-    private static final Object SAMPLE_DATABASE_NAME = "mxmanagertest";
+    private static final String ELGAMAL_PROPERTIES_FILE_NAME = "IzkpMixingIntegrationTestElGamalProperties2013.properties";
+    private static final String ELGAMAL_PUBLIC_KEY_FILE_NAME = "IzkpMixingIntegrationTestElGamalPublicKeys2013.properties";
+    private static final String DATABASE_PROPERTIES_FILE_NAME = "IzkpMixingIntegrationTestDatabaseProperties2013.properties";
+    private static final Object SAMPLE_DATABASE_NAME = "mxmanagertest2013";
     private static final String RESULTS_LIST_FILE_NAME = "IzkpMixingIntegrationTestResultsList.csv";
     private static final String SAMPLE_USERNAME = "usertestmxsmanager";
     private static final String SAMPLE_PASSWORD = "secret";
