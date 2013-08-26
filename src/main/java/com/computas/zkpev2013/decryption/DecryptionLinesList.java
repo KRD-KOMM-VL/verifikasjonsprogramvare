@@ -38,6 +38,7 @@ public interface DecryptionLinesList extends List<DecryptionLine>, Collection {
      * containing a number of decryption lines which are removed from this list. If this list is
      * empty, an empty list is returned.
      *
+     * @param logger The Logger to log progress to.
      * @return A new DecryptionLinesList object, representing a batch.
      */
     DecryptionLinesList popBatch(Logger logger);

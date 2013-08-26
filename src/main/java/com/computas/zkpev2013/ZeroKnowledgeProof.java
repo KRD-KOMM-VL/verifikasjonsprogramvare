@@ -188,6 +188,11 @@ public abstract class ZeroKnowledgeProof {
         }
     }
 
+    /**
+     * Returns the logger.
+     *
+     * @return The logger.
+     */
     public static Logger getLogger() {
         return LOGGER;
     }
