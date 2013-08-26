@@ -29,7 +29,7 @@
 #
 #
 
-VERSION="1.0a1"
+VERSION="1.0a2"
 NIZKPDIR="zkpev2013-${VERSION}"
 NIZKP="./NizkpRcgVcs2013.sh"
 TESTDIR="../tests"
