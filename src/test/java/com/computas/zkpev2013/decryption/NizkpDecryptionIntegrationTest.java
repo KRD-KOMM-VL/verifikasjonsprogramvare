@@ -32,8 +32,6 @@ import java.io.IOException;
 
 /**
  * Integration tests against the NizkpDecryption class.
- *
- *
  */
 public class NizkpDecryptionIntegrationTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Foo";

@@ -35,8 +35,6 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Functional tests against the NizkpDecryption class.
- *
- *
  */
 public class NizkpDecryptionFunctionalTest {
     private static final String DECRYPTION_FILE_NAME = "NizkpDecryptionFunctionalTestDecryptionFile2013.csv";

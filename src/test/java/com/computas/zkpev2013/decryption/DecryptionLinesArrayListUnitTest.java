@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 
 /**
  * Unit tests against DecryptionLinesArrayList.
- *
  */
 public class DecryptionLinesArrayListUnitTest {
     private DecryptionLinesArrayList list;

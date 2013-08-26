@@ -28,7 +28,6 @@ import com.computas.zkpev2013.Result;
 
 /**
  * Incident representing a decryption line with an incorrect proof.
- *
  */
 public class DecryptionLineWithIncorrectProofIncident extends Incident
     implements Result {

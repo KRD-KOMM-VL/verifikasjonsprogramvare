@@ -33,7 +33,6 @@ import java.math.BigInteger;
 
 /**
  * Unit test against a decryption line.
- *
  */
 public class DecryptionLineUnitTest {
     static final String COMMA = ",";

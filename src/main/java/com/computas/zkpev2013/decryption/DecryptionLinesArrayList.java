@@ -34,7 +34,6 @@ import java.util.ArrayList;
 
 /**
  * Implementation of DecryptionLinesList using an ArrayList.
- *
  */
 public class DecryptionLinesArrayList extends ArrayList<DecryptionLine>
     implements DecryptionLinesList {

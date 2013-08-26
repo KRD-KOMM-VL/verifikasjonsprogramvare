@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 
 /**
  * Unit tests on the DecryptionLineWithIncorrectProofIncident class.
- *
  */
 public class DecryptionLineWithIncorrectProofIncidentUnitTest {
     private static final String COMMA = ",";

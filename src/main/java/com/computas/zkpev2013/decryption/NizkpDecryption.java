@@ -26,8 +26,6 @@ import com.computas.zkpev2013.Collection;
 import com.computas.zkpev2013.ElGamalZkp;
 import com.computas.zkpev2013.Result;
 
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 
 import java.security.NoSuchAlgorithmException;
@@ -36,7 +34,6 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Class performing the non-interactive zero-knowledge proof for the correct
  * decryption in the counting server.
- *
  */
 public class NizkpDecryption extends ElGamalZkp {
     private static final int MIN_NO_OF_PARAMETERS_ALLOWED = 3;
