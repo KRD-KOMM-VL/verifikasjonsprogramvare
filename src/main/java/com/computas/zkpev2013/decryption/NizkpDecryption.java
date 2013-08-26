@@ -111,7 +111,7 @@ public class NizkpDecryption extends ElGamalZkp {
 
     private Thread setUpWorker() {
         Thread worker = new DecryptionVerificationWorker(this, getP(), getG(),
-                getH(), LOGGER);
+                getH());
         worker.start();
 
         return worker;

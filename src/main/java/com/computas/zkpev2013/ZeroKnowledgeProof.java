@@ -187,4 +187,8 @@ public abstract class ZeroKnowledgeProof {
             return getClassLoader().getResourceAsStream(fileName);
         }
     }
+
+    public static Logger getLogger() {
+        return LOGGER;
+    }
 }
