@@ -61,6 +61,7 @@ public class ElGamalPublicKeyList extends ArrayList<BigInteger> {
     public ElGamalPublicKeyList(BigInteger optionKey) {
         super();
         this.add(optionKey);
+        this.aggregateKey = optionKey;
     }
 
     /**
