@@ -63,8 +63,8 @@ cp src/main/sh/UnpackCleansedFiles2013.sh $TMPDIR
 chmod a+x $TMPDIR/UnpackCleansedFiles2013.sh
 cp src/main/sh/IzkpMixing.sh $TMPDIR
 chmod a+x $TMPDIR/IzkpMixing.sh
-cp src/main/sh/NizkpDecryption.sh $TMPDIR
-chmod a+x $TMPDIR/NizkpDecryption.sh
+cp src/main/sh/NizkpDecryption2013.sh $TMPDIR
+chmod a+x $TMPDIR/NizkpDecryption2013.sh
 
 # Move some sample files to the temporary directory
 cp src/test/resources/NizkpRcgVcs2013FunctionalTestEncryptedVotes.csv $TMPDIR
@@ -77,9 +77,9 @@ cp src/test/resources/NizkpCleansingFunctionalTestCleansedFilesDirectory/NizkpCl
 cp src/test/resources/IzkpMixingFunctionalTestDatabaseProperties.properties $TMPDIR
 cp src/test/resources/IzkpMixingFunctionalTestElGamalProperties.properties $TMPDIR
 cp src/test/resources/IzkpMixingFunctionalTestElGamalPublicKey.properties $TMPDIR
-cp src/test/resources/NizkpDecryptionFunctionalTestElGamalProperties.properties $TMPDIR
-cp src/test/resources/NizkpDecryptionFunctionalTestElGamalPublicKey.properties $TMPDIR
-cp src/test/resources/NizkpDecryptionFunctionalTestDecryptionFile.csv $TMPDIR
+cp src/test/resources/NizkpDecryption2013FunctionalTestElGamalProperties.properties $TMPDIR
+cp src/test/resources/NizkpDecryption2013FunctionalTestElGamalPublicKeys.properties $TMPDIR
+cp src/test/resources/NizkpDecryption2013FunctionalTestDecryptionFile.csv $TMPDIR
 
 # Move the sample database dump to the temporary directory
 cp src/test/resources/IzkpMixingFunctionalTestDatabaseDump $TMPDIR
