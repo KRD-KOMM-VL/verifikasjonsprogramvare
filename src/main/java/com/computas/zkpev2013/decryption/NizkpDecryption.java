@@ -78,10 +78,15 @@ public class NizkpDecryption extends ElGamalZkp {
         openResultsFileIfRequired();
         loadElGamalProperties();
         loadElGamalPublicKeys();
+        calculateElGamalAggregateKey();
 
         loadDecryptionLines();
         verifyDecryptionLineProofs();
         closeResultsFileIfNeeded();
+    }
+
+    private void calculateElGamalAggregateKey() {
+        getH().calculateAggregateKey(getP());
     }
 
     private void verifyDecryptionLineProofs() throws NoSuchAlgorithmException {
@@ -143,7 +148,9 @@ public class NizkpDecryption extends ElGamalZkp {
         decryptionLines = new DecryptionLinesArrayList();
         addFileContentToCollection(decryptionFileName,
             (Collection) decryptionLines);
-        LOGGER.info("All decryption lines from the Counting Server loaded.");
+        LOGGER.info(String.format(
+                "All %d decryption lines from the Counting Server loaded.",
+                decryptionLines.size()));
     }
 
     DecryptionLinesArrayList getDecryptionLines() {

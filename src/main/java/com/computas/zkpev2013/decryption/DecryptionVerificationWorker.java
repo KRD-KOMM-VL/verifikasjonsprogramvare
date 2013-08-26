@@ -75,8 +75,6 @@ public class DecryptionVerificationWorker extends ElGamalVerificationWorker {
 
     private void verifyDecryptionLineProof(DecryptionLine decryptionLine)
         throws NoSuchAlgorithmException {
-        getH().calculateAggregateKey(getP());
-
         if (!decryptionLine.verifyProof(getP(), getG(), getH().getAggregateKey())) {
             master.addResult(new DecryptionLineWithIncorrectProofIncident(
                     decryptionLine));

@@ -56,6 +56,7 @@ public class ElGamalPublicKeyList extends ArrayList<BigInteger> {
 
     /**
     * Helper constructor to make transition from 2011 easier.
+    *
     * @param optionKey a single BigInteger public key.
     */
     public ElGamalPublicKeyList(BigInteger optionKey) {
@@ -64,7 +65,7 @@ public class ElGamalPublicKeyList extends ArrayList<BigInteger> {
     }
 
     /**
-     *  Getter for the BigInteger aggregateKey.
+     * Getter for the BigInteger aggregateKey.
      *
      * @return BigInteger aggregateKey.
      */
@@ -73,15 +74,17 @@ public class ElGamalPublicKeyList extends ArrayList<BigInteger> {
     }
 
     /**
-     *  Help method to calculate aggregate keys.
+     * Help method to calculate aggregate keys.
      *
      * @param modulus a BigInteger that specifies the multiplication group.
      */
     public void calculateAggregateKey(BigInteger modulus) {
-        aggregateKey = BigInteger.ONE;
+        BigInteger product = BigInteger.ONE;
 
         for (BigInteger optKey : this) {
-            aggregateKey = aggregateKey.multiply(optKey).mod(modulus);
+            product = product.multiply(optKey).mod(modulus);
         }
+
+        aggregateKey = product;
     }
 }
