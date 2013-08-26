@@ -22,7 +22,6 @@
  */
 package com.computas.zkpev2013;
 
-import com.computas.zkpev.decryption.NizkpDecryption;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
