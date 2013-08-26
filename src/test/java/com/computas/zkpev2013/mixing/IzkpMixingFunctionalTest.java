@@ -27,7 +27,6 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-
 /**
  * Functional tests against the IzkpMixing class. These tests require
  * that there is a database available as defined in the database properties
@@ -47,7 +46,7 @@ public class IzkpMixingFunctionalTest {
      * the ElGamal public key and the mixing data from the database, and runs the protocol.
      * @throws Exception Should not be thrown.
      */
-    @BeforeMethod(groups = "MixingDatabasePresent", enabled = false)
+    @BeforeMethod(groups = "MixingDatabasePresent")
     public void createIzkpLoadDataFilesAndRun() throws Exception {
         izkp = new IzkpMixing(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, ELGAMAL_PUBLIC_KEY_FILE_NAME,
@@ -59,7 +58,7 @@ public class IzkpMixingFunctionalTest {
     /**
      * Verifies that the IZKP didn't produce an incident.
      */
-    @Test(groups = "MixingDatabasePresent", enabled = false)
+    @Test(groups = "MixingDatabasePresent")
     public void resultsMustNotContainAnIncident() {
         assertEquals(izkp.getResults().size(), 0);
     }

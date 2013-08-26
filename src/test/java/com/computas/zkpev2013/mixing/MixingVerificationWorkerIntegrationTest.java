@@ -187,7 +187,7 @@ public class MixingVerificationWorkerIntegrationTest {
      * Verifies that an incident is created if a proof is incorrect.
      * @throws java.security.NoSuchAlgorithmException Should not be thrown.
      */
-    @Test(enabled = false)
+    @Test
     public void mustCreateAnIncorrectMixingProofIncidentIfAProofIsIncorrect()
         throws NoSuchAlgorithmException {
         worker.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INPUT_VOTES,

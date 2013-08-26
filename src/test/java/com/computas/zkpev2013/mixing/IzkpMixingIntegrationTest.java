@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-
 /**
  * Integration tests on the IzkpMixing class.
  *
@@ -84,7 +83,7 @@ public class IzkpMixingIntegrationTest {
      * properties file.
      * @throws java.io.IOException Thrown if something goes wrong while loading the database properties file.
      */
-    @Test(enabled = false)
+    @Test
     public void mustLoadTheCorrectDatabaseName() throws IOException {
         izkp.loadDatabaseProperties();
         assertEquals(izkp.getDatabaseName(), SAMPLE_DATABASE_NAME);
