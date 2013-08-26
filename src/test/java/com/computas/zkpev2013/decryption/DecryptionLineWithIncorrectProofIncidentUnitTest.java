@@ -122,6 +122,15 @@ public class DecryptionLineWithIncorrectProofIncidentUnitTest {
     }
 
     /**
+     * Verifies that the incident doesn't have the same hash code as another incident with another decryption line.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherDecryptionLineWithIncorrectProofIncidentWithAnotherLine() {
+        assertFalse(incident.hashCode() == new DecryptionLineWithIncorrectProofIncident(
+                new DecryptionLine(OTHER_SAMPLE_LINE)).hashCode());
+    }
+
+    /**
      * Verifies that toString produced a comma-separated line with the correct
      * values.
      */
