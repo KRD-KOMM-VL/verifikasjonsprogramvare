@@ -27,8 +27,7 @@ import com.computas.zkpev2013.BrokenLineIncident;
 
 /**
  * Incident related to the presence of a broken line (i.e. a line not
- * confirming to the format for a decryption line) in the decryption file.
- *
+ * conforming to the format for a decryption line) in the decryption file.
  */
 public class DecryptionFileBrokenLineIncident extends BrokenLineIncident {
     DecryptionFileBrokenLineIncident(String line) {

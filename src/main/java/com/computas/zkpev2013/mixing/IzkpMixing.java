@@ -24,8 +24,6 @@ package com.computas.zkpev2013.mixing;
 
 import com.computas.zkpev2013.ElGamalZkp;
 
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 
 import java.sql.*;
@@ -202,9 +200,5 @@ public class IzkpMixing extends ElGamalZkp {
 
     String getPassword() {
         return password;
-    }
-
-    static Logger getLogger() {
-        return LOGGER;
     }
 }

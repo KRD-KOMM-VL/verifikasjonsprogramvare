@@ -22,12 +22,12 @@
  */
 package com.computas.zkpev2013.mixing;
 
+import static org.testng.Assert.*;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-
-import static org.testng.Assert.*;
 
 
 /**
@@ -84,7 +84,7 @@ public class IzkpMixingIntegrationTest {
      * properties file.
      * @throws java.io.IOException Thrown if something goes wrong while loading the database properties file.
      */
-    @Test
+    @Test(enabled = false)
     public void mustLoadTheCorrectDatabaseName() throws IOException {
         izkp.loadDatabaseProperties();
         assertEquals(izkp.getDatabaseName(), SAMPLE_DATABASE_NAME);

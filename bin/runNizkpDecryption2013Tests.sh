@@ -22,16 +22,15 @@
 #
 
 #
-# Runs the test files for NizkpRcgVcs.
+# Runs the test files for NizkpDecryption.
 #
 # This script assumes that it is run from the trunk directory, and that the
 # appropriate test files are available in a subdirectory called tests.
 #
-#
 
 VERSION="1.0a2"
-NIZKPDIR="zkpev2013-${VERSION}"
-NIZKP="./NizkpRcgVcs2013.sh"
+NIZKPDIR="zkpev-${VERSION}"
+NIZKP="./NizkpDecryption2013.sh"
 TESTDIR="../tests"
 
 cd $NIZKPDIR
@@ -42,7 +41,7 @@ rm -f zkpev2013.log
 test()
 {
 	echo
-	$NIZKP $TESTDIR/NizkpRcgVcs2013RcgVotingReceiptsTestFile-$1.csv $TESTDIR/NizkpRcgVcs2013VcsEncryptedVotesTestFile-$1.csv Results-RCG-VCS-$1.csv
+	$NIZKP $TESTDIR/NizkpDecryption2013ElGamalProperties.properties $TESTDIR/NizkpDecryption2013ElGamalPublicKeys.properties $TESTDIR/NizkpDecryption2013DecryptionFile-$1.csv Results-Decryption2013-$1.csv
 }
 
 test 3

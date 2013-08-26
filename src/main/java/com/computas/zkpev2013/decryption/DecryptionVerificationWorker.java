@@ -25,8 +25,6 @@ package com.computas.zkpev2013.decryption;
 import com.computas.zkpev2013.ElGamalPublicKeyList;
 import com.computas.zkpev2013.ElGamalVerificationWorker;
 
-import org.apache.log4j.Logger;
-
 import java.math.BigInteger;
 
 import java.security.NoSuchAlgorithmException;
@@ -34,17 +32,14 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * A worker thread performing the decryption verification.
- *
  */
 public class DecryptionVerificationWorker extends ElGamalVerificationWorker {
     private final NizkpDecryption master;
-    private Logger logger;
 
     protected DecryptionVerificationWorker(NizkpDecryption master,
-        BigInteger p, BigInteger g, ElGamalPublicKeyList h, Logger logger) {
+        BigInteger p, BigInteger g, ElGamalPublicKeyList h) {
         super(p, g, h);
         this.master = master;
-        this.logger = logger;
     }
 
     @Override
@@ -65,7 +60,8 @@ public class DecryptionVerificationWorker extends ElGamalVerificationWorker {
         try {
             tryToVerifyDecryptionLineProofs(batch);
         } catch (NoSuchAlgorithmException e) {
-            logger.error("An error occured while trying to verify decryption line proofs.",
+            NizkpDecryption.getLogger()
+                           .error("An error occured while trying to verify decryption line proofs.",
                 e);
         }
     }

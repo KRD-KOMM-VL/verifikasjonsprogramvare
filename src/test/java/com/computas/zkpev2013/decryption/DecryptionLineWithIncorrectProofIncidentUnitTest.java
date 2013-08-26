@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 
 /**
  * Unit tests on the DecryptionLineWithIncorrectProofIncident class.
- *
  */
 public class DecryptionLineWithIncorrectProofIncidentUnitTest {
     private static final String COMMA = ",";
@@ -120,6 +119,15 @@ public class DecryptionLineWithIncorrectProofIncidentUnitTest {
         assertFalse(incident.equals(
                 new DecryptionLineWithIncorrectProofIncident(
                     new DecryptionLine(OTHER_SAMPLE_LINE))));
+    }
+
+    /**
+     * Verifies that the incident doesn't have the same hash code as another incident with another decryption line.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherDecryptionLineWithIncorrectProofIncidentWithAnotherLine() {
+        assertFalse(incident.hashCode() == new DecryptionLineWithIncorrectProofIncident(
+                new DecryptionLine(OTHER_SAMPLE_LINE)).hashCode());
     }
 
     /**

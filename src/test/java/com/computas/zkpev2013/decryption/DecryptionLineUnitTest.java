@@ -33,7 +33,6 @@ import java.math.BigInteger;
 
 /**
  * Unit test against a decryption line.
- *
  */
 public class DecryptionLineUnitTest {
     static final String COMMA = ",";
@@ -114,12 +113,21 @@ public class DecryptionLineUnitTest {
     }
 
     /**
-     * Verifies that the incident is not equal to another incident with another decryption line.
+     * Verifies that the decryption line is not equal to another decryption line with another source line.
      */
     @Test
     public void mustNotBeEqualToAnotherDecryptionLineWithAnotherSourceLine() {
         assertFalse(decryptionLine.equals(
                 new DecryptionLine(SAMPLE_LINE_WITH_INCORRECT_PROOF)));
+    }
+
+    /**
+     * Verifies that the decryption line has another hash code than a decryption line with another source line.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherDecryptionLineWithAnotherSourceLine() {
+        assertFalse(decryptionLine.hashCode() == new DecryptionLine(
+                SAMPLE_LINE_WITH_INCORRECT_PROOF).hashCode());
     }
 
     /**

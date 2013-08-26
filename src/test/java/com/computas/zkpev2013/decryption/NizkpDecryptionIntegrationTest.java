@@ -32,14 +32,12 @@ import java.io.IOException;
 
 /**
  * Integration tests against the NizkpDecryption class.
- *
- *
  */
 public class NizkpDecryptionIntegrationTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Foo";
     private static final String ELGAMAL_PUBLIC_KEY_FILE_NAME = "Bar";
-    private static final String DECRYPTION_FILE_NAME = "NizkpDecryptionIntegrationTestDecryptionFile2013.csv";
-    private static final String RESULTS_LIST_FILE_NAME = "NizkpDecryptionIntegrationTestResultsList2013.csv";
+    private static final String DECRYPTION_FILE_NAME = "NizkpDecryption2013IntegrationTestDecryptionFile.csv";
+    private static final String RESULTS_LIST_FILE_NAME = "NizkpDecryption2013IntegrationTestResultsList.csv";
     private static final int NO_OF_DECRYPTION_LINES_IN_SAMPLE_DECRYPTION_FILE = 16;
     private NizkpDecryption nizkp;
 

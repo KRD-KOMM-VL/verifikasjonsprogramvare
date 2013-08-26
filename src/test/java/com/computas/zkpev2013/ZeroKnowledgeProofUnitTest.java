@@ -22,6 +22,8 @@
  */
 package com.computas.zkpev2013;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.BeforeMethod;
@@ -64,5 +66,22 @@ public class ZeroKnowledgeProofUnitTest {
     @Test
     public void resultsMustBeEmptyByDefault() {
         assertTrue(zkp.getResults().isEmpty());
+    }
+
+    /**
+     * Verifies that getLogger doesn't return null.
+     */
+    @Test
+    public void getLoggerShouldNotBeNull() {
+        assertNotNull(ZeroKnowledgeProof.getLogger());
+    }
+
+    /**
+     * Verifies that getLogger returns the same object when called twice.
+     */
+    @Test
+    public void getLoggerReturnsSameObject() {
+        assertEquals(ZeroKnowledgeProof.getLogger(),
+            ZeroKnowledgeProof.getLogger());
     }
 }

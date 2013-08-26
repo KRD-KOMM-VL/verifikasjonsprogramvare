@@ -27,7 +27,6 @@ import java.math.BigInteger;
 
 /**
  * Class representing an ElGamal encryption pair.
- *
  */
 public class SchnorrSignature {
     private final BigInteger messageComponent;

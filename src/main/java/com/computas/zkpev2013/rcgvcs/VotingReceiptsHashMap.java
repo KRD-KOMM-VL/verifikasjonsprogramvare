@@ -38,6 +38,7 @@ import java.util.HashMap;
  */
 public class VotingReceiptsHashMap extends HashMap<String, VotingReceiptCounter>
     implements VotingReceiptsMap {
+    private static final int TICKS_TO_LOG_NO_OF_VOTING_RECEIPT_LINES_READ = 10000;
     private static final String COMMA = ",";
 
     private boolean addVotingReceipt(VotingReceipt votingReceipt) {
@@ -67,7 +68,7 @@ public class VotingReceiptsHashMap extends HashMap<String, VotingReceiptCounter>
         while (line != null) {
             addVotingReceiptOrAddIncident(line, results);
 
-            if ((noOfLines % 10000) == 0) {
+            if ((noOfLines % TICKS_TO_LOG_NO_OF_VOTING_RECEIPT_LINES_READ) == 0) {
                 logger.info(String.format("Read %d lines so far...", noOfLines));
             }
 

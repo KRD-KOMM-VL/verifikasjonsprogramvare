@@ -30,8 +30,6 @@ import org.testng.annotations.Test;
 
 /**
  * Unit tests against the NizkpDecryption class.
- *
- *
  */
 public class NizkpDecryptionUnitTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Foo";

@@ -22,11 +22,8 @@
  */
 package com.computas.zkpev2013.decryption;
 
-import com.computas.zkpev.CsvLineParseable;
-
+import com.computas.zkpev2013.CsvLineParseable;
 import com.computas.zkpev2013.ElGamalEncryptionPair;
-
-import org.postgresql.util.Base64;
 
 import java.math.BigInteger;
 
@@ -36,7 +33,6 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Domain object holding all relevant information about a decryption line.
- *
  */
 public class DecryptionLine extends CsvLineParseable {
     private static final String HASHING_ALGORITHM = "SHA-256";
@@ -105,20 +101,8 @@ public class DecryptionLine extends CsvLineParseable {
         electionId = getAttribute(attributes, DecryptionLineCsvIndex.ELECTION_ID);
         contestId = getAttribute(attributes, DecryptionLineCsvIndex.CONTEST_ID);
 
-        String[] encodedVotingOptionIdsProductStrings = getAttributeAsString(attributes,
-                DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS).split("#");
-
-        if (encodedVotingOptionIdsProductStrings.length != 2) {
-            throw new IllegalArgumentException(
-                "INVALID FORMAT FOR ENCODED VOTE OPTIONS");
-        }
-
-        BigInteger encodedVotingOptionIdsProductPublicKeyComponent = new BigInteger(Base64.decode(
-                    encodedVotingOptionIdsProductStrings[0]));
-        BigInteger encodedVotingOptionIdsProductMessageComponent = new BigInteger(Base64.decode(
-                    encodedVotingOptionIdsProductStrings[1]));
-        encodedVotingOptionsIdsProduct = new ElGamalEncryptionPair(encodedVotingOptionIdsProductPublicKeyComponent,
-                encodedVotingOptionIdsProductMessageComponent);
+        encodedVotingOptionsIdsProduct = getAttributeAsElGamalEncryptionPair(attributes,
+                DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
         encryptedVotingOptionsIdsProductString = getAttribute(attributes,
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
 
@@ -128,11 +112,6 @@ public class DecryptionLine extends CsvLineParseable {
                     attributes, DecryptionLineCsvIndex.SIGNATURE));
         schnorrSignatureString = getAttribute(attributes,
                 DecryptionLineCsvIndex.SIGNATURE);
-    }
-
-    private BigInteger getAttributeAsBigInteger(String[] attributes,
-        DecryptionLineCsvIndex index) {
-        return new BigInteger(getAttribute(attributes, index));
     }
 
     boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)

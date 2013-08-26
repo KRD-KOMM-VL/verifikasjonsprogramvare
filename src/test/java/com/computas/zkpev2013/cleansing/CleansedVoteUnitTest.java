@@ -20,7 +20,7 @@
  * /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
  * http://www.gnu.org/licenses/.
  */
-package com.computas.zkpev.cleansing;
+package com.computas.zkpev2013.cleansing;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -33,7 +33,6 @@ import java.math.BigInteger;
 
 /**
  * Unit tests on CleansedVote.
- *
  */
 public class CleansedVoteUnitTest {
     private static final String COMMA = ",";
@@ -66,7 +65,7 @@ public class CleansedVoteUnitTest {
     /**
      * Creates a cleansed vote to run the tests against.
      */
-    @BeforeMethod
+    @BeforeMethod(enabled = false)
     public void createCleansedVote() {
         cleansedVote = new CleansedVote(GIVEN_SAMPLE_LINE);
     }
@@ -75,7 +74,7 @@ public class CleansedVoteUnitTest {
      * Verifies that the constructor sets the encrypted vote option IDs as String
      * correctly.
      */
-    @Test
+    @Test(enabled = false)
     public void constructorMustSetTheTheEncryptedVoteOptionIdsAsStringCorrectly() {
         assertEquals(cleansedVote.getEncryptedVoteOptIdsAsString(),
             GIVEN_ENC_VOTE_OPT_IDS);
@@ -85,7 +84,7 @@ public class CleansedVoteUnitTest {
      * Verifies that the constructor sets the public key component of the encrypted vote option IDs correctly from
      * a line.
      */
-    @Test
+    @Test(enabled = false)
     public void constructorMustSetThePublicKeyComponentOfTheEncryptedVoteOptionIdsCorrectly() {
         assertEquals(cleansedVote.getEncryptedVoteOptIds()
                                  .getPublicKeyComponent(),
@@ -96,7 +95,7 @@ public class CleansedVoteUnitTest {
      * Verifies that the constructor sets the message component of the encrypted vote option IDs correctly from
      * a line.
      */
-    @Test
+    @Test(enabled = false)
     public void constructorMustSetTheMessageComponentOfTheEncryptedVoteOptionIdsCorrectly() {
         assertEquals(cleansedVote.getEncryptedVoteOptIds()
                                  .getPublicKeyComponent(),
@@ -107,7 +106,7 @@ public class CleansedVoteUnitTest {
      * Verifies that the constructor sets the contest ID correctly from
      * a line.
      */
-    @Test
+    @Test(enabled = false)
     public void constructorMustSetTheContestIdCorrectly() {
         assertEquals(cleansedVote.getContestId(), GIVEN_CONTEST_ID);
     }
@@ -116,7 +115,7 @@ public class CleansedVoteUnitTest {
      * Verifies that the constructor sets the election ID correctly from
      * a line.
      */
-    @Test
+    @Test(enabled = false)
     public void constructorMustSetTheElectionIdCorrectly() {
         assertEquals(cleansedVote.getElectionId(), GIVEN_ELECTION_ID);
     }
@@ -125,7 +124,7 @@ public class CleansedVoteUnitTest {
      * Verifies that the constructor sets the election event ID correctly from
      * a line.
      */
-    @Test
+    @Test(enabled = false)
     public void constructorMustSetTheElectionEventIdCorrectly() {
         assertEquals(cleansedVote.getElectionEventId(), GIVEN_ELECTION_EVENT_ID);
     }
@@ -141,7 +140,7 @@ public class CleansedVoteUnitTest {
     /**
      * Verifies that a cleansed vote has a consistent hashCode.
      */
-    @Test
+    @Test(enabled = false)
     public void mustHaveSameHashCodeAsItself() {
         assertEquals(cleansedVote.hashCode(), cleansedVote.hashCode());
     }
@@ -149,7 +148,7 @@ public class CleansedVoteUnitTest {
     /**
      * Verifies that a cleansed vote is not equal to null.
      */
-    @Test
+    @Test(enabled = false)
     public void mustNotBeEqualToNull() {
         Object nullObject = null;
         assertFalse(cleansedVote.equals(nullObject));
@@ -158,7 +157,7 @@ public class CleansedVoteUnitTest {
     /**
      * Verifies that a cleansed vote is not equal to an object of another class. This is used as the test case.
      */
-    @Test
+    @Test(enabled = false)
     public void mustNotBeEqualToAnObjectOfAnotherClass() {
         assertFalse(cleansedVote.equals(this));
     }
@@ -166,7 +165,7 @@ public class CleansedVoteUnitTest {
     /**
      * Verifies that the cleansed vote is equal to another cleansed vote generated from the same line.
      */
-    @Test
+    @Test(enabled = false)
     public void mustBeEqualToAnotherInjectedCleansedVoteLineIncidentWithTheSameCleansedVote() {
         assertEquals(cleansedVote, new CleansedVote(GIVEN_SAMPLE_LINE));
     }
@@ -174,7 +173,7 @@ public class CleansedVoteUnitTest {
     /**
      * Verifies that the cleansed vote has the same hashCode as another cleansed vote generated from the same line.
      */
-    @Test
+    @Test(enabled = false)
     public void mustHaveSameHashCodeAsAnotherCleansedVoteGeneratedFromTheSameLine() {
         assertEquals(cleansedVote.hashCode(),
             new CleansedVote(GIVEN_SAMPLE_LINE).hashCode());
@@ -183,7 +182,7 @@ public class CleansedVoteUnitTest {
     /**
      * Verifies that the cleansed vote is not equal to another cleansed vote with other encrypted vote option IDs.
      */
-    @Test
+    @Test(enabled = false)
     public void mustNotBeEqualToAnotherCleansedVoteWithOtherOptionIDs() {
         assertFalse(cleansedVote.equals(
                 new CleansedVote(CLEANSED_VOTE_LINE_WITH_OTHER_ENC_OPT_IDS)));
@@ -192,7 +191,7 @@ public class CleansedVoteUnitTest {
     /**
      * Verifies that the cleansed vote is not equal to another cleansed vote with another contest ID.
      */
-    @Test
+    @Test(enabled = false)
     public void mustNotBeEqualToAnotherCleansedVoteWithOtherContestId() {
         assertFalse(cleansedVote.equals(
                 new CleansedVote(CLEANSED_VOTE_LINE_WITH_OTHER_CONTEST_ID)));
@@ -201,7 +200,7 @@ public class CleansedVoteUnitTest {
     /**
      * Verifies that the cleansed vote is not equal to another cleansed vote with another election ID.
      */
-    @Test
+    @Test(enabled = false)
     public void mustNotBeEqualToAnotherCleansedVoteWithOtherElectionId() {
         assertFalse(cleansedVote.equals(
                 new CleansedVote(CLEANSED_VOTE_LINE_WITH_OTHER_ELECTION_ID)));
@@ -210,7 +209,7 @@ public class CleansedVoteUnitTest {
     /**
      * Verifies that the cleansed vote is not equal to another cleansed vote with another election event ID.
      */
-    @Test
+    @Test(enabled = false)
     public void mustNotBeEqualToAnotherCleansedVoteWithOtherElectionEventId() {
         assertFalse(cleansedVote.equals(
                 new CleansedVote(

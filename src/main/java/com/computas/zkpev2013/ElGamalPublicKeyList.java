@@ -54,7 +54,7 @@ public class ElGamalPublicKeyList extends ArrayList<BigInteger> {
         }
     }
 
-    /*
+    /**
     * Helper constructor to make transition from 2011 easier.
     * @param optionKey a single BigInteger public key.
     */

@@ -47,7 +47,7 @@ public class IzkpMixingFunctionalTest {
      * the ElGamal public key and the mixing data from the database, and runs the protocol.
      * @throws Exception Should not be thrown.
      */
-    @BeforeMethod(groups = "MixingDatabasePresent")
+    @BeforeMethod(groups = "MixingDatabasePresent", enabled = false)
     public void createIzkpLoadDataFilesAndRun() throws Exception {
         izkp = new IzkpMixing(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, ELGAMAL_PUBLIC_KEY_FILE_NAME,
@@ -59,7 +59,7 @@ public class IzkpMixingFunctionalTest {
     /**
      * Verifies that the IZKP didn't produce an incident.
      */
-    @Test(groups = "MixingDatabasePresent")
+    @Test(groups = "MixingDatabasePresent", enabled = false)
     public void resultsMustNotContainAnIncident() {
         assertEquals(izkp.getResults().size(), 0);
     }
