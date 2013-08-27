@@ -34,7 +34,7 @@ TMPLIBDIR="$TMPDIR/lib"
 TARFILE="zkpev2013-${VERSION}.tgz"
 ZIPFILE="zkpev2013-${VERSION}.zip"
 
-mvn clean install -PNoCodeQuality
+mvn clean install -P MixingDatabaseAbsent,NoCodeQuality
 
 echo
 echo "Packing all run-time code together..."
