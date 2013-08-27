@@ -29,7 +29,6 @@ import java.math.BigInteger;
 
 /**
  * Class representing a set of factors for an ElGamal vote group.
- *
  */
 public class ElGamalVoteGroupFactors {
     private final BigInteger p;

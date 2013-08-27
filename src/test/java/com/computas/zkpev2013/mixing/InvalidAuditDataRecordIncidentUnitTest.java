@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 
 /**
  * Unit tests on the InvalidAuditDataRecordIncident class.
- *
  */
 public class InvalidAuditDataRecordIncidentUnitTest {
     private static final String SAMPLE_AUDIT_UUID = "97b089bb78034cb3a193e8b9d308ba13";

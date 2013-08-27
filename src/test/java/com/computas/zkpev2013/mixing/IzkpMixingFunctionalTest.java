@@ -33,8 +33,6 @@ import org.testng.annotations.Test;
  * that there is a database available as defined in the database properties
  * file, and that all mixing/audit data sets have correct proofs. A sample
  * database dump is available in the test resources catalog.
- *
- *
  */
 public class IzkpMixingFunctionalTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "IzkpMixingFunctionalTestElGamalProperties2013.properties";

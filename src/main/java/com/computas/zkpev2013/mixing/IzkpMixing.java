@@ -35,7 +35,6 @@ import java.util.Properties;
 
 /**
  * Class implementing the interactive zero-knowledge proof for the mixing process.
- *
  */
 public class IzkpMixing extends ElGamalZkp {
     private static final int MIN_NO_OF_PARAMETERS_ALLOWED = 3;

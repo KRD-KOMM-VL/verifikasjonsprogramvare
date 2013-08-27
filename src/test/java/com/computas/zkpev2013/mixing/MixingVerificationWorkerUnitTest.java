@@ -45,7 +45,6 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Unit tests on MixingVerificationWorker.
- *
  */
 public class MixingVerificationWorkerUnitTest {
     private static final int THREE = 3;

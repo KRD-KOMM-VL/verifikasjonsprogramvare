@@ -44,7 +44,6 @@ import java.util.List;
 
 /**
  * A worker thread performing the mixing verification.
- *
  */
 public class MixingVerificationWorker extends ElGamalVerificationWorker {
     private static final String HASHING_ALGORITHM = "SHA-256";

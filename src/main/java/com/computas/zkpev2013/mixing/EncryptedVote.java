@@ -25,14 +25,9 @@ package com.computas.zkpev2013.mixing;
 import com.computas.zkpev2013.CsvLineParseable;
 import com.computas.zkpev2013.ElGamalEncryptionPair;
 
-import org.apache.commons.codec.binary.Base64;
-
-import java.math.BigInteger;
-
 
 /**
  * Class representing an encrypted vote in the context of the mixing process.
- *
  */
 public class EncryptedVote extends CsvLineParseable {
     private ElGamalEncryptionPair elGamalEncryptionPair;
@@ -43,13 +38,8 @@ public class EncryptedVote extends CsvLineParseable {
 
     @Override
     protected void setAttributes(String[] attributes) throws Exception {
-        //byte[] encodedVotingOptionIdsProductByteArray = getAttributeAsMultilinedByteArray(attributes,
-        //        EncryptedVoteCsvIndex.ENC_VOTE_OPT_IDS);
-        String[] parsedString = getAttributeAsString(attributes,
-                EncryptedVoteCsvIndex.ENC_VOTE_OPT_IDS).split("#");
-        elGamalEncryptionPair = new ElGamalEncryptionPair(new BigInteger(
-                    Base64.decodeBase64(parsedString[0].getBytes())),
-                new BigInteger(Base64.decodeBase64(parsedString[1].getBytes())));
+        elGamalEncryptionPair = getAttributeAsElGamalEncryptionPair(attributes,
+                EncryptedVoteCsvIndex.ENC_VOTE_OPT_IDS);
     }
 
     ElGamalEncryptionPair getElGamalEncryptionPair() {

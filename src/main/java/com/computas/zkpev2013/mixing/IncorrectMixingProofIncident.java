@@ -27,7 +27,6 @@ import com.computas.zkpev2013.Incident;
 
 /**
  * Incident relating to an incorrect mixing proof.
- *
  */
 public class IncorrectMixingProofIncident extends Incident {
     private final String mixingUuid;

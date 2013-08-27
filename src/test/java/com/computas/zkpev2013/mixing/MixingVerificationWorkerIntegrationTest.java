@@ -27,7 +27,6 @@ import com.computas.zkpev2013.ResultsArrayList;
 import com.computas.zkpev2013.ResultsList;
 
 import org.apache.commons.codec.binary.Base64;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.BeforeMethod;
@@ -40,7 +39,6 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Integration tests on the MixingVerificationWorker.
- *
  */
 public class MixingVerificationWorkerIntegrationTest {
     private static final BigInteger SAMPLE_P = new BigInteger(

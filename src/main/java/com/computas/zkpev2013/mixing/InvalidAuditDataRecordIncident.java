@@ -27,7 +27,6 @@ import com.computas.zkpev2013.Incident;
 
 /**
  * Incident relating to an invalid audit data record.
- *
  */
 public class InvalidAuditDataRecordIncident extends Incident {
     static final String INPUT_VOTE_GROUPS_INVALID = "Input vote groups invalid";

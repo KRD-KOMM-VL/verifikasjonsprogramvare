@@ -33,7 +33,6 @@ import java.math.BigInteger;
 
 /**
  * Unit tests on ElGamalVoteGroupFactors.
- *
  */
 public class ElGamalVoteGroupFactorsUnitTest {
     private ElGamalVoteGroupFactors factors;
