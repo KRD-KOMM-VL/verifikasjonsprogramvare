@@ -228,6 +228,7 @@ public class MixingVerificationWorker extends ElGamalVerificationWorker {
 
     private boolean verifyZeroKnowledgeProofs() throws NoSuchAlgorithmException {
         boolean globalResult = true;
+
         for (int i = 0; i < reencryptionProofs.size(); i++) {
             boolean result = verifyZeroKnowledgeProof(getP(), getG(),
                     getH().getAggregateKey(), inputVoteGroupsFactors.get(i),
