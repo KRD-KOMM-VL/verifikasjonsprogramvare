@@ -84,15 +84,11 @@ public class IzkpMixing extends ElGamalZkp {
         openResultsFileIfRequired();
         loadElGamalProperties();
         loadElGamalPublicKeys();
-        calculateAggregateKey();
+        calculateElGamalAggregateKey();
         loadDatabaseProperties();
 
         verifyMixingProofs();
         closeResultsFileIfNeeded();
-    }
-
-    public void calculateAggregateKey() {
-        getH().calculateAggregateKey(getP());
     }
 
     private void verifyMixingProofs() throws SQLException {

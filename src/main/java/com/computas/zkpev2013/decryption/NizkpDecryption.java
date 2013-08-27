@@ -85,10 +85,6 @@ public class NizkpDecryption extends ElGamalZkp {
         closeResultsFileIfNeeded();
     }
 
-    private void calculateElGamalAggregateKey() {
-        getH().calculateAggregateKey(getP());
-    }
-
     private void verifyDecryptionLineProofs() throws NoSuchAlgorithmException {
         Thread[] workers = setUpWorkers();
         waitForWorkersToFinish(workers);

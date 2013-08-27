@@ -89,6 +89,10 @@ public abstract class ElGamalZkp extends ZeroKnowledgeProof {
                 EL_GAMAL_PUBLIC_KEYS_PROPERTY_NAME);
     }
 
+    protected void calculateElGamalAggregateKey() {
+        h.calculateAggregateKey(p);
+    }
+
     protected Properties loadProperties(String fileName)
         throws IOException {
         Properties properties = new Properties();
