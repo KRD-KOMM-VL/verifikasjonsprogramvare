@@ -83,12 +83,21 @@ public class InvalidAuditDataRecordIncidentUnitTest {
     }
 
     /**
-     * Verifies that the incident is equal to another incident with the same audit UUID and cuase.
+     * Verifies that the incident is equal to another incident with the same audit UUID and cause.
      */
     @Test
     public void mustBeEqualToAnotherInvalidAuditDataRecordIncidentWithTheSameAuditUuidAndCause() {
         assertEquals(incident,
             new InvalidAuditDataRecordIncident(SAMPLE_AUDIT_UUID, SAMPLE_CAUSE));
+    }
+
+    /**
+     * Verifies that the incident has the same hash code as another incident with the same audit UUID and cause.
+     */
+    @Test
+    public void mustHaveSameHashCodeAsAnotherInvalidAuditDataRecordIncidentWithTheSameAuditUuidAndCause() {
+        assertEquals(incident.hashCode(),
+            new InvalidAuditDataRecordIncident(SAMPLE_AUDIT_UUID, SAMPLE_CAUSE).hashCode());
     }
 
     /**
@@ -102,6 +111,15 @@ public class InvalidAuditDataRecordIncidentUnitTest {
     }
 
     /**
+     * Verifies that the incident doesn't have the same hash code as another incident with another audit UUID.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherInvalidAuditDataRecordIncidentWithAnotherAuditUuid() {
+        assertFalse(incident.hashCode() == new InvalidAuditDataRecordIncident(
+                OTHER_AUDIT_UUID, SAMPLE_CAUSE).hashCode());
+    }
+
+    /**
      * Verifies that the incident is not equal to another incident with another cause.
      */
     @Test
@@ -109,6 +127,15 @@ public class InvalidAuditDataRecordIncidentUnitTest {
         assertFalse(incident.equals(
                 new InvalidAuditDataRecordIncident(SAMPLE_AUDIT_UUID,
                     OTHER_CAUSE)));
+    }
+
+    /**
+     * Verifies that the incident doesn't have the same hash code as another incident with another cause.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherInvalidAuditDataRecordIncidentWithAnotherCause() {
+        assertFalse(incident.hashCode() == new InvalidAuditDataRecordIncident(
+                SAMPLE_AUDIT_UUID, OTHER_CAUSE).hashCode());
     }
 
     /**
