@@ -92,6 +92,15 @@ public class InvalidMixingDataRecordIncidentUnitTest {
     }
 
     /**
+     * Verifies that the incident has the same hash code as another incident with the same mixing UUID and cause.
+     */
+    @Test
+    public void mustHaveSameHashCodeAsAnotherInvalidMixingDataRecordIncidentWithTheSameMixingUuidAndCause() {
+        assertEquals(incident.hashCode(),
+            new InvalidMixingDataRecordIncident(SAMPLE_MIXING_UUID, SAMPLE_CAUSE).hashCode());
+    }
+
+    /**
      * Verifies that the incident is not equal to another incident with another mixing UUID.
      */
     @Test
@@ -102,6 +111,15 @@ public class InvalidMixingDataRecordIncidentUnitTest {
     }
 
     /**
+     * Verifies that the incident doesn't have the same hash code as another incident with another mixing UUID.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherInvalidMixingDataRecordIncidentWithAnotherMixingUuid() {
+        assertFalse(incident.hashCode() == new InvalidMixingDataRecordIncident(
+                OTHER_MIXING_UUID, SAMPLE_CAUSE).hashCode());
+    }
+
+    /**
      * Verifies that the incident is not equal to another incident with another cause.
      */
     @Test
@@ -109,6 +127,15 @@ public class InvalidMixingDataRecordIncidentUnitTest {
         assertFalse(incident.equals(
                 new InvalidMixingDataRecordIncident(SAMPLE_MIXING_UUID,
                     OTHER_CAUSE)));
+    }
+
+    /**
+     * Verifies that the incident doesn't have the same hash code as another incident with another cause.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherInvalidMixingDataRecordIncidentWithAnotherCause() {
+        assertFalse(incident.hashCode() == new InvalidMixingDataRecordIncident(
+                SAMPLE_MIXING_UUID, OTHER_CAUSE).hashCode());
     }
 
     /**
