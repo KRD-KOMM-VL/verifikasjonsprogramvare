@@ -167,7 +167,7 @@ public class MixingVerificationWorker extends ElGamalVerificationWorker {
     public void run() {
         try {
             tryToRun();
-        } catch (Throwable t) {
+        } catch (NoSuchAlgorithmException t) {
             IzkpMixing.getLogger()
                       .error(String.format(
                     "An unexpected error occured while trying to verify the proofs for mixing/audit dataset %s/%s.",
