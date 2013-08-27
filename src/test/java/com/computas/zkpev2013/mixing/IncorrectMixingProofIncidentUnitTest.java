@@ -84,13 +84,23 @@ public class IncorrectMixingProofIncidentUnitTest {
     }
 
     /**
-     * Verifies that the incident is equal to another incident with the same mixing and audit UUID.
+     * Verifies that the incident is equal to another incident with the same fields.
      */
     @Test
-    public void mustBeEqualToAnotherIncorrectMixingProofIncidentWithTheSameMixingAndAuditUuid() {
+    public void mustBeEqualToAnotherIncorrectMixingProofIncidentWithTheSameFields() {
         assertEquals(incident,
             new IncorrectMixingProofIncident(SAMPLE_MIXING_UUID,
                 SAMPLE_AUDIT_UUID, SAMPLE_VOTE_GROUP));
+    }
+
+    /**
+     * Verifies that the incident has the same hash code as another incident with the same fields.
+     */
+    @Test
+    public void mustHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithTheSameFields() {
+        assertEquals(incident.hashCode(),
+            new IncorrectMixingProofIncident(SAMPLE_MIXING_UUID,
+                SAMPLE_AUDIT_UUID, SAMPLE_VOTE_GROUP).hashCode());
     }
 
     /**
@@ -104,6 +114,15 @@ public class IncorrectMixingProofIncidentUnitTest {
     }
 
     /**
+     * Verifies that the incident doesn't have the same hash code as another incident with another mixing UUID.
+     */
+    @Test
+    public void mustHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithAnotherMixingUuid() {
+        assertFalse(incident.hashCode() == new IncorrectMixingProofIncident(
+                OTHER_UUID, SAMPLE_AUDIT_UUID, SAMPLE_VOTE_GROUP).hashCode());
+    }
+
+    /**
      * Verifies that the incident is not equal to another incident with another audit UUID.
      */
     @Test
@@ -114,6 +133,15 @@ public class IncorrectMixingProofIncidentUnitTest {
     }
 
     /**
+     * Verifies that the incident doesn't have the same hash code as another incident with another audit UUID.
+     */
+    @Test
+    public void mustHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithAnotherAuditUuid() {
+        assertFalse(incident.hashCode() == new IncorrectMixingProofIncident(
+                SAMPLE_MIXING_UUID, OTHER_UUID, SAMPLE_VOTE_GROUP).hashCode());
+    }
+
+    /**
      * Verifies that the incident is not equal to another incident with another vote group.
      */
     @Test
@@ -121,6 +149,15 @@ public class IncorrectMixingProofIncidentUnitTest {
         assertFalse(incident.equals(
                 new IncorrectMixingProofIncident(SAMPLE_MIXING_UUID,
                     SAMPLE_AUDIT_UUID, OTHER_VOTE_GROUP)));
+    }
+
+    /**
+     * Verifies that the incident doesn't have the same hash code as another incident with another vote group.
+     */
+    @Test
+    public void mustHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithAnotherVoteGroup() {
+        assertFalse(incident.hashCode() == new IncorrectMixingProofIncident(
+                SAMPLE_MIXING_UUID, SAMPLE_AUDIT_UUID, OTHER_VOTE_GROUP).hashCode());
     }
 
     /**
