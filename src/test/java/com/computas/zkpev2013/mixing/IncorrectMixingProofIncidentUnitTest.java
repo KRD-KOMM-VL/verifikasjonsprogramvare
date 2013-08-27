@@ -117,7 +117,7 @@ public class IncorrectMixingProofIncidentUnitTest {
      * Verifies that the incident doesn't have the same hash code as another incident with another mixing UUID.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithAnotherMixingUuid() {
+    public void mustNotHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithAnotherMixingUuid() {
         assertFalse(incident.hashCode() == new IncorrectMixingProofIncident(
                 OTHER_UUID, SAMPLE_AUDIT_UUID, SAMPLE_VOTE_GROUP).hashCode());
     }
@@ -136,7 +136,7 @@ public class IncorrectMixingProofIncidentUnitTest {
      * Verifies that the incident doesn't have the same hash code as another incident with another audit UUID.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithAnotherAuditUuid() {
+    public void mustNotHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithAnotherAuditUuid() {
         assertFalse(incident.hashCode() == new IncorrectMixingProofIncident(
                 SAMPLE_MIXING_UUID, OTHER_UUID, SAMPLE_VOTE_GROUP).hashCode());
     }
@@ -155,7 +155,7 @@ public class IncorrectMixingProofIncidentUnitTest {
      * Verifies that the incident doesn't have the same hash code as another incident with another vote group.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithAnotherVoteGroup() {
+    public void mustNotHaveSameHashCodeAsAnotherIncorrectMixingProofIncidentWithAnotherVoteGroup() {
         assertFalse(incident.hashCode() == new IncorrectMixingProofIncident(
                 SAMPLE_MIXING_UUID, SAMPLE_AUDIT_UUID, OTHER_VOTE_GROUP).hashCode());
     }
