@@ -304,19 +304,21 @@ InvalidMixingDataRecordIncident,a13868a6b6fd4b78a6b65e3840be9ad6,Input votes inv
   
 ** Install PostgreSQL 9.1
 
-  The following instructions will install PostgreSQL 9.1 on Ubuntu 11.04 (as per
-  31 August 2011):
+  The following instructions will install PostgreSQL 9.2 on Ubuntu 13.04 (as per
+  27 August 2013):
+
+  * Create <<</etc/apt/sources.list.d/pgdg.list>>> containing a line <<<deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main>>>.
+
+  * Import the repository key: <<<wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add ->>>.
+
+  * Update the packages list: <<<sudo apt-get update>>>.
   
-  * Add the PostgreSQL PPA repository: <<<sudo add-apt-repository ppa:pitti/postgresql>>>.
-  
-  * Update APT: <<<sudo apt-get update>>>.
-  
-  * Install PostgreSQL 9.1: <<<sudo apt-get install postgresql>>>
+  * Install PostgreSQL 9.2: <<<sudo apt-get install postgresql>>>.
   
 ** Configure PostgreSQL
 
   Configure PostgreSQL such that it is ready for the database dump file to be
-  restored. This involved creating a user and creating the target database.
+  restored. This involves creating a user and creating the target database.
     
   * Create and set-up the user <<<usertestmxsmanager>>> as follows:
 
@@ -329,17 +331,17 @@ Shall the new role be allowed to create databases? (y/n) n
 Shall the new role be allowed to create more new roles? (y/n) n
 ---------------------------------------------------------------
     
-  * Create a target database for the dump using <<<sudo -u postgres createdb mxmanagertest>>>.
+  * Create a target database for the dump using <<<sudo -u postgres createdb mxmanagertest2013>>>.
 
 ** Restore the Database
   
   Finally, you can restore the database dump into the newly created database. 
   If the database dump is a so-called plain dump, you
-  can use the following command to do this: <<<sudo -u postgres psql mxmanagertest -f mxsmdump1>>>.
+  can use the following command to do this: <<<sudo -u postgres psql mxmanagertest2013 -f mxsmdump1>>>.
   This command should be issued from the catalog where the file with the
   database dump (<<<mxsmdump1>>>) is located. If the database dump is a so-called
   custom dump, you can use the following command instead from the same 
-  catalog: <<<sudo -u postgres pg_restore -d mxmanagertest mxsmdump1>>>.
+  catalog: <<<sudo -u postgres pg_restore -d mxmanagertest2013 mxsmdump1>>>.
   
 ** Re-restoring the Database
 
