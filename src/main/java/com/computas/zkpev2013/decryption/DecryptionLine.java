@@ -24,6 +24,7 @@ package com.computas.zkpev2013.decryption;
 
 import com.computas.zkpev2013.CsvLineParseable;
 import com.computas.zkpev2013.ElGamalEncryptionPair;
+import com.computas.zkpev2013.ElGamalEncryptionTuple;
 
 import java.math.BigInteger;
 
@@ -37,6 +38,7 @@ import java.security.NoSuchAlgorithmException;
 public class DecryptionLine extends CsvLineParseable {
     private static final String HASHING_ALGORITHM = "SHA-256";
     private final String line;
+    private ElGamalEncryptionTuple encodedVotingOptionsIds;
     private ElGamalEncryptionPair encodedVotingOptionsIdsProduct;
     private SchnorrSignature schnorrSignature;
     private BigInteger decryptedVotingOptionIdsProduct;
@@ -94,6 +96,10 @@ public class DecryptionLine extends CsvLineParseable {
         return schnorrSignatureString;
     }
 
+    void setEncodedVotingOptionsIdsProduct(BigInteger p) {
+        encodedVotingOptionsIdsProduct = encodedVotingOptionsIds.convertToPair(p);
+    }
+
     @Override
     protected void setAttributes(String[] attributes) throws Exception {
         electionEventId = getAttribute(attributes,
@@ -101,7 +107,7 @@ public class DecryptionLine extends CsvLineParseable {
         electionId = getAttribute(attributes, DecryptionLineCsvIndex.ELECTION_ID);
         contestId = getAttribute(attributes, DecryptionLineCsvIndex.CONTEST_ID);
 
-        encodedVotingOptionsIdsProduct = getAttributeAsElGamalEncryptionPair(attributes,
+        encodedVotingOptionsIds = getAttributeAsElGamalEncryptionTuple(attributes,
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
         encryptedVotingOptionsIdsProductString = getAttribute(attributes,
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
@@ -117,6 +123,8 @@ public class DecryptionLine extends CsvLineParseable {
     boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
         throws NoSuchAlgorithmException {
         BigInteger x = calculateNonInteractiveChallengeX();
+        setEncodedVotingOptionsIdsProduct(p);
+
         BigInteger g1 = calculateGeneratorG1(p, g, x);
         BigInteger h1 = calculatePublicKeyH1(p, h, x);
         BigInteger w1 = calculateSchnorrMessageW1(p, g1, h1);
@@ -140,10 +148,10 @@ public class DecryptionLine extends CsvLineParseable {
 
     BigInteger calculateGeneratorG1(BigInteger p, BigInteger g, BigInteger x) {
         return decryptedVotingOptionIdsSmallerThanEncodedVotingOptionsMessageComponent()
-        ? encodedVotingOptionsIdsProduct.getPublicKeyComponent().modPow(x, p)
-                                        .multiply(g).mod(p)
-        : encodedVotingOptionsIdsProduct.getPublicKeyComponent().modInverse(p)
-                                        .modPow(x, p).multiply(g).mod(p);
+        ? encodedVotingOptionsIds.getPublicKeyComponent().modPow(x, p)
+                                 .multiply(g).mod(p)
+        : encodedVotingOptionsIds.getPublicKeyComponent().modInverse(p)
+                                 .modPow(x, p).multiply(g).mod(p);
     }
 
     BigInteger calculatePublicKeyH1(BigInteger p, BigInteger h, BigInteger x) {
