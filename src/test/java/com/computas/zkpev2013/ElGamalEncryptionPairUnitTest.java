@@ -71,15 +71,6 @@ public class ElGamalEncryptionPairUnitTest {
     }
 
     /**
-     * Verifies that the constructor with byte array behaves well.
-     */
-    @Test
-    public void constructorWithStringBehavesWell() {
-        assertEquals(pair,
-            new ElGamalEncryptionPair(PUBLIC_KEY_COMPONENT, MESSAGE_COMPONENT));
-    }
-
-    /**
      * Verifies that a pair is equal to itself.
      */
     @Test
