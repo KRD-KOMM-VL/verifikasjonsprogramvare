@@ -113,7 +113,7 @@ public class ElGamalVoteGroupFactorsUnitTest {
      * Verifies that an ElGamalVoteGroupFactors object doesn't have the same hash code as another ElGamalVoteGroupFactors with another p.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherElGamalVoteGroupFactorsWithAnotherP() {
+    public void mustNotHaveSameHashCodeAsAnotherElGamalVoteGroupFactorsWithAnotherP() {
         assertFalse(factors.hashCode() == new ElGamalVoteGroupFactors(
                 BigInteger.ONE, BigInteger.ONE, BigInteger.TEN).hashCode());
     }
@@ -132,7 +132,7 @@ public class ElGamalVoteGroupFactorsUnitTest {
      * Verifies that an ElGamalVoteGroupFactors object doesn't have the same hash code as another ElGamalVoteGroupFactors with another public key factor.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherElGamalVoteGroupFactorsWithAnotherPublicKeyFactor() {
+    public void mustNotHaveSameHashCodeAsAnotherElGamalVoteGroupFactorsWithAnotherPublicKeyFactor() {
         assertFalse(factors.hashCode() == new ElGamalVoteGroupFactors(
                 BigInteger.ZERO, BigInteger.ZERO, BigInteger.TEN).hashCode());
     }
@@ -151,7 +151,7 @@ public class ElGamalVoteGroupFactorsUnitTest {
      * Verifies that an ElGamalVoteGroupFactors object doesn't have the same hash code as another ElGamalVoteGroupFactors with another message factor.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherElGamalVoteGroupFactorsWithAnotherMessageFactor() {
+    public void mustNotHaveSameHashCodeAsAnotherElGamalVoteGroupFactorsWithAnotherMessageFactor() {
         assertFalse(factors.hashCode() == new ElGamalVoteGroupFactors(
                 BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO).hashCode());
     }
