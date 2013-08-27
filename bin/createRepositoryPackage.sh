@@ -28,7 +28,7 @@
 #
 #
 
-VERSION="1.0a1"
+VERSION="1.0a3"
 MVNREPDIR="${HOME}/.m2/repository"
 TMPMVNREPDIR="${HOME}/.m2/repository-tmp-$(date +%s)"
 TARFILE="zkpev2013-mvnrep-${VERSION}.tgz"

@@ -28,7 +28,7 @@
 #
 #
 
-VERSION="1.0a2"
+VERSION="1.0a3"
 TMPDIR="zkpev2013-${VERSION}"
 TMPLIBDIR="$TMPDIR/lib"
 TARFILE="zkpev2013-${VERSION}.tgz"

@@ -28,12 +28,12 @@
 #
 #
 
-VERSION="1.0a1"
+VERSION="1.0a3"
 TMPDIR="zkpev2013-sysdoc-${VERSION}"
 TARFILE="zkpev2013-sysdoc-${VERSION}.tgz"
 ZIPFILE="zkpev2013-sysdoc-${VERSION}.zip"
 
-mvn clean site:site
+mvn clean site:site -P MixingDatabaseAbsent,NoCodeQuality
 
 echo
 echo "Packing all system documentation together..."
