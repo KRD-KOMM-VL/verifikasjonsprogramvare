@@ -22,6 +22,7 @@
  */
 package com.computas.zkpev2013.cleansing;
 
+import com.computas.zkpev2013.EncryptedVote;
 import com.computas.zkpev2013.Incident;
 
 

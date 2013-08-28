@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
  * Unit tests on VcsEncryptedVotesMapKeyCollisionIncident.
  *
  */
-public class VcsEncryptedVotesMapKeyCollisionIncidentUnitTest {
+public class EncryptedVotesMapKeyCollisionIncidentUnitTest {
     private static final String UUID1 = "Foo";
     private static final String UUID2 = "Bar";
     private static final String OTHER_UUID = "Other";

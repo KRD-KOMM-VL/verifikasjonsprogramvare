@@ -22,6 +22,7 @@
  */
 package com.computas.zkpev2013.rcgvcs;
 
+import com.computas.zkpev2013.EncryptedVote;
 import com.computas.zkpev2013.ResultsList;
 
 import org.apache.log4j.Logger;

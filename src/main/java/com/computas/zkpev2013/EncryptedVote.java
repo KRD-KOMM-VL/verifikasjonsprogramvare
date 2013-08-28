@@ -20,9 +20,7 @@
  * /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
  * http://www.gnu.org/licenses/.
  */
-package com.computas.zkpev2013.rcgvcs;
-
-import com.computas.zkpev2013.CsvLineParseable;
+package com.computas.zkpev2013;
 
 import com.scytl.evote.protocol.integration.voting.model.AuthToken;
 import com.scytl.evote.protocol.integration.voting.model.VoteBean;
@@ -30,11 +28,15 @@ import com.scytl.evote.protocol.integration.voting.parser.json.AuthTokenJsonPars
 import com.scytl.evote.protocol.integration.voting.parser.json.AuthTokenJsonParserImpl;
 import com.scytl.evote.protocol.integration.voting.parser.json.VoteBeanToJson;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import java.math.BigInteger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -58,25 +60,31 @@ public class EncryptedVote extends CsvLineParseable {
     private String electionEventId;
     private String uuid;
     private String votingReceipt;
+    private String voterAreaId;
+    private ElGamalEncryptionTuple encVoteOptIds;
 
-    EncryptedVote(String line) {
+    public EncryptedVote(String line) {
         super(line);
     }
 
-    String getContestId() {
+    public String getContestId() {
         return contestId;
     }
 
-    String getElectionEventId() {
+    public String getElectionEventId() {
         return electionEventId;
     }
 
-    String getElectionId() {
+    public String getElectionId() {
         return electionId;
     }
 
-    String getUuid() {
+    public String getUuid() {
         return uuid;
+    }
+
+    public String getVoterAreaId() {
+        return voterAreaId;
     }
 
     @Override
@@ -86,6 +94,10 @@ public class EncryptedVote extends CsvLineParseable {
         electionId = getAttribute(attributes, EncryptedVoteCsvIndex.ELECTION_ID);
         electionEventId = getAttribute(attributes,
                 EncryptedVoteCsvIndex.ELECTION_EVENT_ID);
+        voterAreaId = getAttribute(attributes,
+                EncryptedVoteCsvIndex.VOTER_AREA_ID);
+        encVoteOptIds = getAttributeAsElGamalEncryptionTuple(attributes,
+                EncryptedVoteCsvIndex.ENC_GAMMA_AND_VOTE_OPT_IDS);
 
         byte[][] encGammaAndVoteOptIds = getAttributeAsByteArrayArray(attributes,
                 EncryptedVoteCsvIndex.ENC_GAMMA_AND_VOTE_OPT_IDS);
@@ -176,7 +188,7 @@ public class EncryptedVote extends CsvLineParseable {
         return md.digest();
     }
 
-    String getVotingReceipt() {
+    public String getVotingReceipt() {
         return votingReceipt;
     }
 
@@ -188,7 +200,8 @@ public class EncryptedVote extends CsvLineParseable {
 
     private boolean privateEqual(EncryptedVote other) {
         return uuid.equals(other.getUuid()) && electionIdsEqual(other) &&
-        votingReceipt.equals(other.getVotingReceipt());
+        votingReceipt.equals(other.getVotingReceipt()) &&
+        voterAreaId.equals(other.getVoterAreaId());
     }
 
     private boolean electionIdsEqual(EncryptedVote other) {
@@ -204,6 +217,22 @@ public class EncryptedVote extends CsvLineParseable {
     }
 
     /**
+     * TODO
+     *
+     * @param modulus
+     * @param prime
+     * @return
+     */
+    public ElGamalEncryptionTuple getCompressedEncVoteOptIds(
+        BigInteger modulus, BigInteger prime) {
+        return encVoteOptIds;
+    }
+
+    public ElGamalEncryptionTuple getEncVoteOptIds() {
+        return encVoteOptIds;
+    }
+
+    /**
      * Indexes of the various fields in the CSV file.
      */
     private enum EncryptedVoteCsvIndex {UUID,
@@ -215,7 +244,7 @@ public class EncryptedVote extends CsvLineParseable {
         ELECTION_TYPE,
         VOTE_TIMESTAMP,
         VOTER_CERTIFICATE,
-        VOTER_AREA,
+        VOTER_AREA_ID,
         CONTEST_ID,
         ELECTION_ID,
         ELECTION_EVENT_ID,

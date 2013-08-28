@@ -60,10 +60,20 @@ public class AreasHashMapUnitTest {
      * Verifies that an area can be retrieved after it's added.
      */
     @Test
-    public void mustAddArea() {
+    public void mustAddAreaAsArea() {
         Area area = new Area(SAMPLE_AREA_LINE);
         areas.add(area);
         assertEquals(areas.get(AREA_PATH), area);
+    }
+
+    /**
+     * Verifies that an area can be retrieved after it's added as a line.
+     */
+    @Test
+    public void mustAddAreaFromLine() {
+        Area area = new Area(SAMPLE_AREA_LINE);
+        areas.addArea(SAMPLE_AREA_LINE);
+        assertEquals(areas.get(AREA_PATH).getPath(), area.getPath());
     }
 
     /**

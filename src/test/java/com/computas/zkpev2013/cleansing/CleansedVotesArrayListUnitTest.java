@@ -65,6 +65,8 @@ public class CleansedVotesArrayListUnitTest {
 
     /**
      * Adding must not create an incident if the cleansed vote can be parsed.
+     *
+     * TODO
      */
     @Test(enabled = false)
     public void mustNotCreateAnIncidentWhenTryingToAddANewCleansedVote() {

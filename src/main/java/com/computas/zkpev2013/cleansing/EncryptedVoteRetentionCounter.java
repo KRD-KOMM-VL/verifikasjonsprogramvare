@@ -24,6 +24,7 @@ package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.ElGamalEncryptionPair;
 import com.computas.zkpev2013.ElGamalEncryptionTuple;
+import com.computas.zkpev2013.EncryptedVote;
 
 import java.math.BigInteger;
 
