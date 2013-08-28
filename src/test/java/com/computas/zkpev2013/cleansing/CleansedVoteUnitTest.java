@@ -189,12 +189,30 @@ public class CleansedVoteUnitTest {
     }
 
     /**
+     * Verifies that the cleansed vote doesn't have the same hashCode as another cleansed vote with other encrypted vote option IDs.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherCleansedVoteWithOtherOptionIDs() {
+        assertFalse(cleansedVote.hashCode() == new CleansedVote(
+                CLEANSED_VOTE_LINE_WITH_OTHER_ENC_OPT_IDS).hashCode());
+    }
+
+    /**
      * Verifies that the cleansed vote is not equal to another cleansed vote with another contest ID.
      */
     @Test
     public void mustNotBeEqualToAnotherCleansedVoteWithOtherContestId() {
         assertFalse(cleansedVote.equals(
                 new CleansedVote(CLEANSED_VOTE_LINE_WITH_OTHER_CONTEST_ID)));
+    }
+
+    /**
+     * Verifies that the cleansed vote doesn't have the same hashCode as another cleansed vote with other contest ID.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherCleansedVoteWithOtherContestId() {
+        assertFalse(cleansedVote.hashCode() == new CleansedVote(
+                CLEANSED_VOTE_LINE_WITH_OTHER_CONTEST_ID).hashCode());
     }
 
     /**
@@ -207,6 +225,15 @@ public class CleansedVoteUnitTest {
     }
 
     /**
+     * Verifies that the cleansed vote doesn't have the same hashCode as another cleansed vote with other election ID.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherCleansedVoteWithOtherElectionId() {
+        assertFalse(cleansedVote.hashCode() == new CleansedVote(
+                CLEANSED_VOTE_LINE_WITH_OTHER_ELECTION_ID).hashCode());
+    }
+
+    /**
      * Verifies that the cleansed vote is not equal to another cleansed vote with another election event ID.
      */
     @Test
@@ -214,5 +241,14 @@ public class CleansedVoteUnitTest {
         assertFalse(cleansedVote.equals(
                 new CleansedVote(
                     CLEANSED_VOTE_LINE_WITH_OTHER_ELECTION_EVENT_IT)));
+    }
+
+    /**
+     * Verifies that the cleansed vote doesn't have the same hashCode as another cleansed vote with other election event ID.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherCleansedVoteWithOtherElectionEventId() {
+        assertFalse(cleansedVote.hashCode() == new CleansedVote(
+                CLEANSED_VOTE_LINE_WITH_OTHER_ELECTION_EVENT_IT).hashCode());
     }
 }
