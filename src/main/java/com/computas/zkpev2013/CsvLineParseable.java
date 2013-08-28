@@ -115,6 +115,32 @@ public abstract class CsvLineParseable {
             encodedVotingOptionIdsProductMessageComponent);
     }
 
+    protected ElGamalEncryptionTuple getAttributeAsElGamalEncryptionTuple(
+        String[] attributes, Enum index) {
+        String encodedVotingOptionIdsProductString = getAttributeAsString(attributes,
+                index);
+        String[] encodedVotingOptionIdsProductStrings = encodedVotingOptionIdsProductString.split(
+                "#");
+
+        if (encodedVotingOptionIdsProductStrings.length < 2) {
+            throw new IllegalArgumentException(String.format(
+                    "Could not parse a field as an ElGamal encryption tuple: %s.",
+                    encodedVotingOptionIdsProductString));
+        }
+
+        BigInteger encodedVotingOptionIdsProductPublicKeyComponent = new BigInteger(Base64.decodeBase64(
+                    encodedVotingOptionIdsProductStrings[0]));
+        ArrayList<BigInteger> encodedVotingOptionIdsProductMessageComponents = new ArrayList<BigInteger>();
+
+        for (int i = 1; i < encodedVotingOptionIdsProductStrings.length; i++) {
+            encodedVotingOptionIdsProductMessageComponents.add(new BigInteger(
+                    Base64.decodeBase64(encodedVotingOptionIdsProductStrings[i])));
+        }
+
+        return new ElGamalEncryptionTuple(encodedVotingOptionIdsProductPublicKeyComponent,
+            encodedVotingOptionIdsProductMessageComponents);
+    }
+
     protected BigInteger getAttributeAsBigInteger(String[] attributes,
         Enum index) {
         return new BigInteger(getAttribute(attributes, index));
