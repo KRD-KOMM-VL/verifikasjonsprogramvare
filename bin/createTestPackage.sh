@@ -51,7 +51,7 @@ mkdir $TMPDIR/NizkpCleansingFunctionalTestCleansedFilesDirectory
 cp src/test/resources/NizkpCleansingFunctionalTestCleansedFilesDirectory/NizkpCleansingFunctionalTestCleansedFile.csv $TMPDIR/NizkpCleansingFunctionalTestCleansedFilesDirectory
 cp src/test/resources/IzkpMixing2013FunctionalTestDatabaseProperties.properties $TMPDIR
 cp src/test/resources/IzkpMixing2013FunctionalTestElGamalProperties.properties $TMPDIR
-cp src/test/resources/IzkpMixing2013FunctionalTestElGamalPublicKey.properties $TMPDIR
+cp src/test/resources/IzkpMixing2013FunctionalTestElGamalPublicKeys.properties $TMPDIR
 cp src/test/resources/NizkpDecryption2013FunctionalTestElGamalProperties.properties $TMPDIR
 cp src/test/resources/NizkpDecryption2013FunctionalTestElGamalPublicKeys.properties $TMPDIR
 cp src/test/resources/NizkpDecryption2013FunctionalTestDecryptionFile.csv $TMPDIR
