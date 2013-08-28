@@ -23,7 +23,7 @@
 package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.CsvLineParseable;
-import com.computas.zkpev2013.ElGamalEncryptionPair;
+import com.computas.zkpev2013.ElGamalEncryptionTuple;
 
 
 /**
@@ -33,7 +33,7 @@ public class CleansedVote extends CsvLineParseable {
     private String contestId;
     private String electionId;
     private String electionEventId;
-    private ElGamalEncryptionPair encryptedVoteOptIds;
+    private ElGamalEncryptionTuple encryptedVoteOptIds;
     private String encryptedVoteOptIdsAsString;
 
     CleansedVote(String line) {
@@ -42,7 +42,7 @@ public class CleansedVote extends CsvLineParseable {
 
     @Override
     protected void setAttributes(String[] attributes) throws Exception {
-        encryptedVoteOptIds = getAttributeAsElGamalEncryptionPair(attributes,
+        encryptedVoteOptIds = getAttributeAsElGamalEncryptionTuple(attributes,
                 VcsEncryptedVoteCsvIndex.ENC_VOTE_OPT_IDS);
 
         encryptedVoteOptIdsAsString = getAttribute(attributes,
@@ -66,7 +66,7 @@ public class CleansedVote extends CsvLineParseable {
         return electionEventId;
     }
 
-    ElGamalEncryptionPair getEncryptedVoteOptIds() {
+    ElGamalEncryptionTuple getEncryptedVoteOptIds() {
         return encryptedVoteOptIds;
     }
 
