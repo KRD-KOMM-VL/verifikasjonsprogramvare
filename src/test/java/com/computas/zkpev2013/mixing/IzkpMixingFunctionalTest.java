@@ -35,9 +35,9 @@ import org.testng.annotations.Test;
  * database dump is available in the test resources catalog.
  */
 public class IzkpMixingFunctionalTest {
-    private static final String ELGAMAL_PROPERTIES_FILE_NAME = "IzkpMixingFunctionalTestElGamalProperties2013.properties";
-    private static final String ELGAMAL_PUBLIC_KEY_FILE_NAME = "IzkpMixingFunctionalTestElGamalPublicKeys2013.properties";
-    private static final String DATABASE_PROPERTIES_FILE_NAME = "IzkpMixingFunctionalTestDatabaseProperties2013.properties";
+    private static final String ELGAMAL_PROPERTIES_FILE_NAME = "IzkpMixing2013FunctionalTestElGamalProperties.properties";
+    private static final String ELGAMAL_PUBLIC_KEY_FILE_NAME = "IzkpMixing2013FunctionalTestElGamalPublicKeys.properties";
+    private static final String DATABASE_PROPERTIES_FILE_NAME = "IzkpMixing2013FunctionalTestDatabaseProperties.properties";
     private IzkpMixing izkp;
 
     /**
