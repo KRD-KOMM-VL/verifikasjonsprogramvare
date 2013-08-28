@@ -23,14 +23,14 @@
 package com.computas.zkpev2013.mixing;
 
 import com.computas.zkpev2013.CsvLineParseable;
-import com.computas.zkpev2013.ElGamalEncryptionPair;
+import com.computas.zkpev2013.ElGamalEncryptionTuple;
 
 
 /**
  * Class representing an encrypted vote in the context of the mixing process.
  */
 public class EncryptedVote extends CsvLineParseable {
-    private ElGamalEncryptionPair elGamalEncryptionPair;
+    private ElGamalEncryptionTuple elGamalEncryptionTuple;
 
     protected EncryptedVote(String line) {
         super(line);
@@ -38,12 +38,12 @@ public class EncryptedVote extends CsvLineParseable {
 
     @Override
     protected void setAttributes(String[] attributes) throws Exception {
-        elGamalEncryptionPair = getAttributeAsElGamalEncryptionPair(attributes,
+        elGamalEncryptionTuple = getAttributeAsElGamalEncryptionTuple(attributes,
                 EncryptedVoteCsvIndex.ENC_VOTE_OPT_IDS);
     }
 
-    ElGamalEncryptionPair getElGamalEncryptionPair() {
-        return elGamalEncryptionPair;
+    ElGamalEncryptionTuple getElGamalEncryptionTuple() {
+        return elGamalEncryptionTuple;
     }
     private enum EncryptedVoteCsvIndex {ENC_VOTE_OPT_IDS;
     }

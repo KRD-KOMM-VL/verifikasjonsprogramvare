@@ -42,9 +42,10 @@ public class ElGamalVoteGroupsFactors extends ArrayList<ElGamalVoteGroupFactors>
         }
     }
 
-    void update(Integer voteGroup, String encryptedVoteLine) {
+    void update(Integer voteGroup, String encryptedVoteLine, BigInteger p) {
         get(voteGroup)
-            .add(new EncryptedVote(encryptedVoteLine).getElGamalEncryptionPair());
+            .add(new EncryptedVote(encryptedVoteLine).getElGamalEncryptionTuple()
+                                                     .convertToPair(p));
     }
 
     static ElGamalVoteGroupsFactors computeProducts(int size, BigInteger p,
@@ -54,7 +55,7 @@ public class ElGamalVoteGroupsFactors extends ArrayList<ElGamalVoteGroupFactors>
         String[] encryptedVoteLines = encryptedVotesString.split("\n");
 
         for (int i = 0; i < voteGroups.size(); i++) {
-            voteGroupsFactors.update(voteGroups.get(i), encryptedVoteLines[i]);
+            voteGroupsFactors.update(voteGroups.get(i), encryptedVoteLines[i], p);
         }
 
         return voteGroupsFactors;
