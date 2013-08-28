@@ -59,43 +59,9 @@ public class VotingReceiptCollisionIncidentUnitTest {
     }
 
     /**
-     * Verifies that an IllegalArgumentException is thrown when no
-     * encrypted vote is provided.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void throwsIllegalArgumentExceptionWhenNoEncryptedVoteProvided() {
-        new VotingReceiptCollisionIncident(new VotingReceipt(
-                COLLIDING_VOTING_RECEIPT));
-    }
-
-    /**
-     * Verifies that an IllegalArgumentException is thrown when only one
-     * encrypted vote is provided.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void throwsIllegalArgumentExceptionWhenOnlyOneEncryptedVoteProvided() {
-        new VotingReceiptCollisionIncident(new VotingReceipt(
-                COLLIDING_VOTING_RECEIPT),
-            new EncryptedVote(FIRST_ENCRYPTED_VOTE_FOR_RECEIPT_COLLISION));
-    }
-
-    /**
-     * Verifies that an IllegalArgumentException is thrown when one of the
-     * encrypted appears more than once.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void throwsIllegalArgumentExceptionWhenAnEncryptedVoteOccursMoreThanOnce() {
-        new VotingReceiptCollisionIncident(new VotingReceipt(
-                COLLIDING_VOTING_RECEIPT),
-            new EncryptedVote(FIRST_ENCRYPTED_VOTE_FOR_RECEIPT_COLLISION),
-            new EncryptedVote(FIRST_ENCRYPTED_VOTE_FOR_RECEIPT_COLLISION),
-            new EncryptedVote(SECOND_ENCRYPTED_VOTE_FOR_RECEIPT_COLLISION));
-    }
-
-    /**
      * Verifies that an incident is equal to itself.
      */
-    @Test
+    @Test(groups = "VotingReceiptCollisionIncidentCreated")
     public void mustBeEqualToItself() {
         assertEquals(incident, incident);
     }
@@ -193,6 +159,18 @@ public class VotingReceiptCollisionIncidentUnitTest {
     }
 
     /**
+     * Verifies that the incident doesn't have the same hashCode as another incident with
+     * the another voting receipt.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherVotingReceiptCollisionIncidentWithAnotherVotingReceipt() {
+        assertFalse(incident.hashCode() == new VotingReceiptCollisionIncident(
+                new VotingReceipt(OTHER_VOTING_RECEIPT),
+                new EncryptedVote(FIRST_ENCRYPTED_VOTE_FOR_RECEIPT_COLLISION),
+                new EncryptedVote(SECOND_ENCRYPTED_VOTE_FOR_RECEIPT_COLLISION)).hashCode());
+    }
+
+    /**
      * Verifies that the incident is not equal to another incident with other
      * encrypted votes.
      */
@@ -204,6 +182,18 @@ public class VotingReceiptCollisionIncidentUnitTest {
                     new EncryptedVote(OTHER_ENCRYPTED_VOTE),
                     new EncryptedVote(
                         SECOND_ENCRYPTED_VOTE_FOR_RECEIPT_COLLISION))));
+    }
+
+    /**
+     * Verifies that the incident doesn't have the same hashCode as another incident with
+     * other encrypted votes.
+     */
+    @Test
+    public void mustNotHaveSameHashCodeAsAnotherVotingReceiptCollisionIncidentWithAnotherEncryptedVote() {
+        assertFalse(incident.hashCode() == new VotingReceiptCollisionIncident(
+                new VotingReceipt(COLLIDING_VOTING_RECEIPT),
+                new EncryptedVote(OTHER_ENCRYPTED_VOTE),
+                new EncryptedVote(SECOND_ENCRYPTED_VOTE_FOR_RECEIPT_COLLISION)).hashCode());
     }
 
     /**
