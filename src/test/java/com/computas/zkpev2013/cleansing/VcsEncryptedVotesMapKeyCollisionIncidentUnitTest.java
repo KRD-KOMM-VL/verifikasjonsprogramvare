@@ -20,7 +20,7 @@
  * /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
  * http://www.gnu.org/licenses/.
  */
-package com.computas.zkpev.cleansing;
+package com.computas.zkpev2013.cleansing;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -37,14 +37,14 @@ public class VcsEncryptedVotesMapKeyCollisionIncidentUnitTest {
     private static final String UUID1 = "Foo";
     private static final String UUID2 = "Bar";
     private static final String OTHER_UUID = "Other";
-    private VcsEncryptedVotesMapKeyCollisionIncident incident;
+    private EncryptedVotesMapKeyCollisionIncident incident;
 
     /**
     * Creates an incident to test against.
     */
     @BeforeMethod
-    public void createVcsEncryptedVotesMapKeyCollisionIncident() {
-        incident = new VcsEncryptedVotesMapKeyCollisionIncident(UUID1, UUID2);
+    public void createEncryptedVotesMapKeyCollisionIncident() {
+        incident = new EncryptedVotesMapKeyCollisionIncident(UUID1, UUID2);
     }
 
     /**
@@ -84,54 +84,54 @@ public class VcsEncryptedVotesMapKeyCollisionIncidentUnitTest {
      * Verifies that the incident is equal to another incident with the same UUIDs.
      */
     @Test
-    public void mustBeEqualToAnotherVcsEncryptedVotesMapKeyCollisionIncidentWithTheSameUuids() {
+    public void mustBeEqualToAnotherEncryptedVotesMapKeyCollisionIncidentWithTheSameUuids() {
         assertEquals(incident,
-            new VcsEncryptedVotesMapKeyCollisionIncident(UUID1, UUID2));
+            new EncryptedVotesMapKeyCollisionIncident(UUID1, UUID2));
     }
 
     /**
      * Verifies that the incident is equal to another incident with the same UUIDs, but interchanged.
      */
     @Test
-    public void mustBeEqualToAnotherVcsEncryptedVotesMapKeyCollisionIncidentWithTheSameUuidsInterchanged() {
+    public void mustBeEqualToAnotherEncryptedVotesMapKeyCollisionIncidentWithTheSameUuidsInterchanged() {
         assertEquals(incident,
-            new VcsEncryptedVotesMapKeyCollisionIncident(UUID2, UUID1));
+            new EncryptedVotesMapKeyCollisionIncident(UUID2, UUID1));
     }
 
     /**
      * Verifies that the incident has the same hashCode as another incident with the same UUIDs.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherVcsEncryptedVotesMapKeyCollisionIncidentWithTheSameUuids() {
+    public void mustHaveSameHashCodeAsAnotherEncryptedVotesMapKeyCollisionIncidentWithTheSameUuids() {
         assertEquals(incident.hashCode(),
-            new VcsEncryptedVotesMapKeyCollisionIncident(UUID1, UUID2).hashCode());
+            new EncryptedVotesMapKeyCollisionIncident(UUID1, UUID2).hashCode());
     }
 
     /**
      * Verifies that the incident has the same hashCode as another incident with the same UUIDs, but interchanged.
      */
     @Test
-    public void mustHaveSameHashCodeAsAnotherVcsEncryptedVotesMapKeyCollisionIncidentWithTheSameUuidsInterchanged() {
+    public void mustHaveSameHashCodeAsAnotherEncryptedVotesMapKeyCollisionIncidentWithTheSameUuidsInterchanged() {
         assertEquals(incident.hashCode(),
-            new VcsEncryptedVotesMapKeyCollisionIncident(UUID2, UUID1).hashCode());
+            new EncryptedVotesMapKeyCollisionIncident(UUID2, UUID1).hashCode());
     }
 
     /**
      * Verifies that the incident is not equal to another incident with another first UUID.
      */
     @Test
-    public void mustNotBeEqualToAnotherVcsEncryptedVotesMapKeyCollisionIncidentWithAnotherFirstUuid() {
+    public void mustNotBeEqualToAnotherEncryptedVotesMapKeyCollisionIncidentWithAnotherFirstUuid() {
         assertFalse(incident.equals(
-                new VcsEncryptedVotesMapKeyCollisionIncident(OTHER_UUID, UUID2)));
+                new EncryptedVotesMapKeyCollisionIncident(OTHER_UUID, UUID2)));
     }
 
     /**
      * Verifies that the incident is not equal to another incident with another second UUID.
      */
     @Test
-    public void mustNotBeEqualToAnotherVcsEncryptedVotesMapKeyCollisionIncidentWithAnotherSecondUuid() {
+    public void mustNotBeEqualToAnotherEncryptedVotesMapKeyCollisionIncidentWithAnotherSecondUuid() {
         assertFalse(incident.equals(
-                new VcsEncryptedVotesMapKeyCollisionIncident(UUID1, OTHER_UUID)));
+                new EncryptedVotesMapKeyCollisionIncident(UUID1, OTHER_UUID)));
     }
 
     /**
@@ -141,6 +141,6 @@ public class VcsEncryptedVotesMapKeyCollisionIncidentUnitTest {
     @Test
     public void toStringMustBeCommaSeparatedline() {
         assertEquals(incident.toString(),
-            "VcsEncryptedVotesMapKeyCollisionIncident," + UUID1 + "," + UUID2);
+            "EncryptedVotesMapKeyCollisionIncident," + UUID1 + "," + UUID2);
     }
 }

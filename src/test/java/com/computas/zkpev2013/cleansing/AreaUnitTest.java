@@ -20,7 +20,7 @@
  * /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
  * http://www.gnu.org/licenses/.
  */
-package com.computas.zkpev.cleansing;
+package com.computas.zkpev2013.cleansing;
 
 import static org.testng.Assert.assertEquals;
 
@@ -32,7 +32,6 @@ import java.math.BigInteger;
 
 /**
  * Unit tests on Area.
- *
  */
 public class AreaUnitTest {
     private static final String MAIN_AREA_PATH = "47.01.0101.010100";
