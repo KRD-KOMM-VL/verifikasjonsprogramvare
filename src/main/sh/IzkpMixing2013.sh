@@ -26,4 +26,4 @@
 #
 
 CLASSPATH=lib/bsh-2.0b4.jar:lib/commons-codec-1.8.jar:lib/commons-lang-2.6.jar:lib/jackson-core-asl-1.9.2.jar:lib/jackson-mapper-asl-1.9.2.jar:lib/jcommander-1.27.jar:lib/junit-4.10.jar:lib/log4j-1.2.17.jar:lib/snakeyaml-1.6.jar:lib/testng-6.8.5.jar:lib/zkpev2013-1.0a3.jar
-java -Xmx6000m -cp $CLASSPATH com.computas.zkpev.mixing.IzkpMixing $@
+java -Xmx6000m -cp $CLASSPATH com.computas.zkpev2013.mixing.IzkpMixing $@
