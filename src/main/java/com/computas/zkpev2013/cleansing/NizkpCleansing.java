@@ -24,8 +24,6 @@ package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.ZeroKnowledgeProof;
 
-import org.apache.log4j.Logger;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;

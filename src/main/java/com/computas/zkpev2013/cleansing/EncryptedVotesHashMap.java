@@ -22,7 +22,6 @@
  */
 package com.computas.zkpev2013.cleansing;
 
-import com.computas.zkpev2013.ElGamalEncryptionPair;
 import com.computas.zkpev2013.ElGamalEncryptionTuple;
 import com.computas.zkpev2013.EncryptedVote;
 import com.computas.zkpev2013.ResultsList;
@@ -105,8 +104,15 @@ public class EncryptedVotesHashMap extends HashMap<String, EncryptedVoteRetentio
     private String calculateKeyFromKeyParts(
         ElGamalEncryptionTuple elGamalEncryptionTuple, String contestId,
         String electionId, String electionEventId) {
+        StringBuffer messageComponentsWithComma = new StringBuffer();
+
+        for (BigInteger messageComponent : elGamalEncryptionTuple.getMessageComponents()) {
+            messageComponentsWithComma.append(messageComponent).append(COMMA);
+        }
+
         return elGamalEncryptionTuple.getPublicKeyComponent() + COMMA +
-        contestId + COMMA + electionId + COMMA + electionEventId;
+        messageComponentsWithComma.toString() + contestId + COMMA + electionId +
+        COMMA + electionEventId;
     }
 
     private String calculateKeyFromCleansedEncryptedVote(

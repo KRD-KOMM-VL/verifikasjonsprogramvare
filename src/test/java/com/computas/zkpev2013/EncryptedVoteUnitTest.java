@@ -22,7 +22,6 @@
  */
 package com.computas.zkpev2013;
 
-import com.computas.zkpev2013.EncryptedVote;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 

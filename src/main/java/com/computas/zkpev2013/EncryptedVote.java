@@ -28,8 +28,6 @@ import com.scytl.evote.protocol.integration.voting.parser.json.AuthTokenJsonPars
 import com.scytl.evote.protocol.integration.voting.parser.json.AuthTokenJsonParserImpl;
 import com.scytl.evote.protocol.integration.voting.parser.json.VoteBeanToJson;
 
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
-
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.ByteArrayInputStream;
