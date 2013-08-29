@@ -113,7 +113,7 @@ public class EncryptedVoteEqualityUnitTest {
         COMMA + GIVEN_CONTEST_ID + COMMA + GIVEN_ELECTION_ID + COMMA +
         GIVEN_ELECTION_EVENT_ID + COMMA + GIVEN_VOTER_ID + COMMA + CHANNEL_ID +
         COMMA + RECEIPT_VOTE_TIMESTAMP + COMMA + GIVEN_VOTE_Z_K_PROOF_SIG;
-    private static final String SAMPLE_VOTE_LINE_WITH_OTHER_ENC_VOTING_OPT_IDS = GIVEN_UUID +
+    private static final String SAMPLE_LINE_WITH_OTHER_ENC_VOTING_OPT_IDS = GIVEN_UUID +
         COMMA + GIVEN_AUTH_TOKEN + COMMA + GIVEN_AUTH_TOKEN_ID + COMMA +
         OTHER_ENC_VOTE_OPT_IDS + COMMA + GIVEN_ENC_VOTE_SIG + COMMA +
         GIVEN_INTERNAL_AUTH_TOKEN_ID + COMMA + GIVEN_ELECTION_TYPE + COMMA +
@@ -246,7 +246,6 @@ public class EncryptedVoteEqualityUnitTest {
     @Test
     public void mustNotBeEqualToAnotherEncryptedVoteWithOtherEncVotingOptionIds() {
         assertFalse(encryptedVote.equals(
-                new EncryptedVote(
-                    SAMPLE_VOTE_LINE_WITH_OTHER_ENC_VOTING_OPT_IDS)));
+                new EncryptedVote(SAMPLE_LINE_WITH_OTHER_ENC_VOTING_OPT_IDS)));
     }
 }
