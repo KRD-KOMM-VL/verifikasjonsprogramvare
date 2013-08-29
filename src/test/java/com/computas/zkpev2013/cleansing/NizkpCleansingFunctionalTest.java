@@ -24,7 +24,6 @@ package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.EncryptedVote;
 import com.computas.zkpev2013.Result;
-
 import static com.computas.zkpev2013.ZkpFunctionalTestAssertions.assertZkpContainsIncident;
 import static com.computas.zkpev2013.ZkpFunctionalTestAssertions.assertZkpDoesNotContainIncident;
 import static org.testng.Assert.assertEquals;
@@ -118,7 +117,7 @@ public class NizkpCleansingFunctionalTest {
     /**
      * Verifies that the NIZKP produced an incident about an encrypted
      * vote appearing twice or more in the cleansed encrypted votes file.
-     * 
+     *
      * TODO
      */
     @Test(enabled = false)
@@ -142,7 +141,7 @@ public class NizkpCleansingFunctionalTest {
     /**
      * Verifies that the NIZKP produced an incident about a cleansed vote
      * that wasn't present in the VCS encrypted votes file.
-     * 
+     *
      * TODO
      */
     @Test(enabled = false)
@@ -155,7 +154,7 @@ public class NizkpCleansingFunctionalTest {
     /**
      * Verifies that the NIZKP produced an incident about colliding VCS encrypted
      * votes map keys.
-     * 
+     *
      * TODO
      */
     @Test(enabled = false)
@@ -169,7 +168,7 @@ public class NizkpCleansingFunctionalTest {
     /**
      * Verifies that the NIZKP didn't produce more incidents than present in
      * the test files.
-     * 
+     *
      * TODO
      */
     @Test(enabled = false)
