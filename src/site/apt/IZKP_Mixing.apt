@@ -302,7 +302,7 @@ InvalidMixingDataRecordIncident,a13868a6b6fd4b78a6b65e3840be9ad6,Input votes inv
   Follow the following instructions in order to get a dump from the mixing
   database installed locally:
   
-** Install PostgreSQL 9.1
+** Install PostgreSQL 9.2
 
   The following instructions will install PostgreSQL 9.2 on Ubuntu 13.04 (as per
   27 August 2013):
