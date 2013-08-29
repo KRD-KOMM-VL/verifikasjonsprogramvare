@@ -22,6 +22,7 @@
  */
 package com.computas.zkpev2013.rcgvcs;
 
+import com.computas.zkpev2013.EncryptedVoteLineGenerator;
 import com.computas.zkpev2013.MemoryConsumptionAssertions;
 import static com.computas.zkpev2013.MemoryConsumptionAssertions.assertDoesNotConsumeMoreMemoryThanAllowed;
 import com.computas.zkpev2013.ResultsArrayList;
@@ -36,7 +37,7 @@ import org.testng.annotations.Test;
  * Class testing the memory usage of the creation of the encrypted votes.
  *
  */
-public class EncryptedVotesMemoryConsumptionTest {
+public class EncryptedVotesInEncryptedVotesListMemoryConsumptionTest {
     private static final int ALLOWED_MEMORY_CONSUMPTION = 10000;
     private EncryptedVoteLineGenerator encryptedVoteLineGenerator;
     private EncryptedVotesList list;

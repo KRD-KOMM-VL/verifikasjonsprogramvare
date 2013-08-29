@@ -23,6 +23,7 @@
 package com.computas.zkpev2013.rcgvcs;
 
 import com.computas.zkpev2013.EncryptedVote;
+import com.computas.zkpev2013.EncryptedVoteLineGenerator;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
