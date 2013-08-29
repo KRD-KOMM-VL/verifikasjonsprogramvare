@@ -23,7 +23,6 @@
 package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.EncryptedVote;
-import com.computas.zkpev2013.Result;
 import static com.computas.zkpev2013.ZkpFunctionalTestAssertions.assertZkpContainsIncident;
 import static com.computas.zkpev2013.ZkpFunctionalTestAssertions.assertZkpDoesNotContainIncident;
 import static org.testng.Assert.assertEquals;
