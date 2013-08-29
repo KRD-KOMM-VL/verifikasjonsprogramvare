@@ -41,12 +41,14 @@ public class DecryptionLine extends CsvLineParseable {
     private ElGamalEncryptionTuple encodedVotingOptionsIds;
     private ElGamalEncryptionPair encodedVotingOptionsIdsProduct;
     private SchnorrSignature schnorrSignature;
+    private String[] decryptedVotingOptionIds;
     private BigInteger decryptedVotingOptionIdsProduct;
     private String electionEventId;
     private String electionId;
     private String contestId;
     private String encryptedVotingOptionsIdsProductString;
     private String schnorrSignatureString;
+    private String decryptedVotingOptionIdsString;
 
     DecryptionLine(String line) {
         super(line);
@@ -88,6 +90,10 @@ public class DecryptionLine extends CsvLineParseable {
         return encryptedVotingOptionsIdsProductString;
     }
 
+    String[] getDecryptedVotingOptionIds() {
+        return decryptedVotingOptionIds;
+    }
+
     BigInteger getDecryptedVotingOptionIdsProduct() {
         return decryptedVotingOptionIdsProduct;
     }
@@ -111,20 +117,31 @@ public class DecryptionLine extends CsvLineParseable {
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
         encryptedVotingOptionsIdsProductString = getAttribute(attributes,
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
-
-        decryptedVotingOptionIdsProduct = getAttributeAsBigInteger(attributes,
+        decryptedVotingOptionIdsString = getAttributeAsString(attributes,
                 DecryptionLineCsvIndex.DEC_VOTE_OPT_IDS_PROD);
+        decryptedVotingOptionIds = getAttributeAsString(attributes,
+                DecryptionLineCsvIndex.DEC_VOTE_OPT_IDS_PROD).split("#");
         schnorrSignature = new SchnorrSignature(getAttributeAsByteArray(
                     attributes, DecryptionLineCsvIndex.SIGNATURE));
         schnorrSignatureString = getAttribute(attributes,
                 DecryptionLineCsvIndex.SIGNATURE);
     }
 
+    protected void calculateDecryptedVotingOptionIdsProduct(BigInteger p) {
+        decryptedVotingOptionIdsProduct = BigInteger.ONE;
+
+        for (String str : decryptedVotingOptionIds) {
+            decryptedVotingOptionIdsProduct = decryptedVotingOptionIdsProduct.multiply(new BigInteger(
+                        str).mod(p));
+        }
+    }
+
     boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
         throws NoSuchAlgorithmException {
-        BigInteger x = calculateNonInteractiveChallengeX();
         setEncodedVotingOptionsIdsProduct(p);
+        calculateDecryptedVotingOptionIdsProduct(p);
 
+        BigInteger x = calculateNonInteractiveChallengeX();
         BigInteger g1 = calculateGeneratorG1(p, g, x);
         BigInteger h1 = calculatePublicKeyH1(p, h, x);
         BigInteger w1 = calculateSchnorrMessageW1(p, g1, h1);
@@ -136,7 +153,10 @@ public class DecryptionLine extends CsvLineParseable {
     BigInteger calculateNonInteractiveChallengeX()
         throws NoSuchAlgorithmException {
         MessageDigest md = getMessageDigestInstance();
-        md.update(decryptedVotingOptionIdsProduct.toByteArray());
+
+        for (String str : decryptedVotingOptionIds) {
+            md.update(new BigInteger(str).toByteArray());
+        }
 
         return new BigInteger(md.digest());
     }
