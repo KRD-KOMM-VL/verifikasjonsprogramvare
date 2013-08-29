@@ -20,7 +20,7 @@
  * /src/site/resources/gpl-3.0-standalone.html. Otherwise, see also
  * http://www.gnu.org/licenses/.
  */
-package com.computas.zkpev.cleansing;
+package com.computas.zkpev2013.cleansing;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -32,12 +32,11 @@ import org.testng.annotations.Test;
 
 /**
  * Unit tests on NizkpCleansing.
- *
  */
 public class NizkpCleansingUnitTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Corge";
     private static final String AREAS_FILE_NAME = "Grault";
-    private static final String VCS_FILE_NAME = "Foo";
+    private static final String ENCRYPTED_VOTES_FILE_NAME = "Foo";
     private static final String CLEANSED_DIR_NAME = "Bar";
     private static final String RESULTS_FILE_NAME = "Qux";
     private NizkpCleansing nizkp;
@@ -48,8 +47,9 @@ public class NizkpCleansingUnitTest {
     @BeforeMethod
     public void createNizkp() {
         nizkp = new NizkpCleansing(new String[] {
-                    ELGAMAL_PROPERTIES_FILE_NAME, AREAS_FILE_NAME, VCS_FILE_NAME,
-                    CLEANSED_DIR_NAME, RESULTS_FILE_NAME
+                    ELGAMAL_PROPERTIES_FILE_NAME, AREAS_FILE_NAME,
+                    ENCRYPTED_VOTES_FILE_NAME, CLEANSED_DIR_NAME,
+                    RESULTS_FILE_NAME
                 });
     }
 
@@ -80,11 +80,12 @@ public class NizkpCleansingUnitTest {
     }
 
     /**
-     * Verifies that the constructor sets the file name of the VCS file correctly.
+     * Verifies that the constructor sets the file name of the encrypted votes file correctly.
      */
     @Test
-    public void constructorSetsVcsFileName() {
-        assertEquals(nizkp.getVcsFileName(), VCS_FILE_NAME);
+    public void constructorSetsEncryptedVotesFileName() {
+        assertEquals(nizkp.getEncryptedVotesFileName(),
+            ENCRYPTED_VOTES_FILE_NAME);
     }
 
     /**
@@ -119,8 +120,8 @@ public class NizkpCleansingUnitTest {
     @Test
     public void loggingOfResultsIsNotRequiredIfAResultsFileNameIsNotProvided() {
         NizkpCleansing nonLoggingNizkp = new NizkpCleansing(new String[] {
-                    ELGAMAL_PROPERTIES_FILE_NAME, AREAS_FILE_NAME, VCS_FILE_NAME,
-                    CLEANSED_DIR_NAME
+                    ELGAMAL_PROPERTIES_FILE_NAME, AREAS_FILE_NAME,
+                    ENCRYPTED_VOTES_FILE_NAME, CLEANSED_DIR_NAME
                 });
         assertFalse(nonLoggingNizkp.isLoggingOfResultsRequired());
     }

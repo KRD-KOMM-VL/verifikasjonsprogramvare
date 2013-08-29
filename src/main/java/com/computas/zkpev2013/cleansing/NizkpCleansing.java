@@ -242,7 +242,7 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
         }
     }
 
-    String getVcsFileName() {
+    String getEncryptedVotesFileName() {
         return encryptedVotesFileName;
     }
 
