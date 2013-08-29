@@ -26,9 +26,8 @@
 #
 # This script assumes that it is run from the trunk directory.
 #
-#
 
-VERSION="1.0a3"
+VERSION="1.0a4"
 TMPDIR="zkpev2013-${VERSION}"
 TMPLIBDIR="$TMPDIR/lib"
 TARFILE="zkpev2013-${VERSION}.tgz"
@@ -61,28 +60,10 @@ cp src/main/sh/NizkpCleansing.sh $TMPDIR
 chmod a+x $TMPDIR/NizkpCleansing.sh
 cp src/main/sh/UnpackCleansedFiles2013.sh $TMPDIR
 chmod a+x $TMPDIR/UnpackCleansedFiles2013.sh
-cp src/main/sh/IzkpMixing.sh $TMPDIR
-chmod a+x $TMPDIR/IzkpMixing.sh
+cp src/main/sh/IzkpMixing2013.sh $TMPDIR
+chmod a+x $TMPDIR/IzkpMixing2013.sh
 cp src/main/sh/NizkpDecryption2013.sh $TMPDIR
 chmod a+x $TMPDIR/NizkpDecryption2013.sh
-
-# Move some sample files to the temporary directory
-cp src/test/resources/NizkpRcgVcs2013FunctionalTestEncryptedVotes.csv $TMPDIR
-cp src/test/resources/NizkpRcgVcs2013FunctionalTestVotingReceipts.csv $TMPDIR
-cp src/test/resources/NizkpCleansingFunctionalTestElGamalProperties.properties $TMPDIR
-cp src/test/resources/NizkpCleansingFunctionalTestAreas.csv $TMPDIR
-cp src/test/resources/NizkpCleansingFunctionalTestVcsEncryptedVotes.csv $TMPDIR
-mkdir $TMPDIR/NizkpCleansingFunctionalTestCleansedFilesDirectory
-cp src/test/resources/NizkpCleansingFunctionalTestCleansedFilesDirectory/NizkpCleansingFunctionalTestCleansedFile.csv $TMPDIR/NizkpCleansingFunctionalTestCleansedFilesDirectory
-cp src/test/resources/IzkpMixingFunctionalTestDatabaseProperties.properties $TMPDIR
-cp src/test/resources/IzkpMixingFunctionalTestElGamalProperties.properties $TMPDIR
-cp src/test/resources/IzkpMixingFunctionalTestElGamalPublicKey.properties $TMPDIR
-cp src/test/resources/NizkpDecryption2013FunctionalTestElGamalProperties.properties $TMPDIR
-cp src/test/resources/NizkpDecryption2013FunctionalTestElGamalPublicKeys.properties $TMPDIR
-cp src/test/resources/NizkpDecryption2013FunctionalTestDecryptionFile.csv $TMPDIR
-
-# Move the sample database dump to the temporary directory
-cp src/test/resources/IzkpMixingFunctionalTestDatabaseDump $TMPDIR
 
 # Packing everything together in a tgz file
 tar -czf $TARFILE $TMPDIR

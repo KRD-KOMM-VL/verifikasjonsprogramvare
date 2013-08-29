@@ -23,6 +23,7 @@
 package com.computas.zkpev2013.rcgvcs;
 
 import com.computas.zkpev2013.Collection;
+import com.computas.zkpev2013.EncryptedVote;
 import com.computas.zkpev2013.ResultsList;
 
 import java.util.List;

@@ -34,11 +34,11 @@ import java.io.IOException;
  * Integration tests on the IzkpMixing class.
  */
 public class IzkpMixingIntegrationTest {
-    private static final String ELGAMAL_PROPERTIES_FILE_NAME = "IzkpMixingIntegrationTestElGamalProperties2013.properties";
-    private static final String ELGAMAL_PUBLIC_KEY_FILE_NAME = "IzkpMixingIntegrationTestElGamalPublicKeys2013.properties";
-    private static final String DATABASE_PROPERTIES_FILE_NAME = "IzkpMixingIntegrationTestDatabaseProperties2013.properties";
+    private static final String ELGAMAL_PROPERTIES_FILE_NAME = "IzkpMixing2013IntegrationTestElGamalProperties.properties";
+    private static final String ELGAMAL_PUBLIC_KEY_FILE_NAME = "IzkpMixing2013IntegrationTestElGamalPublicKeys.properties";
+    private static final String DATABASE_PROPERTIES_FILE_NAME = "IzkpMixing2013IntegrationTestDatabaseProperties.properties";
     private static final Object SAMPLE_DATABASE_NAME = "mxmanagertest2013";
-    private static final String RESULTS_LIST_FILE_NAME = "IzkpMixingIntegrationTestResultsList.csv";
+    private static final String RESULTS_LIST_FILE_NAME = "IzkpMixing2013IntegrationTestResultsList.csv";
     private static final String SAMPLE_USERNAME = "usertestmxsmanager";
     private static final String SAMPLE_PASSWORD = "secret";
     private IzkpMixing izkp;

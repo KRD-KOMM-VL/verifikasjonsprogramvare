@@ -27,7 +27,7 @@
   <groupId>com.computas.zkpev</groupId>
   <artifactId>zkpev2013</artifactId>
   <packaging>jar</packaging>
-  <version>1.0a3</version>
+  <version>1.0a4</version>
   <name>Zero-Knowledge Protocols for E-Vote</name>
   <description>
     Software component to perform the zero-knowledge protocols for the Norwegian
@@ -90,9 +90,9 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>postgresql</groupId>
+      <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>9.1-901.jdbc4</version>
+      <version>9.2-1003-jdbc4</version>
     </dependency>    
   </dependencies>
   <properties>

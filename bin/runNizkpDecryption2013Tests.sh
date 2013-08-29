@@ -28,7 +28,7 @@
 # appropriate test files are available in a subdirectory called tests.
 #
 
-VERSION="1.0a3"
+VERSION="1.0a4"
 NIZKPDIR="zkpev-${VERSION}"
 NIZKP="./NizkpDecryption2013.sh"
 TESTDIR="../tests"

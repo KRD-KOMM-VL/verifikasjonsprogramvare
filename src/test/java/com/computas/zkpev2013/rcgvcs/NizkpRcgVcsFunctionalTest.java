@@ -22,6 +22,7 @@
  */
 package com.computas.zkpev2013.rcgvcs;
 
+import com.computas.zkpev2013.EncryptedVote;
 import static com.computas.zkpev2013.ZkpFunctionalTestAssertions.*;
 
 import org.testng.annotations.BeforeMethod;
