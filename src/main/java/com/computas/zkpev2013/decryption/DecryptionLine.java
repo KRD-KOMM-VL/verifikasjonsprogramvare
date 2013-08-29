@@ -48,7 +48,6 @@ public class DecryptionLine extends CsvLineParseable {
     private String contestId;
     private String encryptedVotingOptionsIdsProductString;
     private String schnorrSignatureString;
-    private String decryptedVotingOptionIdsString;
 
     DecryptionLine(String line) {
         super(line);
@@ -117,8 +116,6 @@ public class DecryptionLine extends CsvLineParseable {
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
         encryptedVotingOptionsIdsProductString = getAttribute(attributes,
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
-        decryptedVotingOptionIdsString = getAttributeAsString(attributes,
-                DecryptionLineCsvIndex.DEC_VOTE_OPT_IDS_PROD);
         decryptedVotingOptionIds = getAttributeAsString(attributes,
                 DecryptionLineCsvIndex.DEC_VOTE_OPT_IDS_PROD).split("#");
         schnorrSignature = new SchnorrSignature(getAttributeAsByteArray(
