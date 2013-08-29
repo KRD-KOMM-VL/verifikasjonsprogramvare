@@ -61,26 +61,56 @@ public class EncryptedVote extends CsvLineParseable {
     private String voterAreaId;
     private ElGamalEncryptionTuple encVoteOptIds;
 
+    /**
+     * Constructs an encrypted vote from a line read in from an encrypted votes file.
+     *
+     * @param line The line from which to construct an encrypted vote.
+     */
     public EncryptedVote(String line) {
         super(line);
     }
 
+    /**
+     * Returns the contest ID.
+     *
+     * @return The contest ID.
+     */
     public String getContestId() {
         return contestId;
     }
 
+    /**
+     * Returns the election event ID.
+     *
+     * @return The election event ID.
+     */
     public String getElectionEventId() {
         return electionEventId;
     }
 
+    /**
+     * Returns the election ID.
+     *
+     * @return The election ID.
+     */
     public String getElectionId() {
         return electionId;
     }
 
+    /**
+     * Returns the UUID.
+     *
+     * @return The UUID.
+     */
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * Returns the voter area ID.
+     *
+     * @return The voter area ID.
+     */
     public String getVoterAreaId() {
         return voterAreaId;
     }
@@ -100,8 +130,8 @@ public class EncryptedVote extends CsvLineParseable {
         byte[][] encGammaAndVoteOptIds = getAttributeAsByteArrayArray(attributes,
                 EncryptedVoteCsvIndex.ENC_GAMMA_AND_VOTE_OPT_IDS);
         byte[] encGamma = encGammaAndVoteOptIds[0];
-        byte[][] encVoteOptIds = Arrays.copyOfRange(encGammaAndVoteOptIds, 1,
-                encGammaAndVoteOptIds.length);
+        byte[][] encVoteOptIdsAsByteArrayArray = Arrays.copyOfRange(encGammaAndVoteOptIds,
+                1, encGammaAndVoteOptIds.length);
         long voteTimestamp = getAttributeAsLong(attributes,
                 EncryptedVoteCsvIndex.VOTE_TIMESTAMP);
         long receiptTimestamp = getAttributeAsLong(attributes,
@@ -116,7 +146,7 @@ public class EncryptedVote extends CsvLineParseable {
         AuthToken authToken = deserializeAuthToken(getAttributeAsByteArray(
                     attributes, EncryptedVoteCsvIndex.AUTH_TOKEN), uuid);
         VoteBean voteBean = new VoteBean.VoteBeanBuilder().setEncGamma(encGamma)
-                                                          .setEncVoteOptIDs(encVoteOptIds)
+                                                          .setEncVoteOptIDs(encVoteOptIdsAsByteArrayArray)
                                                           .setVoterId(voterId)
                                                           .setElectionId(electionId)
                                                           .setElectionEventId(electionEventId)
@@ -186,6 +216,11 @@ public class EncryptedVote extends CsvLineParseable {
         return md.digest();
     }
 
+    /**
+     * Returns the voting receipt.
+     *
+     * @return The voting receipt.
+     */
     public String getVotingReceipt() {
         return votingReceipt;
     }
@@ -215,17 +250,24 @@ public class EncryptedVote extends CsvLineParseable {
     }
 
     /**
-     * TODO
+     * Returns a compressed ElGamal encryption tuple.
      *
-     * @param modulus
-     * @param prime
-     * @return
+     * @param modulus Modulus.
+     * @param prime Prims.
+     * @return A compressed ElGamal encryption tuple.
+     *
+     * TODO
      */
     public ElGamalEncryptionTuple getCompressedEncVoteOptIds(
         BigInteger modulus, BigInteger prime) {
         return encVoteOptIds;
     }
 
+    /**
+     * Returns the encoded vote option IDs as an ElGamal encryption tuple.
+     *
+     * @return The encoded vote option IDs.
+     */
     public ElGamalEncryptionTuple getEncVoteOptIds() {
         return encVoteOptIds;
     }
