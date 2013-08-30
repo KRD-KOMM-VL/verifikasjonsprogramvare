@@ -92,7 +92,7 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
                                              .multiply(findLargestPartyPrime())
                                              .multiply(findMaximalCandidateNumber());
 
-        return calculateLogarithm(modulus, largestPossibleVote);
+        return calculateFlooredLogarithm(modulus, largestPossibleVote);
     }
 
     BigInteger findLargestAreaPrime(AreasMap areas) {
@@ -111,9 +111,19 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
         return BigInteger.ONE;
     }
 
-    private int calculateLogarithm(BigInteger modulus,
+    int calculateFlooredLogarithm(BigInteger modulus,
         BigInteger largestPossibleVote) {
-        return 1;
+        int logarithm = modulus.bitLength() / largestPossibleVote.bitLength();
+
+        while (largestPossibleVote.pow(logarithm).compareTo(modulus) < 0) {
+            logarithm++;
+        }
+
+        while (largestPossibleVote.pow(logarithm).compareTo(modulus) >= 0) {
+            logarithm--;
+        }
+
+        return logarithm;
     }
 
     private void checkEncryptedVoteRetentionCounters(
