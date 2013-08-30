@@ -39,7 +39,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -253,21 +255,38 @@ public class EncryptedVote extends CsvLineParseable {
      * Returns a compressed ElGamal encryption tuple.
      *
      * @param modulus Modulus.
-     * @param prime Prims.
+     * @param areaPrime Prime.
      * @return A compressed ElGamal encryption tuple.
      *
      * TODO
      */
     public ElGamalEncryptionTuple getCompressedEncVoteOptIds(
-        BigInteger modulus, BigInteger prime) {
-        return encVoteOptIds;
+        BigInteger areaPrime, BigInteger environmentPrime, BigInteger modulus) {
+        return new ElGamalEncryptionTuple(encVoteOptIds.getPublicKeyComponent(),
+            compressMessageComponents(encVoteOptIds.getMessageComponents(),
+                areaPrime, environmentPrime, modulus));
+    }
+
+    private List<BigInteger> compressMessageComponents(
+        List<BigInteger> messageComponents, BigInteger areaPrime,
+        BigInteger environmentPrime, BigInteger modulus) {
+        List<BigInteger> result = new ArrayList<BigInteger>();
+        BigInteger r = areaPrime.multiply(environmentPrime).mod(modulus);
+
+        for (BigInteger c : messageComponents) {
+            r = r.multiply(c).mod(modulus);
+        }
+
+        result.add(r);
+
+        return result;
     }
 
     /**
-     * Returns the encoded vote option IDs as an ElGamal encryption tuple.
-     *
-     * @return The encoded vote option IDs.
-     */
+    * Returns the encoded vote option IDs as an ElGamal encryption tuple.
+    *
+    * @return The encoded vote option IDs.
+    */
     public ElGamalEncryptionTuple getEncVoteOptIds() {
         return encVoteOptIds;
     }
