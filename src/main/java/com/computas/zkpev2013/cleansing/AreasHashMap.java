@@ -29,12 +29,13 @@ import org.apache.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import java.math.BigInteger;
+
 import java.util.HashMap;
 
 
 /**
  * A class implementing the AreasMap using a HashMap.
- *
  */
 public class AreasHashMap extends HashMap<String, Area> implements AreasMap {
     @Override
@@ -65,5 +66,20 @@ public class AreasHashMap extends HashMap<String, Area> implements AreasMap {
     private String readNextLine(BufferedReader bufferedReader)
         throws IOException {
         return bufferedReader.readLine();
+    }
+
+    @Override
+    public BigInteger findLargestPrime() {
+        BigInteger largestPrime = null;
+
+        for (Area area : values()) {
+            if ((largestPrime == null) ||
+                    ((area.getPrime() != null) &&
+                    (largestPrime.compareTo(area.getPrime()) < 0))) {
+                largestPrime = area.getPrime();
+            }
+        }
+
+        return largestPrime;
     }
 }

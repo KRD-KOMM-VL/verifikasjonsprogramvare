@@ -24,9 +24,12 @@ package com.computas.zkpev2013.cleansing;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertNull;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.math.BigInteger;
 
 
 /**
@@ -35,7 +38,7 @@ import org.testng.annotations.Test;
 public class AreasHashMapUnitTest {
     private static final String MAIN_AREA_PATH = "47.01.0101.010100";
     private static final String AREA_PATH = "47.01.0101.010100.0000";
-    private static final String COMMON_AREA_PRIME = "35533";
+    private static final BigInteger COMMON_AREA_PRIME = new BigInteger("35533");
     private static final String SAMPLE_AREA_LINE = AREA_PATH + "," +
         COMMON_AREA_PRIME + "," + MAIN_AREA_PATH + ",";
     private AreasHashMap areas;
@@ -57,6 +60,14 @@ public class AreasHashMapUnitTest {
     }
 
     /**
+     * Verifies that when the map is empty, null is returned when asked to find the largest prime.
+     */
+    @Test
+    public void mustReturnNullAsLargestPrimeByDefault() {
+        assertNull(areas.findLargestPrime());
+    }
+
+    /**
      * Verifies that an area can be retrieved after it's added.
      */
     @Test
@@ -74,6 +85,16 @@ public class AreasHashMapUnitTest {
         Area area = new Area(SAMPLE_AREA_LINE);
         areas.addArea(SAMPLE_AREA_LINE);
         assertEquals(areas.get(AREA_PATH).getPath(), area.getPath());
+    }
+
+    /**
+     * Verifies that when one area is added, its prime is returned as the largest prime.
+     */
+    @Test
+    public void mustReturnPrimeAsLargestPrimeWhenOneAreaAdded() {
+        Area area = new Area(SAMPLE_AREA_LINE);
+        areas.add(area);
+        assertEquals(areas.findLargestPrime(), COMMON_AREA_PRIME);
     }
 
     /**
