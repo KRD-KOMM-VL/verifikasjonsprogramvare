@@ -22,14 +22,13 @@
  */
 package com.computas.zkpev2013.decryption;
 
-import static org.testng.Assert.*;
-
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
-
 import java.security.NoSuchAlgorithmException;
+
+import static org.testng.Assert.*;
 
 
 /**
@@ -81,6 +80,7 @@ public class DecryptionLineProofUnitTest {
     public void createDecryptionLine() {
         decryptionLine = new DecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF);
         decryptionLine.setEncodedVotingOptionsIdsProduct(SAMPLE_P);
+        decryptionLine.calculateDecryptedVotingOptionIdsProduct(SAMPLE_P);
     }
 
     /**
