@@ -73,14 +73,17 @@ public class EncryptedVoteRetentionCounter {
         area100GeneratesAMatch(cleansedVote, modulus, areas, voterArea);
     }
 
+    /**
+     * TODO: ENVIRONMENT PRIME
+     */
     private boolean areaGeneratesAMatch(CleansedVote cleansedVote,
         BigInteger modulus, Area voterArea) {
         if (voterArea.getPrime() == null) {
             return false;
         }
 
-        ElGamalEncryptionTuple compressedEncVoteOptIds = encryptedVote.getCompressedEncVoteOptIds(modulus,
-                voterArea.getPrime());
+        ElGamalEncryptionTuple compressedEncVoteOptIds = encryptedVote.getCompressedEncVoteOptIds(voterArea.getPrime(),
+                BigInteger.ONE, modulus);
 
         return compressedEncVoteOptIds.equals(cleansedVote.getEncryptedVoteOptIds());
     }
