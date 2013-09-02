@@ -61,8 +61,8 @@ public class DecryptionLineWithIncorrectProofIncident extends Incident
         return new String[] {
             decryptionLine.getElectionEventId(), decryptionLine.getElectionId(),
             decryptionLine.getContestId(),
-            decryptionLine.getEncryptedVotingOptionsIdsProductString(),
-            decryptionLine.getDecryptedVotingOptionIdsProduct().toString(),
+            decryptionLine.getEncryptedVotingOptionsIdsString(),
+            decryptionLine.getDecryptedVotingOptionIdsString(),
             decryptionLine.getSchnorrSignatureString()
         };
     }
