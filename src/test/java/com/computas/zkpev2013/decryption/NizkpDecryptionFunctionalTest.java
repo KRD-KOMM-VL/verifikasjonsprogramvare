@@ -89,7 +89,6 @@ public class NizkpDecryptionFunctionalTest {
     public void resultsMustNotContainIncidentAboutCorrectProof() {
         assertZkpDoesNotContainIncident(nizkp,
             new DecryptionLineWithIncorrectProofIncident(
-                new DecryptionLine(DECRYPTION_LINE_WITH_CORRECT_PROOF,
-                    "default")));
+                new DecryptionLine(DECRYPTION_LINE_WITH_CORRECT_PROOF)));
     }
 }
