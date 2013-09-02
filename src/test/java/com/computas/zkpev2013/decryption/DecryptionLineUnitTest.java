@@ -22,13 +22,13 @@
  */
 package com.computas.zkpev2013.decryption;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 
 
 /**
@@ -166,7 +166,7 @@ public class DecryptionLineUnitTest {
      */
     @Test
     public void constructorMustSetTheEncryptedVotingOptionsIdsProductStringCorrectly() {
-        assertEquals(decryptionLine.getEncryptedVotingOptionsIdsProductString(),
+        assertEquals(decryptionLine.getEncryptedVotingOptionsIdsString(),
             ENCRYPTED_VOTING_OPTIONS_IDS_PRODUCT);
     }
 

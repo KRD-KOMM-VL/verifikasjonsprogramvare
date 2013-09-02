@@ -79,7 +79,7 @@ public class DecryptionLineProofUnitTest {
     @BeforeMethod
     public void createDecryptionLine() {
         decryptionLine = new DecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF);
-        decryptionLine.setEncodedVotingOptionsIdsProduct(SAMPLE_P);
+        decryptionLine.setEncodedVotingOptionIdsProduct(SAMPLE_P);
         decryptionLine.calculateDecryptedVotingOptionIdsProduct(SAMPLE_P);
     }
 
