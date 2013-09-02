@@ -24,12 +24,13 @@ package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.Collection;
 
+import java.math.BigInteger;
+
 import java.util.Map;
 
 
 /**
  * Interface defining a map with Areas.
- *
  */
 public interface AreasMap extends Map<String, Area>, Collection {
     /**
@@ -38,4 +39,11 @@ public interface AreasMap extends Map<String, Area>, Collection {
      * @param area The area to be added.
      */
     void add(Area area);
+
+    /**
+     * Finds the largest prime for an area in the map.
+     *
+     * @return The largest prime in the map.
+     */
+    BigInteger findLargestPrime();
 }

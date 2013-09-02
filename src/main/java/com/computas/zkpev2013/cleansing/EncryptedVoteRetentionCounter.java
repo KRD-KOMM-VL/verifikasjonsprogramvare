@@ -58,38 +58,42 @@ public class EncryptedVoteRetentionCounter {
     }
 
     boolean matches(CleansedVote cleansedVote, AreasMap areas,
-        BigInteger modulus) {
+        int compressionFactor, BigInteger modulus) {
         Area voterArea = getVoterAreaFromEncryptedVote(areas);
 
-        return areaOrLinkedAreasGeneratesAMatch(cleansedVote, modulus, areas,
-            voterArea);
+        return areaOrLinkedAreasGeneratesAMatch(cleansedVote,
+            compressionFactor, modulus, areas, voterArea);
     }
 
     private boolean areaOrLinkedAreasGeneratesAMatch(
-        CleansedVote cleansedVote, BigInteger modulus, AreasMap areas,
-        Area voterArea) {
-        return areaGeneratesAMatch(cleansedVote, modulus, voterArea) ||
-        thresholdAreaGeneratesAMatch(cleansedVote, modulus, areas, voterArea) ||
-        area100GeneratesAMatch(cleansedVote, modulus, areas, voterArea);
+        CleansedVote cleansedVote, int compressionFactor, BigInteger modulus,
+        AreasMap areas, Area voterArea) {
+        return areaGeneratesAMatch(cleansedVote, compressionFactor, modulus,
+            voterArea) ||
+        thresholdAreaGeneratesAMatch(cleansedVote, compressionFactor, modulus,
+            areas, voterArea) ||
+        area100GeneratesAMatch(cleansedVote, compressionFactor, modulus, areas,
+            voterArea);
     }
 
     /**
      * TODO: ENVIRONMENT PRIME
      */
     private boolean areaGeneratesAMatch(CleansedVote cleansedVote,
-        BigInteger modulus, Area voterArea) {
+        int compressionFactor, BigInteger modulus, Area voterArea) {
         if (voterArea.getPrime() == null) {
             return false;
         }
 
-        ElGamalEncryptionTuple compressedEncVoteOptIds = encryptedVote.getCompressedEncVoteOptIds(voterArea.getPrime(),
-                BigInteger.ONE, modulus);
+        ElGamalEncryptionTuple compressedEncVoteOptIds = encryptedVote.getCompressedEncVoteOptIds(compressionFactor,
+                voterArea.getPrime(), BigInteger.ONE, modulus);
 
         return compressedEncVoteOptIds.equals(cleansedVote.getEncryptedVoteOptIds());
     }
 
     private boolean thresholdAreaGeneratesAMatch(CleansedVote cleansedVote,
-        BigInteger modulus, AreasMap areas, Area voterArea) {
+        int compressionFactor, BigInteger modulus, AreasMap areas,
+        Area voterArea) {
         String thresholdAreaId = voterArea.getThresholdAreaId();
 
         if ("".equals(thresholdAreaId)) {
@@ -104,12 +108,13 @@ public class EncryptedVoteRetentionCounter {
                     thresholdArea, encryptedVote.getUuid()));
         }
 
-        return areaOrLinkedAreasGeneratesAMatch(cleansedVote, modulus, areas,
-            thresholdArea);
+        return areaOrLinkedAreasGeneratesAMatch(cleansedVote,
+            compressionFactor, modulus, areas, thresholdArea);
     }
 
     private boolean area100GeneratesAMatch(CleansedVote cleansedVote,
-        BigInteger modulus, AreasMap areas, Area voterArea) {
+        int compressionFactor, BigInteger modulus, AreasMap areas,
+        Area voterArea) {
         String area100Id = voterArea.getArea100Id();
 
         if ("".equals(area100Id)) {
@@ -124,8 +129,8 @@ public class EncryptedVoteRetentionCounter {
                     area100Id, encryptedVote.getUuid()));
         }
 
-        return areaOrLinkedAreasGeneratesAMatch(cleansedVote, modulus, areas,
-            area100);
+        return areaOrLinkedAreasGeneratesAMatch(cleansedVote,
+            compressionFactor, modulus, areas, area100);
     }
 
     private String getReducedAreaId(String areaId) {

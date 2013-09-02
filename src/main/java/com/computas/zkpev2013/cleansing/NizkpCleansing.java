@@ -75,14 +75,55 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
 
         BigInteger modulus = loadElGamalModulus();
         AreasMap areas = loadAreas();
+        int compressionFactor = calculateCompressionFactor(areas, modulus);
         EncryptedVotesMap encryptedVotes = loadEncryptedVotes(modulus);
         CleansedVotesList cleansedEncryptedVotes = loadCleansedVotes();
         checkCleansedVotesAgainstEncryptedVotes(cleansedEncryptedVotes,
-            encryptedVotes, areas, modulus);
+            encryptedVotes, areas, compressionFactor, modulus);
 
         checkEncryptedVoteRetentionCounters(encryptedVotes);
 
         closeResultsFileIfNeeded();
+    }
+
+    int calculateCompressionFactor(AreasMap areas, BigInteger modulus) {
+        BigInteger largestPossibleVote = findLargestAreaPrime(areas)
+                                             .multiply(findLargestEnvironmentPrime())
+                                             .multiply(findLargestPartyPrime())
+                                             .multiply(findMaximalCandidateNumber());
+
+        return calculateFlooredLogarithm(modulus, largestPossibleVote);
+    }
+
+    BigInteger findLargestAreaPrime(AreasMap areas) {
+        return areas.findLargestPrime();
+    }
+
+    private BigInteger findLargestEnvironmentPrime() {
+        return BigInteger.ONE;
+    }
+
+    private BigInteger findLargestPartyPrime() {
+        return BigInteger.ONE;
+    }
+
+    private BigInteger findMaximalCandidateNumber() {
+        return BigInteger.ONE;
+    }
+
+    int calculateFlooredLogarithm(BigInteger modulus,
+        BigInteger largestPossibleVote) {
+        int logarithm = modulus.bitLength() / largestPossibleVote.bitLength();
+
+        while (largestPossibleVote.pow(logarithm).compareTo(modulus) < 0) {
+            logarithm++;
+        }
+
+        while (largestPossibleVote.pow(logarithm).compareTo(modulus) >= 0) {
+            logarithm--;
+        }
+
+        return logarithm;
     }
 
     private void checkEncryptedVoteRetentionCounters(
@@ -104,12 +145,13 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
 
     private void checkCleansedVotesAgainstEncryptedVotes(
         CleansedVotesList cleansedEncryptedVotes,
-        EncryptedVotesMap encryptedVotes, AreasMap areas, BigInteger modulus) {
+        EncryptedVotesMap encryptedVotes, AreasMap areas,
+        int compressionFactor, BigInteger modulus) {
         int noOfCleansedVotesChecked = 0;
 
         for (CleansedVote cleansedVote : cleansedEncryptedVotes) {
             checkCleansedVoteAgainstEncryptedVotes(cleansedVote,
-                encryptedVotes, areas, modulus);
+                encryptedVotes, areas, compressionFactor, modulus);
             noOfCleansedVotesChecked++;
 
             if ((noOfCleansedVotesChecked % TICKS_TO_LOG_NO_OF_CLEANSED_VOTES_CHECKED) == 0) {
@@ -203,11 +245,11 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
 
     private void checkCleansedVoteAgainstEncryptedVotes(
         CleansedVote cleansedVote, EncryptedVotesMap encryptedVotes,
-        AreasMap areas, BigInteger modulus) {
+        AreasMap areas, int compressionFactor, BigInteger modulus) {
         EncryptedVoteRetentionCounter counter = encryptedVotes.findMatchForCleansedVote(cleansedVote);
 
         if ((counter == null) ||
-                !counter.matches(cleansedVote, areas, modulus)) {
+                !counter.matches(cleansedVote, areas, compressionFactor, modulus)) {
             results.add(new InjectedCleansedVoteLineIncident(cleansedVote));
         } else {
             counter.registerMatch(cleansedVote);

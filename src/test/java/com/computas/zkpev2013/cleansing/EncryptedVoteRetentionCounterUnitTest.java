@@ -78,6 +78,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
         GIVEN_ELECTION_EVENT_ID + COMMA;
     private static final BigInteger MODULUS = new BigInteger(
             "22519781860318881430187237378393910440433456793106883439191554045609533190204716026094503488051043531257695232100353994296431999733305913289830606623675094806877884255872439714678914992056169353692036021770097223778392105262307803104951171429150982767069700653909195647599098780046724703785991755259095912786508845222597772887203546632493935590809326329822837682361511439054458165467044490658668908755516611075852591340913731324282531411301527453756791057107929172839003743485012313000403534330922416540828874783338650662007436059441348150784982317988527563812882812455109992843656727186872083932493433216403334110087");
+    private static final int COMPRESSION_FACTOR = 20;
     private EncryptedVoteRetentionCounter counter;
     private EncryptedVote encryptedVote;
     private CleansedVote cleansedVote;
@@ -142,7 +143,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
     public void mustMatchIfAreaPrimeIsCorrectPrime() {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(MATCH_GENERATING_AREA_LINE));
-        assertTrue(counter.matches(cleansedVote, areas, MODULUS));
+        assertTrue(counter.matches(cleansedVote, areas, COMPRESSION_FACTOR,
+                MODULUS));
     }
 
     /**
@@ -156,7 +158,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
         areas.add(new Area(MATCH_GENERATING_THRESHOLD_AREA_LINE));
-        assertTrue(counter.matches(cleansedVote, areas, MODULUS));
+        assertTrue(counter.matches(cleansedVote, areas, COMPRESSION_FACTOR,
+                MODULUS));
     }
 
     /**
@@ -168,7 +171,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
         areas.add(new Area(NON_MATCH_GENERATING_THRESHOLD_AREA_LINE));
-        assertFalse(counter.matches(cleansedVote, areas, MODULUS));
+        assertFalse(counter.matches(cleansedVote, areas, COMPRESSION_FACTOR,
+                MODULUS));
     }
 
     /**
@@ -183,7 +187,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
         areas.add(new Area(NON_MATCH_GENERATING_FIRST_THRESHOLD_AREA_LINE));
         areas.add(new Area(MATCH_GENERATING_SECOND_THRESHOLD_AREA_LINE));
-        assertTrue(counter.matches(cleansedVote, areas, MODULUS));
+        assertTrue(counter.matches(cleansedVote, areas, COMPRESSION_FACTOR,
+                MODULUS));
     }
 
     /**
@@ -198,7 +203,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_AREA_100_LINE));
 
         areas.add(new Area(MATCH_GENERATING_AREA_100_LINE));
-        assertTrue(counter.matches(cleansedVote, areas, MODULUS));
+        assertTrue(counter.matches(cleansedVote, areas, COMPRESSION_FACTOR,
+                MODULUS));
     }
 
     /**
@@ -211,7 +217,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_AREA_100_LINE));
 
         areas.add(new Area(NON_MATCH_GENERATING_AREA_100_LINE));
-        assertFalse(counter.matches(cleansedVote, areas, MODULUS));
+        assertFalse(counter.matches(cleansedVote, areas, COMPRESSION_FACTOR,
+                MODULUS));
     }
 
     /**
@@ -228,7 +235,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
                 NON_MATCH_GENERATING_AREA_100_WITH_THRESHOLD_AREA_LINE));
 
         areas.add(new Area(MATCH_GENERATING_THRESHOLD_AREA_LINE));
-        assertTrue(counter.matches(cleansedVote, areas, MODULUS));
+        assertTrue(counter.matches(cleansedVote, areas, COMPRESSION_FACTOR,
+                MODULUS));
     }
 
     /**
@@ -239,7 +247,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
     public void mustThrowIllegalArgumentExceptionWhenTheAreaIsMissingInAreas() {
         AreasMap areas = new AreasHashMap();
 
-        counter.matches(cleansedVote, areas, MODULUS);
+        counter.matches(cleansedVote, areas, COMPRESSION_FACTOR, MODULUS);
     }
 
     /**
@@ -250,7 +258,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
     public void mustThrowIllegalArgumentExceptionWhenTheThresholdAreaLinkIsBroken() {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
-        counter.matches(cleansedVote, areas, MODULUS);
+        counter.matches(cleansedVote, areas, COMPRESSION_FACTOR, MODULUS);
     }
 
     /**
@@ -261,6 +269,6 @@ public class EncryptedVoteRetentionCounterUnitTest {
     public void mustThrowIllegalArgumentExceptionWhenTheArea100LinkIsBroken() {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_AREA_100_LINE));
-        counter.matches(cleansedVote, areas, MODULUS);
+        counter.matches(cleansedVote, areas, COMPRESSION_FACTOR, MODULUS);
     }
 }
