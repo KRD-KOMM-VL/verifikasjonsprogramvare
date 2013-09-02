@@ -42,6 +42,7 @@ import java.net.URISyntaxException;
 public class NizkpCleansingIntegrationTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "NizkpCleansing2013IntegrationTestElGamalProperties.properties";
     private static final String AREAS_FILE_NAME = "NizkpCleansing2013IntegrationTestAreas.csv";
+    private static final String ELECTION_EML_FILE_NAME = "NizkpCleansing2013IntegrationElectionDefinition.eml";
     private static final String CLEANSED_FILES_DIR_NAME = "NizkpCleansing2013IntegrationTestCleansedFilesDirectory";
     private static final String ENCRYPTED_VOTES_FILE_NAME = "NizkpCleansing2013IntegrationTestEncryptedVotes.csv";
     private static final String RESULTS_LIST_FILE_NAME = "NizkpCleansing2013IntegrationTestResultsList.csv";
@@ -62,7 +63,8 @@ public class NizkpCleansingIntegrationTest {
     public void createNizkpCleansing() {
         nizkp = new NizkpCleansing(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, AREAS_FILE_NAME,
-                    ENCRYPTED_VOTES_FILE_NAME, CLEANSED_FILES_DIR_NAME
+                    ELECTION_EML_FILE_NAME, ENCRYPTED_VOTES_FILE_NAME,
+                    CLEANSED_FILES_DIR_NAME
                 });
     }
 
@@ -84,8 +86,8 @@ public class NizkpCleansingIntegrationTest {
     public void resultsListMustHaveAWriterIfAFileNameIsSpecified() {
         NizkpCleansing loggingNizkp = new NizkpCleansing(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, AREAS_FILE_NAME,
-                    ENCRYPTED_VOTES_FILE_NAME, CLEANSED_FILES_DIR_NAME,
-                    RESULTS_LIST_FILE_NAME
+                    ELECTION_EML_FILE_NAME, ENCRYPTED_VOTES_FILE_NAME,
+                    CLEANSED_FILES_DIR_NAME, RESULTS_LIST_FILE_NAME
                 });
         loggingNizkp.openResultsFileIfRequired();
         assertTrue(loggingNizkp.getResults().hasWriter());

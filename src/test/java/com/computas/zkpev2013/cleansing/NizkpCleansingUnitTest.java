@@ -38,6 +38,7 @@ import java.math.BigInteger;
 public class NizkpCleansingUnitTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Corge";
     private static final String AREAS_FILE_NAME = "Grault";
+    private static final String ELECTION_EML_FILE_NAME = "Quux";
     private static final String ENCRYPTED_VOTES_FILE_NAME = "Foo";
     private static final String CLEANSED_DIR_NAME = "Bar";
     private static final String RESULTS_FILE_NAME = "Qux";
@@ -52,8 +53,8 @@ public class NizkpCleansingUnitTest {
     public void createNizkp() {
         nizkp = new NizkpCleansing(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, AREAS_FILE_NAME,
-                    ENCRYPTED_VOTES_FILE_NAME, CLEANSED_DIR_NAME,
-                    RESULTS_FILE_NAME
+                    ELECTION_EML_FILE_NAME, ENCRYPTED_VOTES_FILE_NAME,
+                    CLEANSED_DIR_NAME, RESULTS_FILE_NAME
                 });
     }
 
@@ -81,6 +82,14 @@ public class NizkpCleansingUnitTest {
     @Test
     public void constructorSetsAreaFileName() {
         assertEquals(nizkp.getAreasFileName(), AREAS_FILE_NAME);
+    }
+
+    /**
+     * Verifies that the constructor sets the file name of election EML file correctly.
+     */
+    @Test
+    public void constructorSetsElectionEmlFileName() {
+        assertEquals(nizkp.getElectionEmlFileName(), ELECTION_EML_FILE_NAME);
     }
 
     /**
@@ -125,7 +134,8 @@ public class NizkpCleansingUnitTest {
     public void loggingOfResultsIsNotRequiredIfAResultsFileNameIsNotProvided() {
         NizkpCleansing nonLoggingNizkp = new NizkpCleansing(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, AREAS_FILE_NAME,
-                    ENCRYPTED_VOTES_FILE_NAME, CLEANSED_DIR_NAME
+                    ELECTION_EML_FILE_NAME, ENCRYPTED_VOTES_FILE_NAME,
+                    CLEANSED_DIR_NAME
                 });
         assertFalse(nonLoggingNizkp.isLoggingOfResultsRequired());
     }

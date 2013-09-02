@@ -51,6 +51,7 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
     private String cleansedFilesDir;
     private String elGamalPropertiesFileName;
     private String areasFileName;
+    private String electionEmlFileName;
 
     NizkpCleansing(String[] arguments) {
         super(arguments);
@@ -62,6 +63,7 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
             NizkpCleansingMandatoryArgumentIndex.values().length);
         elGamalPropertiesFileName = arguments[NizkpCleansingMandatoryArgumentIndex.EL_GAMAL_PROPERTIES_FILE_NAME_INDEX.ordinal()];
         areasFileName = arguments[NizkpCleansingMandatoryArgumentIndex.AREAS_FILE_NAME_INDEX.ordinal()];
+        electionEmlFileName = arguments[NizkpCleansingMandatoryArgumentIndex.ELECTION_EML_FILE_NAME_INDEX.ordinal()];
         encryptedVotesFileName = arguments[NizkpCleansingMandatoryArgumentIndex.ENCRYPTED_VOTES_FILE_NAME_INDEX.ordinal()];
         cleansedFilesDir = arguments[NizkpCleansingMandatoryArgumentIndex.CLEANSED_FILES_DIR_INDEX.ordinal()];
 
@@ -308,8 +310,13 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
     String getAreasFileName() {
         return areasFileName;
     }
+
+    String getElectionEmlFileName() {
+        return electionEmlFileName;
+    }
     enum NizkpCleansingMandatoryArgumentIndex {
         EL_GAMAL_PROPERTIES_FILE_NAME_INDEX,AREAS_FILE_NAME_INDEX,
+        ELECTION_EML_FILE_NAME_INDEX,
         ENCRYPTED_VOTES_FILE_NAME_INDEX,
         CLEANSED_FILES_DIR_INDEX;
     }
