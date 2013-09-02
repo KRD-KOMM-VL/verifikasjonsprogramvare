@@ -22,7 +22,6 @@
  */
 package com.computas.zkpev2013.cleansing;
 
-import com.computas.zkpev2013.Result;
 import com.computas.zkpev2013.ResultsArrayList;
 import com.computas.zkpev2013.ResultsList;
 import static org.testng.Assert.assertTrue;
