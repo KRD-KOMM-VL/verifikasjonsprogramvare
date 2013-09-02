@@ -147,13 +147,13 @@ public class EncryptedVoteRetentionCounterUnitTest {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(MATCH_GENERATING_AREA_LINE));
 
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
         assertTrue(counter.matches(cleansedVote, areas, environments,
                 COMPRESSION_FACTOR, MODULUS));
     }
 
-    private Environments createMatchGeneratingEnvironments() {
-        Environments environments = new Environments();
+    private EnvironmentsMap createMatchGeneratingEnvironments() {
+        EnvironmentsMap environments = new EnvironmentsHashMap();
         environments.setUncontrolledPrime(MATCH_GENERATING_ENVIRONMENT_PRIME);
 
         return environments;
@@ -171,7 +171,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
         areas.add(new Area(MATCH_GENERATING_THRESHOLD_AREA_LINE));
 
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
         assertTrue(counter.matches(cleansedVote, areas, environments,
                 COMPRESSION_FACTOR, MODULUS));
     }
@@ -186,7 +186,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
         areas.add(new Area(NON_MATCH_GENERATING_THRESHOLD_AREA_LINE));
 
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
         assertFalse(counter.matches(cleansedVote, areas, environments,
                 COMPRESSION_FACTOR, MODULUS));
     }
@@ -204,7 +204,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
         areas.add(new Area(NON_MATCH_GENERATING_FIRST_THRESHOLD_AREA_LINE));
         areas.add(new Area(MATCH_GENERATING_SECOND_THRESHOLD_AREA_LINE));
 
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
         assertTrue(counter.matches(cleansedVote, areas, environments,
                 COMPRESSION_FACTOR, MODULUS));
     }
@@ -222,7 +222,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
 
         areas.add(new Area(MATCH_GENERATING_AREA_100_LINE));
 
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
         assertTrue(counter.matches(cleansedVote, areas, environments,
                 COMPRESSION_FACTOR, MODULUS));
     }
@@ -238,7 +238,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
 
         areas.add(new Area(NON_MATCH_GENERATING_AREA_100_LINE));
 
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
         assertFalse(counter.matches(cleansedVote, areas, environments,
                 COMPRESSION_FACTOR, MODULUS));
     }
@@ -258,7 +258,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
 
         areas.add(new Area(MATCH_GENERATING_THRESHOLD_AREA_LINE));
 
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
         assertTrue(counter.matches(cleansedVote, areas, environments,
                 COMPRESSION_FACTOR, MODULUS));
     }
@@ -270,7 +270,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void mustThrowIllegalArgumentExceptionWhenTheAreaIsMissingInAreas() {
         AreasMap areas = new AreasHashMap();
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
 
         counter.matches(cleansedVote, areas, environments, COMPRESSION_FACTOR,
             MODULUS);
@@ -285,7 +285,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
 
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
         counter.matches(cleansedVote, areas, environments, COMPRESSION_FACTOR,
             MODULUS);
     }
@@ -299,7 +299,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_AREA_100_LINE));
 
-        Environments environments = createMatchGeneratingEnvironments();
+        EnvironmentsMap environments = createMatchGeneratingEnvironments();
         counter.matches(cleansedVote, areas, environments, COMPRESSION_FACTOR,
             MODULUS);
     }

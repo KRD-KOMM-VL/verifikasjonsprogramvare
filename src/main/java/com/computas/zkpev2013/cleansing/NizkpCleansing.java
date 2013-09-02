@@ -75,7 +75,7 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
 
         BigInteger modulus = loadElGamalModulus();
         AreasMap areas = loadAreas();
-        Environments environments = loadEnvironments();
+        EnvironmentsHashMap environments = loadEnvironments();
         int compressionFactor = calculateCompressionFactor(areas, environments,
                 modulus);
         EncryptedVotesMap encryptedVotes = loadEncryptedVotes(modulus);
@@ -88,12 +88,12 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
         closeResultsFileIfNeeded();
     }
 
-    Environments loadEnvironments() {
+    EnvironmentsHashMap loadEnvironments() {
         return null;
     }
 
-    int calculateCompressionFactor(AreasMap areas, Environments environments,
-        BigInteger modulus) {
+    int calculateCompressionFactor(AreasMap areas,
+        EnvironmentsHashMap environments, BigInteger modulus) {
         BigInteger largestPossibleVote = findLargestAreaPrime(areas)
                                              .multiply(findLargestEnvironmentPrime(
                     environments)).multiply(findLargestPartyPrime())
@@ -106,7 +106,8 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
         return areas.findLargestPrime();
     }
 
-    private BigInteger findLargestEnvironmentPrime(Environments environments) {
+    private BigInteger findLargestEnvironmentPrime(
+        EnvironmentsHashMap environments) {
         return BigInteger.ONE;
     }
 
@@ -153,7 +154,8 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
     private void checkCleansedVotesAgainstEncryptedVotes(
         CleansedVotesList cleansedEncryptedVotes,
         EncryptedVotesMap encryptedVotes, AreasMap areas,
-        Environments environments, int compressionFactor, BigInteger modulus) {
+        EnvironmentsHashMap environments, int compressionFactor,
+        BigInteger modulus) {
         int noOfCleansedVotesChecked = 0;
 
         for (CleansedVote cleansedVote : cleansedEncryptedVotes) {
@@ -252,8 +254,8 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
 
     private void checkCleansedVoteAgainstEncryptedVotes(
         CleansedVote cleansedVote, EncryptedVotesMap encryptedVotes,
-        AreasMap areas, Environments environments, int compressionFactor,
-        BigInteger modulus) {
+        AreasMap areas, EnvironmentsHashMap environments,
+        int compressionFactor, BigInteger modulus) {
         EncryptedVoteRetentionCounter counter = encryptedVotes.findMatchForCleansedVote(cleansedVote);
 
         if ((counter == null) ||

@@ -24,28 +24,39 @@ package com.computas.zkpev2013.cleansing;
 
 import java.math.BigInteger;
 
-import java.util.HashMap;
+import java.util.Map;
 
 
 /**
- * A HashMap holding the primes for the environments.
+ * Definition of a map holding the environments and their primes.
  */
-public class Environments extends HashMap<Environments.Environment, BigInteger> {
-    void setUncontrolledPrime(BigInteger prime) {
-        this.put(Environment.UNCONTROLLED, prime);
-    }
-
-    BigInteger getPrime(Environment environment) {
-        return this.get(environment);
-    }
-
-    static Environment getEnvironment(String channelId) {
-        return Environment.valueOf(channelId.substring("CHANNEL_ID_".length()));
-    }
+public interface EnvironmentsMap extends Map<EnvironmentsMap.Environment, BigInteger> {
+    /**
+     * Sets the prime for the controlled environment.
+     *
+     * @param prime The prime for the controlled environment.
+     */
+    void setControlledPrime(BigInteger prime);
 
     /**
-     * Enumeration of all possible environments.
+     * Sets the prime for the uncontrolled environment.
+     *
+     * @param prime The prime for the uncontrolled environment.
      */
-    public enum Environment {UNCONTROLLED;
+    void setUncontrolledPrime(BigInteger prime);
+
+    /**
+     * Returns the prime for an environment.
+     *
+     * @param key The environment.
+     * @return The prime.
+     */
+    BigInteger getPrime(Environment key);
+
+    /**
+     * Enumeration of all possible environments used by EnvironmentsHashMap.
+     */
+    public enum Environment {CONTROLLED,
+        UNCONTROLLED;
     }
 }

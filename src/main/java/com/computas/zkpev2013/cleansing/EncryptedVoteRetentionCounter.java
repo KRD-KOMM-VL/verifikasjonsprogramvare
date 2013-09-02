@@ -24,7 +24,7 @@ package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.ElGamalEncryptionTuple;
 import com.computas.zkpev2013.EncryptedVote;
-import com.computas.zkpev2013.cleansing.Environments.Environment;
+import com.computas.zkpev2013.cleansing.EnvironmentsMap.Environment;
 
 import java.math.BigInteger;
 
@@ -35,7 +35,6 @@ import java.util.List;
 /**
  * A class counting how many times a encrypted vote appears in the result
  * file from the Cleansing server.
- *
  */
 public class EncryptedVoteRetentionCounter {
     private final EncryptedVote encryptedVote;
@@ -59,7 +58,7 @@ public class EncryptedVoteRetentionCounter {
     }
 
     boolean matches(CleansedVote cleansedVote, AreasMap areas,
-        Environments environments, int compressionFactor, BigInteger modulus) {
+        EnvironmentsMap environments, int compressionFactor, BigInteger modulus) {
         Area voterArea = getVoterAreaFromEncryptedVote(areas);
         Environment voteEnvironment = getEnvironmentFromEncryptedVote();
 
@@ -68,7 +67,7 @@ public class EncryptedVoteRetentionCounter {
     }
 
     private Environment getEnvironmentFromEncryptedVote() {
-        return Environments.getEnvironment(encryptedVote.getChannelId());
+        return EnvironmentsHashMap.getEnvironment(encryptedVote.getChannelId());
     }
 
     private boolean areaOrLinkedAreasGeneratesAMatch(

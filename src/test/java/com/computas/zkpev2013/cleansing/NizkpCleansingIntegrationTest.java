@@ -135,7 +135,7 @@ public class NizkpCleansingIntegrationTest {
     public void mustCalculateTheCorrectCompressionFactor()
         throws IOException {
         AreasMap areas = nizkp.loadAreas();
-        Environments environments = nizkp.loadEnvironments();
+        EnvironmentsHashMap environments = nizkp.loadEnvironments();
         assertEquals(nizkp.calculateCompressionFactor(areas, environments,
                 SAMPLE_P), 100);
     }
