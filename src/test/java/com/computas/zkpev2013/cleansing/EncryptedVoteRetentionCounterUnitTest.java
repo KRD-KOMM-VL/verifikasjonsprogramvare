@@ -112,6 +112,20 @@ public class EncryptedVoteRetentionCounterUnitTest {
         cleansedVote = new CleansedVote(CLEANSED_VOTE_LINE);
     }
 
+    private EnvironmentsMap createMatchGeneratingEnvironments() {
+        EnvironmentsMap environments = new EnvironmentsHashMap();
+        environments.setUncontrolledPrime(MATCH_GENERATING_ENVIRONMENT_PRIME);
+
+        return environments;
+    }
+
+    private EnvironmentsMap createNonMatchGeneratingEnvironments() {
+        EnvironmentsMap environments = new EnvironmentsHashMap();
+        environments.setUncontrolledPrime(NON_MATCH_GENERATING_ENVIRONMENT_PRIME);
+
+        return environments;
+    }
+
     /**
      * Verifies that the constructor sets the encrypted vote correctly.
      */
@@ -152,11 +166,19 @@ public class EncryptedVoteRetentionCounterUnitTest {
                 COMPRESSION_FACTOR, MODULUS));
     }
 
-    private EnvironmentsMap createMatchGeneratingEnvironments() {
-        EnvironmentsMap environments = new EnvironmentsHashMap();
-        environments.setUncontrolledPrime(MATCH_GENERATING_ENVIRONMENT_PRIME);
+    /**
+     * Verifies that the counter detects no match if the prime of the area is correct,
+     * but not the one of the environment.
+     */
+    @Test
+    public void mustNotMatchIfAreaPrimeIsCorrectPrimeButEnvironmentPrimeIsNotCorrectPrime() {
+        AreasMap areas = new AreasHashMap();
+        areas.add(new Area(MATCH_GENERATING_AREA_LINE));
+        areas.add(new Area(MATCH_GENERATING_THRESHOLD_AREA_LINE));
 
-        return environments;
+        EnvironmentsMap environments = createNonMatchGeneratingEnvironments();
+        assertFalse(counter.matches(cleansedVote, areas, environments,
+                COMPRESSION_FACTOR, MODULUS));
     }
 
     /**
@@ -190,6 +212,21 @@ public class EncryptedVoteRetentionCounterUnitTest {
     }
 
     /**
+     * Verifies that the counter detects no match if the prime of the threshold area
+     * of the encrypted vote is set to be the correct prime, but not the environment prime.
+     */
+    @Test
+    public void mustNotMatchIfThresholdAreaPrimeIsCorrectPrimeButNotEnvironmentPrime() {
+        AreasMap areas = new AreasHashMap();
+        areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
+        areas.add(new Area(MATCH_GENERATING_THRESHOLD_AREA_LINE));
+
+        EnvironmentsMap environments = createNonMatchGeneratingEnvironments();
+        assertFalse(counter.matches(cleansedVote, areas, environments,
+                COMPRESSION_FACTOR, MODULUS));
+    }
+
+    /**
      * Verifies that the counter detects a match if the prime of the threshold area
      * of the threshold area and the environment of the encrypted vote are set to be the correct prime.
      */
@@ -202,6 +239,22 @@ public class EncryptedVoteRetentionCounterUnitTest {
 
         EnvironmentsMap environments = createMatchGeneratingEnvironments();
         assertTrue(counter.matches(cleansedVote, areas, environments,
+                COMPRESSION_FACTOR, MODULUS));
+    }
+
+    /**
+     * Verifies that the counter detects no match if the prime of the threshold area
+     * of the threshold area is set to the correct prime, but not the environment prime.
+     */
+    @Test
+    public void mustNotMatchIfSecondThresholdAreaAndEnvironmentPrimesAreCorrectPrimesButNotEnvironmentPrime() {
+        AreasMap areas = new AreasHashMap();
+        areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
+        areas.add(new Area(NON_MATCH_GENERATING_FIRST_THRESHOLD_AREA_LINE));
+        areas.add(new Area(MATCH_GENERATING_SECOND_THRESHOLD_AREA_LINE));
+
+        EnvironmentsMap environments = createNonMatchGeneratingEnvironments();
+        assertFalse(counter.matches(cleansedVote, areas, environments,
                 COMPRESSION_FACTOR, MODULUS));
     }
 
@@ -238,6 +291,22 @@ public class EncryptedVoteRetentionCounterUnitTest {
     }
 
     /**
+     * Verifies that the counter detects no match if the prime of the area 100
+     * of the encrypted vote is set to be the correct prime, but not the environment prime.
+     */
+    @Test
+    public void mustNotMatchIfArea100PrimeIsCorrectPrimeButNotEnvironmentPrime() {
+        AreasMap areas = new AreasHashMap();
+        areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_AREA_100_LINE));
+
+        areas.add(new Area(MATCH_GENERATING_AREA_100_LINE));
+
+        EnvironmentsMap environments = createNonMatchGeneratingEnvironments();
+        assertFalse(counter.matches(cleansedVote, areas, environments,
+                COMPRESSION_FACTOR, MODULUS));
+    }
+
+    /**
      * Verifies that the counter detects a match if the prime of threshold area for the area 100
      * of the encrypted vote is set to be the correct prime.
      */
@@ -256,6 +325,24 @@ public class EncryptedVoteRetentionCounterUnitTest {
     }
 
     /**
+     * Verifies that the counter detects no match if the prime of threshold area for the area 100
+     * of the encrypted vote is set to be the correct prime, but the environment prime is incorrect.
+     */
+    @Test
+    public void mustNotMatchIfThresholdAreaOfArea100AndEnvironmentPrimesAreCorrectPrimesButNotEnvironmentPrime() {
+        AreasMap areas = new AreasHashMap();
+        areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_AREA_100_LINE));
+        areas.add(new Area(
+                NON_MATCH_GENERATING_AREA_100_WITH_THRESHOLD_AREA_LINE));
+
+        areas.add(new Area(MATCH_GENERATING_THRESHOLD_AREA_LINE));
+
+        EnvironmentsMap environments = createNonMatchGeneratingEnvironments();
+        assertFalse(counter.matches(cleansedVote, areas, environments,
+                COMPRESSION_FACTOR, MODULUS));
+    }
+
+    /**
      * Verifies that the counter throws an IllegalArgumentException if the
      * areas doesn't contain the area for the encrypted vote.
      */
@@ -269,7 +356,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
     }
 
     /**
-     * Verifies that the counter throws an IllegalArgumentException the threshold
+     * Verifies that the counter throws an IllegalArgumentException if the threshold
      * area link is broken.
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -283,7 +370,7 @@ public class EncryptedVoteRetentionCounterUnitTest {
     }
 
     /**
-     * Verifies that the counter throws an IllegalArgumentException the area 100
+     * Verifies that the counter throws an IllegalArgumentException if the area 100
      * link is broken.
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -296,6 +383,19 @@ public class EncryptedVoteRetentionCounterUnitTest {
             MODULUS);
     }
 
-    // TODO: Unit tests on non-matching and missing environment primes.
+    /**
+     * Verifies that the counter throws an IllegalArgumentException if the environment prime is missing.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void mustThrowIllegalArgumentExceptionWhenEnvironmentPrimeIsMissing() {
+        AreasMap areas = new AreasHashMap();
+        areas.add(new Area(MATCH_GENERATING_AREA_LINE));
+
+        EnvironmentsMap environments = new EnvironmentsHashMap();
+
+        counter.matches(cleansedVote, areas, environments, COMPRESSION_FACTOR,
+            MODULUS);
+    }
+
     // TODO: Unit tests on incorrect compression factors.
 }

@@ -73,6 +73,12 @@ public class EncryptedVoteRetentionCounter {
     private boolean areaOrLinkedAreasGeneratesAMatch(
         CleansedVote cleansedVote, Area voterArea, AreasMap areas,
         BigInteger environmentPrime, int compressionFactor, BigInteger modulus) {
+        if (environmentPrime == null) {
+            throw new IllegalArgumentException(String.format(
+                    "Could not look up the environment prime for %s for the encrypted vote with UUID %s.",
+                    encryptedVote.getChannelId(), encryptedVote.getUuid()));
+        }
+
         return areaGeneratesAMatch(cleansedVote, voterArea, environmentPrime,
             compressionFactor, modulus) ||
         thresholdAreaGeneratesAMatch(cleansedVote, areas, voterArea,
