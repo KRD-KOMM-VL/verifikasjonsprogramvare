@@ -116,6 +116,7 @@ public class NizkpCleansingIntegrationTest {
     /**
      * Verifies that the correct largest area prime is found.
      *
+     * TODO: Should be calculated per municipality.
      * @throws IOException Should not be thrown.
      */
     @Test
@@ -127,14 +128,16 @@ public class NizkpCleansingIntegrationTest {
     /**
      * Verifies that the correct compression factor is calculated.
      *
-     * TODO
+     * TODO: Should be calculated per municipality and per contest.
      * @throws IOException Should not be thrown.
      */
     @Test(enabled = false)
     public void mustCalculateTheCorrectCompressionFactor()
         throws IOException {
         AreasMap areas = nizkp.loadAreas();
-        assertEquals(nizkp.calculateCompressionFactor(areas, SAMPLE_P), 100);
+        Environments environments = nizkp.loadEnvironments();
+        assertEquals(nizkp.calculateCompressionFactor(areas, environments,
+                SAMPLE_P), 100);
     }
 
     /**
