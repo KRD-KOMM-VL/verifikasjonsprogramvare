@@ -105,7 +105,7 @@ public class DecryptionLine extends CsvLineParseable {
         return decryptedVotingOptionIdsProduct;
     }
 
-    String getDecryptedVotingOptionIdsString(){
+    String getDecryptedVotingOptionIdsString() {
         return decryptedVotingOptionIdsString;
     }
 
@@ -115,7 +115,6 @@ public class DecryptionLine extends CsvLineParseable {
 
     void setEncodedVotingOptionIdsProduct(BigInteger p) {
         encodedVotingOptionsIdsProduct = encodedVotingOptionsIds.convertToPair(p);
-
     }
 
     @Override
@@ -283,8 +282,6 @@ public class DecryptionLine extends CsvLineParseable {
     private BigInteger modularDivision(BigInteger a, BigInteger b, BigInteger p) {
         return a.multiply(b.modInverse(p)).mod(p);
     }
-
-
 
     private boolean decryptedVotingOptionIdsSmallerThanEncodedVotingOptionsMessageComponent() {
         return decryptedVotingOptionIdsProduct.compareTo(encodedVotingOptionsIdsProduct.getMessageComponent()) <= 0;
