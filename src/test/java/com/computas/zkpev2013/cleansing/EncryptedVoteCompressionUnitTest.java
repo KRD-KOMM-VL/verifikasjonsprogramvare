@@ -61,8 +61,8 @@ public class EncryptedVoteCompressionUnitTest {
     public void createMultipliedEncOptIds() {
         EncryptedVote encryptedVote = new EncryptedVote(ENCRYPTED_VOTE_LINE);
         originalEncOptIds = encryptedVote.getEncVoteOptIds();
-        compressedEncOptIds = encryptedVote.getCompressedEncVoteOptIds(COMPRESSION_FACTOR,
-                AREA_PRIME, ENVIRONMENT_PRIME, MODULUS);
+        compressedEncOptIds = encryptedVote.getCompressedEncVoteOptIds(AREA_PRIME,
+                ENVIRONMENT_PRIME, COMPRESSION_FACTOR, MODULUS);
     }
 
     /**
@@ -111,4 +111,8 @@ public class EncryptedVoteCompressionUnitTest {
         assertEquals(compressedEncOptIds.getMessageComponents(),
             cleansedVote.getEncryptedVoteOptIds().getMessageComponents());
     }
+
+    // TODO: Compression resulting in more than one message component in the cleansed vote with correct compression factor.
+
+    // TODO: Compression resulting in more than one message component in the cleansed vote with incorrect compression factor.
 }

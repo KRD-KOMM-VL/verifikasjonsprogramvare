@@ -88,8 +88,8 @@ public class EncryptedVoteRetentionCounter {
             return false;
         }
 
-        ElGamalEncryptionTuple compressedEncVoteOptIds = encryptedVote.getCompressedEncVoteOptIds(compressionFactor,
-                voterArea.getPrime(), environmentPrime, modulus);
+        ElGamalEncryptionTuple compressedEncVoteOptIds = encryptedVote.getCompressedEncVoteOptIds(voterArea.getPrime(),
+                environmentPrime, compressionFactor, modulus);
 
         return compressedEncVoteOptIds.equals(cleansedVote.getEncryptedVoteOptIds());
     }

@@ -162,10 +162,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
     /**
      * Verifies that the counter detects a match if the prime of the threshold area and the environment
      * of the encrypted vote are set to be the correct primes.
-     *
-     * TODO
      */
-    @Test(enabled = false)
+    @Test
     public void mustMatchIfThresholdAreaAndEnvironmentPrimesAreCorrectPrimes() {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
@@ -194,10 +192,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
     /**
      * Verifies that the counter detects a match if the prime of the threshold area
      * of the threshold area and the environment of the encrypted vote are set to be the correct prime.
-     *
-     * TODO
      */
-    @Test(enabled = false)
+    @Test
     public void mustMatchIfSecondThresholdAreaAndEnvironmentPrimesAreCorrectPrimes() {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_THRESHOLD_AREA_LINE));
@@ -212,10 +208,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
     /**
      * Verifies that the counter detects a match if the prime of the area 100 and environment
      * of the encrypted vote is set to be the correct prime.
-     *
-     * TODO
      */
-    @Test(enabled = false)
+    @Test
     public void mustMatchIfArea100AndEnvironmentPrimesAreCorrectPrimes() {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_AREA_100_LINE));
@@ -246,10 +240,8 @@ public class EncryptedVoteRetentionCounterUnitTest {
     /**
      * Verifies that the counter detects a match if the prime of threshold area for the area 100
      * of the encrypted vote is set to be the correct prime.
-     *
-     * TODO
      */
-    @Test(enabled = false)
+    @Test
     public void mustMatchIfThresholdAreaOfArea100AndEnvironmentPrimesAreCorrectPrimes() {
         AreasMap areas = new AreasHashMap();
         areas.add(new Area(NON_MATCH_GENERATING_AREA_WITH_AREA_100_LINE));
@@ -305,4 +297,5 @@ public class EncryptedVoteRetentionCounterUnitTest {
     }
 
     // TODO: Unit tests on non-matching and missing environment primes.
+    // TODO: Unit tests on incorrect compression factors.
 }

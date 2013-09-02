@@ -256,17 +256,15 @@ public class EncryptedVote extends CsvLineParseable {
     /**
      * Returns a compressed ElGamal encryption tuple.
      *
-     * @param compressionFactor The compression factor.
      * @param areaPrime The area prime.
      * @param environmentPrime The environment prime.
+     * @param compressionFactor The compression factor.
      * @param modulus The modulus.
      * @return A compressed ElGamal encryption tuple.
-     *
-     * TODO
      */
     public ElGamalEncryptionTuple getCompressedEncVoteOptIds(
-        int compressionFactor, BigInteger areaPrime,
-        BigInteger environmentPrime, BigInteger modulus) {
+        BigInteger areaPrime, BigInteger environmentPrime,
+        int compressionFactor, BigInteger modulus) {
         return new ElGamalEncryptionTuple(encVoteOptIds.getPublicKeyComponent(),
             compressMessageComponents(encVoteOptIds.getMessageComponents(),
                 areaPrime, environmentPrime, modulus));
