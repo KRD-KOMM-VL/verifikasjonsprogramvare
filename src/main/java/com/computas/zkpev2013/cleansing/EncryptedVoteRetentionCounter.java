@@ -77,7 +77,7 @@ public class EncryptedVoteRetentionCounter {
     }
 
     /**
-     * TODO: ENVIRONMENT PRIME
+     * TODO: ENVIRONMENT PRIME.
      */
     private boolean areaGeneratesAMatch(CleansedVote cleansedVote,
         int compressionFactor, BigInteger modulus, Area voterArea) {

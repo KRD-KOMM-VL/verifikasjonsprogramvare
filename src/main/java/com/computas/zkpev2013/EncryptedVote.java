@@ -254,8 +254,10 @@ public class EncryptedVote extends CsvLineParseable {
     /**
      * Returns a compressed ElGamal encryption tuple.
      *
-     * @param modulus Modulus.
-     * @param areaPrime Prime.
+     * @param compressionFactor The compression factor.
+     * @param areaPrime The area prime.
+     * @param environmentPrime The environment prime.
+     * @param modulus The modulus.
      * @return A compressed ElGamal encryption tuple.
      *
      * TODO
