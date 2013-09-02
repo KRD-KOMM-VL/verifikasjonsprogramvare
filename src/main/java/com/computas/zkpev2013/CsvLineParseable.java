@@ -36,8 +36,20 @@ import java.util.List;
  */
 public abstract class CsvLineParseable {
     protected static final String COMMA = ",";
+    protected String mixingMode = "default";
 
     protected CsvLineParseable(String line) {
+        try {
+            parseLineAndSetAttributes(line);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(String.format(
+                    "Could not parse the line '%s'.", line), e);
+        }
+    }
+
+    protected CsvLineParseable(String line, String mixingMode) {
+        this.mixingMode = mixingMode;
+
         try {
             parseLineAndSetAttributes(line);
         } catch (Exception e) {

@@ -26,10 +26,14 @@ import com.computas.zkpev2013.CsvLineParseable;
 import com.computas.zkpev2013.ElGamalEncryptionPair;
 import com.computas.zkpev2013.ElGamalEncryptionTuple;
 
+import org.opensaml.xml.util.Base64;
+
 import java.math.BigInteger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import java.util.ArrayList;
 
 
 /**
@@ -39,18 +43,26 @@ public class DecryptionLine extends CsvLineParseable {
     private static final String HASHING_ALGORITHM = "SHA-256";
     private final String line;
     private ElGamalEncryptionTuple encodedVotingOptionsIds;
+    private ArrayList<ElGamalEncryptionPair> encodedVotingOptionsIdsVerificatum;
     private ElGamalEncryptionPair encodedVotingOptionsIdsProduct;
     private SchnorrSignature schnorrSignature;
+    private ArrayList<SchnorrSignature> schnorrSignaturesVerificatum;
     private String[] decryptedVotingOptionIds;
     private BigInteger decryptedVotingOptionIdsProduct;
     private String electionEventId;
     private String electionId;
     private String contestId;
-    private String encryptedVotingOptionsIdsProductString;
+    private String encryptedVotingOptionsIdsString;
     private String schnorrSignatureString;
+    private String decryptedVotingOptionIdsString;
 
     DecryptionLine(String line) {
         super(line);
+        this.line = line;
+    }
+
+    DecryptionLine(String line, String mixingMode) {
+        super(line, mixingMode);
         this.line = line;
     }
 
@@ -85,24 +97,25 @@ public class DecryptionLine extends CsvLineParseable {
         return contestId;
     }
 
-    String getEncryptedVotingOptionsIdsProductString() {
-        return encryptedVotingOptionsIdsProductString;
-    }
-
-    String[] getDecryptedVotingOptionIds() {
-        return decryptedVotingOptionIds;
+    String getEncryptedVotingOptionsIdsString() {
+        return encryptedVotingOptionsIdsString;
     }
 
     BigInteger getDecryptedVotingOptionIdsProduct() {
         return decryptedVotingOptionIdsProduct;
     }
 
+    String getDecryptedVotingOptionIdsString(){
+        return decryptedVotingOptionIdsString;
+    }
+
     String getSchnorrSignatureString() {
         return schnorrSignatureString;
     }
 
-    void setEncodedVotingOptionsIdsProduct(BigInteger p) {
+    void setEncodedVotingOptionIdsProduct(BigInteger p) {
         encodedVotingOptionsIdsProduct = encodedVotingOptionsIds.convertToPair(p);
+
     }
 
     @Override
@@ -112,16 +125,58 @@ public class DecryptionLine extends CsvLineParseable {
         electionId = getAttribute(attributes, DecryptionLineCsvIndex.ELECTION_ID);
         contestId = getAttribute(attributes, DecryptionLineCsvIndex.CONTEST_ID);
 
-        encodedVotingOptionsIds = getAttributeAsElGamalEncryptionTuple(attributes,
+        if (mixingMode.equals("default")) {
+            encodedVotingOptionsIds = getAttributeAsElGamalEncryptionTuple(attributes,
+                    DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
+        } else if (mixingMode.equals("verificatum")) {
+            readEncodedVotingOptionsIdsVerificatum(attributes);
+        }
+
+        encryptedVotingOptionsIdsString = getAttribute(attributes,
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
-        encryptedVotingOptionsIdsProductString = getAttribute(attributes,
-                DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
-        decryptedVotingOptionIds = getAttributeAsString(attributes,
-                DecryptionLineCsvIndex.DEC_VOTE_OPT_IDS_PROD).split("#");
-        schnorrSignature = new SchnorrSignature(getAttributeAsByteArray(
-                    attributes, DecryptionLineCsvIndex.SIGNATURE));
+        decryptedVotingOptionIdsString = getAttributeAsString(attributes,
+                DecryptionLineCsvIndex.DEC_VOTE_OPT_IDS_PROD);
+        decryptedVotingOptionIds = decryptedVotingOptionIdsString.split("#");
+
+        if (mixingMode.equals("default")) {
+            schnorrSignature = new SchnorrSignature(getAttributeAsByteArray(
+                        attributes, DecryptionLineCsvIndex.SIGNATURE));
+        } else if (mixingMode.equals("verificatum")) {
+            readSchnorrSignaturesVerificatum(attributes);
+        }
+
         schnorrSignatureString = getAttribute(attributes,
                 DecryptionLineCsvIndex.SIGNATURE);
+    }
+
+    void readEncodedVotingOptionsIdsVerificatum(String[] attributes) {
+        String[] encodedVotingOptionIdsStrings = getAttributeAsString(attributes,
+                DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS).split("#");
+        BigInteger publicKeyComponent;
+        BigInteger messageComponent;
+        encodedVotingOptionsIdsVerificatum = new ArrayList<ElGamalEncryptionPair>();
+
+        for (int i = 0; i < (encodedVotingOptionIdsStrings.length - 1);
+                i += 2) {
+            publicKeyComponent = new BigInteger(Base64.decode(
+                        (encodedVotingOptionIdsStrings[i])));
+            messageComponent = new BigInteger(Base64.decode(
+                        encodedVotingOptionIdsStrings[i + 1]));
+            encodedVotingOptionsIdsVerificatum.add(new ElGamalEncryptionPair(
+                    publicKeyComponent, messageComponent));
+        }
+    }
+
+    void readSchnorrSignaturesVerificatum(String[] attributes) {
+        String[] schnorrSignaturesStrings = new String(Base64.decode(
+                    getAttributeAsString(attributes,
+                        DecryptionLineCsvIndex.SIGNATURE))).split("\\|null#");
+        schnorrSignaturesVerificatum = new ArrayList<SchnorrSignature>();
+
+        for (String str : schnorrSignaturesStrings) {
+            schnorrSignaturesVerificatum.add(new SchnorrSignature(
+                    str.getBytes()));
+        }
     }
 
     protected void calculateDecryptedVotingOptionIdsProduct(BigInteger p) {
@@ -135,7 +190,7 @@ public class DecryptionLine extends CsvLineParseable {
 
     boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
         throws NoSuchAlgorithmException {
-        setEncodedVotingOptionsIdsProduct(p);
+        setEncodedVotingOptionIdsProduct(p);
         calculateDecryptedVotingOptionIdsProduct(p);
 
         BigInteger x = calculateNonInteractiveChallengeX();
@@ -145,6 +200,35 @@ public class DecryptionLine extends CsvLineParseable {
         BigInteger c1 = calculateSchnorrChallengeC1(p, g, h, w1);
 
         return verifySchnorrChallenge(c1);
+    }
+
+    boolean verifyProofsVerificatum(BigInteger p, BigInteger g, BigInteger h)
+        throws NoSuchAlgorithmException {
+        if (encodedVotingOptionsIdsVerificatum.size() != schnorrSignaturesVerificatum.size()) {
+            return false;
+        }
+
+        if (encodedVotingOptionsIdsVerificatum.size() != decryptedVotingOptionIds.length) {
+            return false;
+        }
+
+        for (int i = 0; i < encodedVotingOptionsIdsVerificatum.size(); i++) {
+            decryptedVotingOptionIdsProduct = new BigInteger(decryptedVotingOptionIds[i]);
+            encodedVotingOptionsIdsProduct = encodedVotingOptionsIdsVerificatum.get(i);
+            schnorrSignature = schnorrSignaturesVerificatum.get(i);
+
+            BigInteger x = calculateNonInteractiveChallengeXVerificatum(i);
+            BigInteger g1 = calculateGeneratorG1(p, g, x);
+            BigInteger h1 = calculatePublicKeyH1(p, h, x);
+            BigInteger w1 = calculateSchnorrMessageW1(p, g1, h1);
+            BigInteger c1 = calculateSchnorrChallengeC1(p, g, h, w1);
+
+            if (verifySchnorrChallenge(c1) == false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     BigInteger calculateNonInteractiveChallengeX()
@@ -158,6 +242,14 @@ public class DecryptionLine extends CsvLineParseable {
         return new BigInteger(md.digest());
     }
 
+    BigInteger calculateNonInteractiveChallengeXVerificatum(int i)
+        throws NoSuchAlgorithmException {
+        MessageDigest md = getMessageDigestInstance();
+        md.update(new BigInteger(decryptedVotingOptionIds[i]).toByteArray());
+
+        return new BigInteger(md.digest());
+    }
+
     private MessageDigest getMessageDigestInstance()
         throws NoSuchAlgorithmException {
         return MessageDigest.getInstance(HASHING_ALGORITHM);
@@ -165,10 +257,10 @@ public class DecryptionLine extends CsvLineParseable {
 
     BigInteger calculateGeneratorG1(BigInteger p, BigInteger g, BigInteger x) {
         return decryptedVotingOptionIdsSmallerThanEncodedVotingOptionsMessageComponent()
-        ? encodedVotingOptionsIds.getPublicKeyComponent().modPow(x, p)
-                                 .multiply(g).mod(p)
-        : encodedVotingOptionsIds.getPublicKeyComponent().modInverse(p)
-                                 .modPow(x, p).multiply(g).mod(p);
+        ? encodedVotingOptionsIdsProduct.getPublicKeyComponent().modPow(x, p)
+                                        .multiply(g).mod(p)
+        : encodedVotingOptionsIdsProduct.getPublicKeyComponent().modInverse(p)
+                                        .modPow(x, p).multiply(g).mod(p);
     }
 
     BigInteger calculatePublicKeyH1(BigInteger p, BigInteger h, BigInteger x) {
@@ -191,6 +283,8 @@ public class DecryptionLine extends CsvLineParseable {
     private BigInteger modularDivision(BigInteger a, BigInteger b, BigInteger p) {
         return a.multiply(b.modInverse(p)).mod(p);
     }
+
+
 
     private boolean decryptedVotingOptionIdsSmallerThanEncodedVotingOptionsMessageComponent() {
         return decryptedVotingOptionIdsProduct.compareTo(encodedVotingOptionsIdsProduct.getMessageComponent()) <= 0;
