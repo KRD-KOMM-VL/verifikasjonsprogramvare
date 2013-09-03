@@ -133,10 +133,8 @@ public class NizkpCleansingIntegrationTest {
 
     /**
      * Verifies that the correct prime for the controlled environment is loaded.
-     *
-     * TODO
      */
-    @Test(enabled = false)
+    @Test
     public void mustLoadTheCorrectControlledEnvironmentPrime() {
         EnvironmentsMap environments = nizkp.loadEnvironments();
         assertEquals(environments.getPrime(
@@ -146,10 +144,8 @@ public class NizkpCleansingIntegrationTest {
 
     /**
      * Verifies that the correct prime for the uncontrolled environment is loaded.
-     *
-     * TODO
      */
-    @Test(enabled = false)
+    @Test
     public void mustLoadTheCorrectUncontrolledEnvironmentPrime() {
         EnvironmentsMap environments = nizkp.loadEnvironments();
         assertEquals(environments.getPrime(
@@ -167,7 +163,7 @@ public class NizkpCleansingIntegrationTest {
     public void mustCalculateTheCorrectCompressionFactor()
         throws IOException {
         AreasMap areas = nizkp.loadAreas();
-        EnvironmentsHashMap environments = nizkp.loadEnvironments();
+        EnvironmentsMap environments = nizkp.loadEnvironments();
         assertEquals(nizkp.calculateCompressionFactor(areas, environments,
                 SAMPLE_P), 100);
     }

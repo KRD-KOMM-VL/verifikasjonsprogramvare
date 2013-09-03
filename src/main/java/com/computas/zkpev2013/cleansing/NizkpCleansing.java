@@ -23,6 +23,7 @@
 package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.ZeroKnowledgeProof;
+import com.computas.zkpev2013.cleansing.EnvironmentsMap.Environment;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -43,6 +44,10 @@ import java.util.Properties;
  *
  */
 public class NizkpCleansing extends ZeroKnowledgeProof {
+    private static final BigInteger HARDCODED_UNCONTROLLED_ENVIRONMENT_PRIME = new BigInteger(
+            "227");
+    private static final BigInteger HARDCODED_CONTROLLED_ENVIRONMENT_PRIME = new BigInteger(
+            "211");
     private static final String EL_GAMAL_MODULUS_PROPERTY_NAME = "p";
     private static final int TICKS_TO_LOG_NO_OF_CLEANSED_VOTES_CHECKED = 5000;
     private static final int TICKS_TO_LOG_NO_OF_ENCRYPTED_VOTE_RETENTION_COUNTERS_CHECKED =
@@ -77,7 +82,7 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
 
         BigInteger modulus = loadElGamalModulus();
         AreasMap areas = loadAreas();
-        EnvironmentsHashMap environments = loadEnvironments();
+        EnvironmentsMap environments = loadEnvironments();
         int compressionFactor = calculateCompressionFactor(areas, environments,
                 modulus);
         EncryptedVotesMap encryptedVotes = loadEncryptedVotes(modulus);
@@ -90,12 +95,21 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
         closeResultsFileIfNeeded();
     }
 
-    EnvironmentsHashMap loadEnvironments() {
-        return null;
+    // TODO: Hardcoded for now, but should be loaded from electionEmlFileName.
+    EnvironmentsMap loadEnvironments() {
+        getLogger().warn("Setting hard-coded environment primes.");
+
+        EnvironmentsMap environments = new EnvironmentsHashMap();
+        environments.put(Environment.CONTROLLED,
+            HARDCODED_CONTROLLED_ENVIRONMENT_PRIME);
+        environments.put(Environment.UNCONTROLLED,
+            HARDCODED_UNCONTROLLED_ENVIRONMENT_PRIME);
+
+        return environments;
     }
 
     int calculateCompressionFactor(AreasMap areas,
-        EnvironmentsHashMap environments, BigInteger modulus) {
+        EnvironmentsMap environments, BigInteger modulus) {
         BigInteger largestPossibleVote = findLargestAreaPrime(areas)
                                              .multiply(findLargestEnvironmentPrime(
                     environments)).multiply(findLargestPartyPrime())
@@ -108,8 +122,7 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
         return areas.findLargestPrime();
     }
 
-    private BigInteger findLargestEnvironmentPrime(
-        EnvironmentsHashMap environments) {
+    private BigInteger findLargestEnvironmentPrime(EnvironmentsMap environments) {
         return BigInteger.ONE;
     }
 
@@ -156,8 +169,7 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
     private void checkCleansedVotesAgainstEncryptedVotes(
         CleansedVotesList cleansedEncryptedVotes,
         EncryptedVotesMap encryptedVotes, AreasMap areas,
-        EnvironmentsHashMap environments, int compressionFactor,
-        BigInteger modulus) {
+        EnvironmentsMap environments, int compressionFactor, BigInteger modulus) {
         int noOfCleansedVotesChecked = 0;
 
         for (CleansedVote cleansedVote : cleansedEncryptedVotes) {
@@ -256,8 +268,8 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
 
     private void checkCleansedVoteAgainstEncryptedVotes(
         CleansedVote cleansedVote, EncryptedVotesMap encryptedVotes,
-        AreasMap areas, EnvironmentsHashMap environments,
-        int compressionFactor, BigInteger modulus) {
+        AreasMap areas, EnvironmentsMap environments, int compressionFactor,
+        BigInteger modulus) {
         EncryptedVoteRetentionCounter counter = encryptedVotes.findMatchForCleansedVote(cleansedVote);
 
         if ((counter == null) ||
