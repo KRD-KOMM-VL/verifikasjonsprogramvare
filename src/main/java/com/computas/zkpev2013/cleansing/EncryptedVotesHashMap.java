@@ -104,15 +104,8 @@ public class EncryptedVotesHashMap extends HashMap<String, EncryptedVoteRetentio
     private String calculateKeyFromKeyParts(
         ElGamalEncryptionTuple elGamalEncryptionTuple, String contestId,
         String electionId, String electionEventId) {
-        StringBuffer messageComponentsWithComma = new StringBuffer();
-
-        for (BigInteger messageComponent : elGamalEncryptionTuple.getMessageComponents()) {
-            messageComponentsWithComma.append(messageComponent).append(COMMA);
-        }
-
-        return elGamalEncryptionTuple.getPublicKeyComponent() + COMMA +
-        messageComponentsWithComma.toString() + contestId + COMMA + electionId +
-        COMMA + electionEventId;
+        return elGamalEncryptionTuple.getPublicKeyComponent() + contestId +
+        COMMA + electionId + COMMA + electionEventId;
     }
 
     private String calculateKeyFromCleansedEncryptedVote(

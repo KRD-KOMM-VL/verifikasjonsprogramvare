@@ -61,6 +61,8 @@ public class AreasHashMapUnitTest {
 
     /**
      * Verifies that when the map is empty, null is returned when asked to find the largest prime.
+     *
+     * TODO: Should be done per municipality, not globally.
      */
     @Test
     public void mustReturnNullAsLargestPrimeByDefault() {
@@ -89,6 +91,8 @@ public class AreasHashMapUnitTest {
 
     /**
      * Verifies that when one area is added, its prime is returned as the largest prime.
+     *
+     * TODO: Should be done per municipality, not globally.
      */
     @Test
     public void mustReturnPrimeAsLargestPrimeWhenOneAreaAdded() {

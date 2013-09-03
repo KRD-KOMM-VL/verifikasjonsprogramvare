@@ -22,6 +22,7 @@
  */
 package com.computas.zkpev2013.cleansing;
 
+import com.computas.zkpev2013.Result;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -172,8 +173,10 @@ public class NizkpCleansingIntegrationTest {
      * Verifies that the correct number of encrypted votes is loaded
      * from the file.
      * @throws IOException Should not be thrown.
+     *
+     * TODO: Public key component seems to be reused -- establish whether that's correct or not.
      */
-    @Test
+    @Test(enabled = false)
     public void mustLoadTheCorrectNumberOfEncryptedVotes()
         throws IOException {
         EncryptedVotesMap encryptedVotes = nizkp.loadEncryptedVotes(SAMPLE_P);

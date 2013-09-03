@@ -39,7 +39,6 @@ import java.math.BigInteger;
  * Memory consumption test for the encrypted votes. The memory consumption
  * for these classes is substantial since they retain the ElGamal encryption
  * pairs.
- *
  */
 public class EncryptedVotesInEncryptedVotesHashMapMemoryConsumptionTest {
     private static final int ALLOWED_MEMORY_CONSUMPTION = 30000;

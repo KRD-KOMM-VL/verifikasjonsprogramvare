@@ -261,6 +261,8 @@ public class EncryptedVote extends CsvLineParseable {
      * @param compressionFactor The compression factor.
      * @param modulus The modulus.
      * @return A compressed ElGamal encryption tuple.
+     *
+     * TODO: compressionFactor?
      */
     public ElGamalEncryptionTuple getCompressedEncVoteOptIds(
         BigInteger areaPrime, BigInteger environmentPrime,
