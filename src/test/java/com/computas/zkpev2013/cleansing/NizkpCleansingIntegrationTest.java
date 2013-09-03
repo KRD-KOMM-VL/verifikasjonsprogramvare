@@ -54,6 +54,10 @@ public class NizkpCleansingIntegrationTest {
     private static final BigInteger SAMPLE_P = new BigInteger(
             "22519781860318881430187237378393910440433456793106883439191554045609533190204716026094503488051043531257695232100353994296431999733305913289830606623675094806877884255872439714678914992056169353692036021770097223778392105262307803104951171429150982767069700653909195647599098780046724703785991755259095912786508845222597772887203546632493935590809326329822837682361511439054458165467044490658668908755516611075852591340913731324282531411301527453756791057107929172839003743485012313000403534330922416540828874783338650662007436059441348150784982317988527563812882812455109992843656727186872083932493433216403334110087");
     private static final Object LARGEST_AREA_PRIME = new BigInteger("70309");
+    private static final Object CONTROLLED_ENVIRONMENT_PRIME = new BigInteger(
+            "211");
+    private static final Object UNCONTROLLED_ENVIRONMENT_PRIME = new BigInteger(
+            "227");
     private NizkpCleansing nizkp;
 
     /**
@@ -125,6 +129,32 @@ public class NizkpCleansingIntegrationTest {
     public void mustFindTheLargestAreaPrime() throws IOException {
         AreasMap areas = nizkp.loadAreas();
         assertEquals(nizkp.findLargestAreaPrime(areas), LARGEST_AREA_PRIME);
+    }
+
+    /**
+     * Verifies that the correct prime for the controlled environment is loaded.
+     *
+     * TODO
+     */
+    @Test(enabled = false)
+    public void mustLoadTheCorrectControlledEnvironmentPrime() {
+        EnvironmentsMap environments = nizkp.loadEnvironments();
+        assertEquals(environments.getPrime(
+                EnvironmentsMap.Environment.CONTROLLED),
+            CONTROLLED_ENVIRONMENT_PRIME);
+    }
+
+    /**
+     * Verifies that the correct prime for the uncontrolled environment is loaded.
+     *
+     * TODO
+     */
+    @Test(enabled = false)
+    public void mustLoadTheCorrectUncontrolledEnvironmentPrime() {
+        EnvironmentsMap environments = nizkp.loadEnvironments();
+        assertEquals(environments.getPrime(
+                EnvironmentsMap.Environment.UNCONTROLLED),
+            UNCONTROLLED_ENVIRONMENT_PRIME);
     }
 
     /**
