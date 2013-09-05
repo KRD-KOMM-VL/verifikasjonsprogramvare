@@ -237,6 +237,11 @@ public abstract class ZeroKnowledgeProof {
         waitForWorkersToFinish(workers);
     }
 
+    /**
+     * Adds a result to the results list.
+     *
+     * @param result The result to be added.
+     */
     public void addResult(Result result) {
         synchronized (results) {
             results.add(result);

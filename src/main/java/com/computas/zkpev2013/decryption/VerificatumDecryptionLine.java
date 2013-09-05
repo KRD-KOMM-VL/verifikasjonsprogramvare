@@ -79,15 +79,15 @@ public class VerificatumDecryptionLine extends DecryptionLine {
     @Override
     boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
         throws NoSuchAlgorithmException {
-        if (encodedVotingOptionsIdsVerificatum.size() != schnorrSignaturesVerificatum.size()) {
+        if (!lengthConsistency()) {
             return false;
         }
 
-        if (encodedVotingOptionsIdsVerificatum.size() != decryptedVotingOptionIds.length) {
-            return false;
-        }
+        boolean result = true;
 
-        for (int i = 0; i < encodedVotingOptionsIdsVerificatum.size(); i++) {
+        for (int i = 0;
+                (i < encodedVotingOptionsIdsVerificatum.size()) && result;
+                i++) {
             decryptedVotingOptionIdsProduct = new BigInteger(decryptedVotingOptionIds[i]);
             encodedVotingOptionsIdsProduct = encodedVotingOptionsIdsVerificatum.get(i);
             schnorrSignature = schnorrSignaturesVerificatum.get(i);
@@ -98,11 +98,14 @@ public class VerificatumDecryptionLine extends DecryptionLine {
             BigInteger w1 = calculateSchnorrMessageW1(p, g1, h1);
             BigInteger c1 = calculateSchnorrChallengeC1(p, g, h, w1);
 
-            if (!verifySchnorrChallenge(c1)) {
-                return false;
-            }
+            result &= verifySchnorrChallenge(c1);
         }
 
-        return true;
+        return result;
+    }
+
+    private boolean lengthConsistency() {
+        return (encodedVotingOptionsIdsVerificatum.size() == schnorrSignaturesVerificatum.size()) &&
+        (encodedVotingOptionsIdsVerificatum.size() == decryptedVotingOptionIds.length);
     }
 }

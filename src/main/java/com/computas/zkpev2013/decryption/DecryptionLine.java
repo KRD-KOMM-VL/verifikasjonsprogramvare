@@ -37,18 +37,18 @@ import java.security.NoSuchAlgorithmException;
  */
 public abstract class DecryptionLine extends CsvLineParseable {
     private static final String HASHING_ALGORITHM = "SHA-256";
-    private final String line;
     ElGamalEncryptionPair encodedVotingOptionsIdsProduct;
     String[] decryptedVotingOptionIds;
     BigInteger decryptedVotingOptionIdsProduct;
+    SchnorrSignature schnorrSignature;
+    ElGamalEncryptionTuple encodedVotingOptionsIds;
+    private final String line;
     private String electionEventId;
     private String electionId;
     private String contestId;
     private String encryptedVotingOptionsIdsString;
     private String schnorrSignatureString;
     private String decryptedVotingOptionIdsString;
-    SchnorrSignature schnorrSignature;
-    ElGamalEncryptionTuple encodedVotingOptionsIds;
 
     DecryptionLine(String line) {
         super(line);

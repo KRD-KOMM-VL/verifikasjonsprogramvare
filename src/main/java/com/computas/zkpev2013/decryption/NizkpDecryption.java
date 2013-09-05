@@ -66,12 +66,13 @@ public class NizkpDecryption extends ElGamalZkp {
     protected void parseArguments(String[] arguments) {
         checkNoOfParameters(arguments, MIN_NO_OF_PARAMETERS_ALLOWED);
 
-        setElGamalPropertiesFileName(arguments[0]);
-        setElGamalPublicKeysFileName(arguments[1]);
-        setMixingType(arguments[2]);
-        decryptionFileName = arguments[3];
+        setElGamalPropertiesFileName(arguments[ArgumentsIndex.EL_GAMAL_PROPERTIES_FILE_NAME.ordinal()]);
+        setElGamalPublicKeysFileName(arguments[ArgumentsIndex.EL_GAMAL_PUBLIC_KEYS_FILE_NAME.ordinal()]);
+        setMixingType(arguments[ArgumentsIndex.MIXING_TYPE.ordinal()]);
+        decryptionFileName = arguments[ArgumentsIndex.DECRYPTION_FILE_NAME.ordinal()];
 
-        setOptionalResultsFileName(arguments, MIN_NO_OF_PARAMETERS_ALLOWED);
+        setOptionalResultsFileName(arguments,
+            ArgumentsIndex.RESULTS_FILE_NAME.ordinal());
     }
 
     private void setMixingType(String mixingTypeString) {
@@ -120,5 +121,11 @@ public class NizkpDecryption extends ElGamalZkp {
     }
     enum MixingType {SCYTL,
         VERIFICATUM;
+    }
+    enum ArgumentsIndex {EL_GAMAL_PROPERTIES_FILE_NAME,
+        EL_GAMAL_PUBLIC_KEYS_FILE_NAME,
+        MIXING_TYPE,
+        DECRYPTION_FILE_NAME,
+        RESULTS_FILE_NAME;
     }
 }
