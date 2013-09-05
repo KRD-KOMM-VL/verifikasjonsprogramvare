@@ -56,7 +56,7 @@ public class DecryptionLineWithIncorrectProofIncidentUnitTest {
       */
     @BeforeMethod
     public void createDecryptionLineWithIncorrectProofIncident() {
-        incident = new DecryptionLineWithIncorrectProofIncident(new DecryptionLine(
+        incident = new DecryptionLineWithIncorrectProofIncident(new ScytlDecryptionLine(
                     SAMPLE_LINE));
     }
 
@@ -100,7 +100,7 @@ public class DecryptionLineWithIncorrectProofIncidentUnitTest {
     public void mustBeEqualToAnotherDecryptionLineWithIncorrectProofIncidentWithTheSameLine() {
         assertEquals(incident,
             new DecryptionLineWithIncorrectProofIncident(
-                new DecryptionLine(SAMPLE_LINE)));
+                new ScytlDecryptionLine(SAMPLE_LINE)));
     }
 
     /**
@@ -110,7 +110,7 @@ public class DecryptionLineWithIncorrectProofIncidentUnitTest {
     public void mustHaveSameHashCodeAsAnotherDecryptionLineWithIncorrectProofIncidentWithTheSameLine() {
         assertEquals(incident.hashCode(),
             new DecryptionLineWithIncorrectProofIncident(
-                new DecryptionLine(SAMPLE_LINE)).hashCode());
+                new ScytlDecryptionLine(SAMPLE_LINE)).hashCode());
     }
 
     /**
@@ -120,7 +120,7 @@ public class DecryptionLineWithIncorrectProofIncidentUnitTest {
     public void mustNotBeEqualToAnotherDecryptionLineWithIncorrectProofIncidentWithAnotherLine() {
         assertFalse(incident.equals(
                 new DecryptionLineWithIncorrectProofIncident(
-                    new DecryptionLine(OTHER_SAMPLE_LINE))));
+                    new ScytlDecryptionLine(OTHER_SAMPLE_LINE))));
     }
 
     /**
@@ -129,7 +129,7 @@ public class DecryptionLineWithIncorrectProofIncidentUnitTest {
     @Test
     public void mustNotHaveSameHashCodeAsAnotherDecryptionLineWithIncorrectProofIncidentWithAnotherLine() {
         assertFalse(incident.hashCode() == new DecryptionLineWithIncorrectProofIncident(
-                new DecryptionLine(OTHER_SAMPLE_LINE)).hashCode());
+                new ScytlDecryptionLine(OTHER_SAMPLE_LINE)).hashCode());
     }
 
     /**

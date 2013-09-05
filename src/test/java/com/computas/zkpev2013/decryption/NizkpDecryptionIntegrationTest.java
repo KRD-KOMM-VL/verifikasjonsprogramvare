@@ -37,6 +37,7 @@ import java.io.IOException;
 public class NizkpDecryptionIntegrationTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Foo";
     private static final String ELGAMAL_PUBLIC_KEY_FILE_NAME = "Bar";
+    private static final String MIXING_TYPE_NAME = "SCYTL";
     private static final String DECRYPTION_FILE_NAME = "NizkpDecryption2013IntegrationTestDecryptionFile.csv";
     private static final String RESULTS_LIST_FILE_NAME = "NizkpDecryption2013IntegrationTestResultsList.csv";
     private static final int NO_OF_DECRYPTION_LINES_IN_SAMPLE_DECRYPTION_FILE = 16;
@@ -50,7 +51,7 @@ public class NizkpDecryptionIntegrationTest {
     public void createNizkp() throws IOException {
         nizkp = new NizkpDecryption(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, ELGAMAL_PUBLIC_KEY_FILE_NAME,
-                    DECRYPTION_FILE_NAME
+                    MIXING_TYPE_NAME, DECRYPTION_FILE_NAME
                 });
     }
 
@@ -72,7 +73,8 @@ public class NizkpDecryptionIntegrationTest {
     public void resultsListMustHaveAWriterIfAFileNameIsSpecified() {
         ZeroKnowledgeProof nizkpWithResultsFile = new NizkpDecryption(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, ELGAMAL_PUBLIC_KEY_FILE_NAME,
-                    DECRYPTION_FILE_NAME, RESULTS_LIST_FILE_NAME
+                    MIXING_TYPE_NAME, DECRYPTION_FILE_NAME,
+                    RESULTS_LIST_FILE_NAME
                 });
         nizkpWithResultsFile.openResultsFileIfRequired();
         assertTrue(nizkpWithResultsFile.getResults().hasWriter());

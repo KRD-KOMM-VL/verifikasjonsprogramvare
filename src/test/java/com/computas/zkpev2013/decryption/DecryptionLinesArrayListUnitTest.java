@@ -22,6 +22,7 @@
  */
 package com.computas.zkpev2013.decryption;
 
+import com.computas.zkpev2013.decryption.NizkpDecryption.MixingType;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -40,7 +41,7 @@ public class DecryptionLinesArrayListUnitTest {
      */
     @BeforeMethod
     public void createDecryptionLinesArrayList() {
-        list = new DecryptionLinesArrayList();
+        list = new DecryptionLinesArrayList(MixingType.SCYTL);
     }
 
     /**
@@ -122,8 +123,8 @@ public class DecryptionLinesArrayListUnitTest {
 
     private void addDecryptionLines(int numberOfDecryptionLines) {
         for (int i = 0; i < numberOfDecryptionLines; i++) {
-            list.add(new DecryptionLine(
-                    DecryptionLineUnitTest.SAMPLE_LINE_WITH_CORRECT_PROOF));
+            list.add(new ScytlDecryptionLine(
+                    ScytlDecryptionLineUnitTest.SAMPLE_LINE_WITH_CORRECT_PROOF));
         }
     }
 }

@@ -35,9 +35,10 @@ import java.security.NoSuchAlgorithmException;
  * decryption in the counting server.
  */
 public class NizkpDecryption extends ElGamalZkp {
-    private static final int MIN_NO_OF_PARAMETERS_ALLOWED = 3;
+    private static final int MIN_NO_OF_PARAMETERS_ALLOWED = 4;
     private String decryptionFileName;
     private DecryptionLinesArrayList decryptionLines;
+    private MixingType mixingType;
 
     NizkpDecryption(String[] arguments) {
         super(arguments);
@@ -67,9 +68,14 @@ public class NizkpDecryption extends ElGamalZkp {
 
         setElGamalPropertiesFileName(arguments[0]);
         setElGamalPublicKeysFileName(arguments[1]);
-        decryptionFileName = arguments[2];
+        setMixingType(arguments[2]);
+        decryptionFileName = arguments[3];
 
         setOptionalResultsFileName(arguments, MIN_NO_OF_PARAMETERS_ALLOWED);
+    }
+
+    private void setMixingType(String mixingTypeString) {
+        this.mixingType = MixingType.valueOf(mixingTypeString);
     }
 
     @Override
@@ -97,7 +103,7 @@ public class NizkpDecryption extends ElGamalZkp {
         LOGGER.info(String.format("Loading the decryption lines from %s.",
                 decryptionFileName));
 
-        decryptionLines = new DecryptionLinesArrayList();
+        decryptionLines = new DecryptionLinesArrayList(mixingType);
         addFileContentToCollection(decryptionFileName,
             (Collection) decryptionLines);
         LOGGER.info(String.format(
@@ -111,5 +117,8 @@ public class NizkpDecryption extends ElGamalZkp {
 
     DecryptionLinesList getNextDecryptionLineBatch() {
         return decryptionLines.popBatch(LOGGER);
+    }
+    enum MixingType {SCYTL,
+        VERIFICATUM;
     }
 }

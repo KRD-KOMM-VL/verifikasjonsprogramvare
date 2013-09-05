@@ -35,7 +35,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Unit test against a decryption line dealing with the zero-knowledge proof specifically.
  */
-public class DecryptionLineProofUnitTest {
+public class ScytlDecryptionLineProofUnitTest {
     private static final String COMMA = ",";
     private static final String ELECTION_EVENT_ID = "730071";
     private static final String ELECTION_ID = "01";
@@ -79,7 +79,7 @@ public class DecryptionLineProofUnitTest {
      */
     @BeforeMethod
     public void createDecryptionLine() {
-        decryptionLine = new DecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF);
+        decryptionLine = new ScytlDecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF);
         decryptionLine.setEncodedVotingOptionIdsProduct(SAMPLE_P);
         decryptionLine.calculateDecryptedVotingOptionIdsProduct(SAMPLE_P);
     }
@@ -150,7 +150,7 @@ public class DecryptionLineProofUnitTest {
     @Test
     public void mustVerifyIncorrectProofAsIncorrect()
         throws NoSuchAlgorithmException {
-        assertFalse(new DecryptionLine(SAMPLE_LINE_WITH_INCORRECT_PROOF).verifyProof(
+        assertFalse(new ScytlDecryptionLine(SAMPLE_LINE_WITH_INCORRECT_PROOF).verifyProof(
                 SAMPLE_P, SAMPLE_G, SAMPLE_H));
     }
 
@@ -161,7 +161,7 @@ public class DecryptionLineProofUnitTest {
     @Test
     public void mustVerifyOptimizedCorrectProofAsCorrect()
         throws NoSuchAlgorithmException {
-        assertTrue(new DecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF).verifyProof(
+        assertTrue(new ScytlDecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF).verifyProof(
                 SAMPLE_P, SAMPLE_G, SAMPLE_H));
     }
 
@@ -172,7 +172,7 @@ public class DecryptionLineProofUnitTest {
     @Test
     public void mustVerifyOptimizedIncorrectProofAsIncorrect()
         throws NoSuchAlgorithmException {
-        assertFalse(new DecryptionLine(SAMPLE_LINE2_WITH_INCORRECT_PROOF).verifyProof(
+        assertFalse(new ScytlDecryptionLine(SAMPLE_LINE2_WITH_INCORRECT_PROOF).verifyProof(
                 SAMPLE_P, SAMPLE_G, SAMPLE_H));
     }
 }
