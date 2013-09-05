@@ -71,6 +71,12 @@ public class ElGamalZkpIntegrationTest {
                     protected void run() throws Exception {
                         // No implementation needed as part of the integration test.
                     }
+
+                    @Override
+                    protected Thread createWorker() {
+                        // No implementation needed as part of the integration test.
+                        return null;
+                    }
                 };
     }
 

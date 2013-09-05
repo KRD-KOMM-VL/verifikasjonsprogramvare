@@ -22,6 +22,7 @@
  */
 package com.computas.zkpev2013.decryption;
 
+import com.computas.zkpev2013.ZeroKnowledgeProof;
 import static org.testng.Assert.*;
 
 import org.testng.annotations.BeforeMethod;
@@ -69,7 +70,7 @@ public class NizkpDecryptionIntegrationTest {
      */
     @Test
     public void resultsListMustHaveAWriterIfAFileNameIsSpecified() {
-        NizkpDecryption nizkpWithResultsFile = new NizkpDecryption(new String[] {
+        ZeroKnowledgeProof nizkpWithResultsFile = new NizkpDecryption(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, ELGAMAL_PUBLIC_KEY_FILE_NAME,
                     DECRYPTION_FILE_NAME, RESULTS_LIST_FILE_NAME
                 });

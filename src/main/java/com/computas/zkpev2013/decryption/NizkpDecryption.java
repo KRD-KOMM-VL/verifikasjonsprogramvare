@@ -24,7 +24,6 @@ package com.computas.zkpev2013.decryption;
 
 import com.computas.zkpev2013.Collection;
 import com.computas.zkpev2013.ElGamalZkp;
-import com.computas.zkpev2013.Result;
 
 import java.io.IOException;
 
@@ -81,56 +80,13 @@ public class NizkpDecryption extends ElGamalZkp {
         calculateElGamalAggregateKey();
 
         loadDecryptionLines();
-        verifyDecryptionLineProofs();
+        runWorkers();
         closeResultsFileIfNeeded();
     }
 
-    private void verifyDecryptionLineProofs() throws NoSuchAlgorithmException {
-        Thread[] workers = setUpWorkers();
-        waitForWorkersToFinish(workers);
-    }
-
-    private Thread[] setUpWorkers() {
-        return setUpWorkers(getNoOfWorkers());
-    }
-
-    private int getNoOfWorkers() {
-        return Runtime.getRuntime().availableProcessors();
-    }
-
-    private Thread[] setUpWorkers(int noOfWorkers) {
-        LOGGER.info(String.format("Setting up %d worker threads.", noOfWorkers));
-
-        Thread[] workers = new Thread[noOfWorkers];
-
-        for (int i = 0; i < noOfWorkers; i++) {
-            workers[i] = setUpWorker();
-        }
-
-        return workers;
-    }
-
-    private Thread setUpWorker() {
-        Thread worker = new DecryptionVerificationWorker(this, getP(), getG(),
-                getH());
-        worker.start();
-
-        return worker;
-    }
-
-    private void waitForWorkersToFinish(Thread[] workers) {
-        for (Thread worker : workers) {
-            tryToWaitForWorker(worker);
-        }
-    }
-
-    private void tryToWaitForWorker(Thread worker) {
-        try {
-            worker.join();
-        } catch (InterruptedException e) {
-            LOGGER.error("An exception occured while trying to wait for a worker thread to finish",
-                e);
-        }
+    @Override
+    protected Thread createWorker() {
+        return new DecryptionVerificationWorker(this, getP(), getG(), getH());
     }
 
     String getDecryptionFileName() {
@@ -155,9 +111,5 @@ public class NizkpDecryption extends ElGamalZkp {
 
     DecryptionLinesList getNextDecryptionLineBatch() {
         return decryptionLines.popBatch(LOGGER);
-    }
-
-    void addResult(Result result) {
-        results.add(result);
     }
 }

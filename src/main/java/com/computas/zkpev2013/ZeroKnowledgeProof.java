@@ -34,6 +34,8 @@ import java.io.InputStreamReader;
 
 import java.net.URL;
 
+import java.security.NoSuchAlgorithmException;
+
 
 /**
  * Abstract class supporting zero-knowledge proofs.
@@ -188,11 +190,64 @@ public abstract class ZeroKnowledgeProof {
         }
     }
 
+    private Thread[] setUpWorkers() {
+        return setUpWorkers(getNoOfWorkers());
+    }
+
+    private Thread[] setUpWorkers(int noOfWorkers) {
+        LOGGER.info(String.format("Setting up %d worker threads.", noOfWorkers));
+
+        Thread[] workers = new Thread[noOfWorkers];
+
+        for (int i = 0; i < noOfWorkers; i++) {
+            workers[i] = setUpWorker();
+        }
+
+        return workers;
+    }
+
+    private int getNoOfWorkers() {
+        return Runtime.getRuntime().availableProcessors();
+    }
+
+    private Thread setUpWorker() {
+        Thread worker = createWorker();
+        worker.start();
+
+        return worker;
+    }
+
+    protected abstract Thread createWorker();
+
+    private void waitForWorkersToFinish(Thread[] workers) {
+        for (Thread worker : workers) {
+            tryToWaitForWorker(worker);
+        }
+    }
+
+    private void tryToWaitForWorker(Thread worker) {
+        try {
+            worker.join();
+        } catch (InterruptedException e) {
+            LOGGER.error("An exception occured while trying to wait for a worker thread to finish",
+                e);
+        }
+    }
+
+    protected void runWorkers() {
+        Thread[] workers = setUpWorkers();
+        waitForWorkersToFinish(workers);
+    }
+
+    public synchronized void addResult(Result result) {
+        results.add(result);
+    }
+
     /**
-     * Returns the logger.
-     *
-     * @return The logger.
-     */
+    * Returns the logger.
+    *
+    * @return The logger.
+    */
     public static Logger getLogger() {
         return LOGGER;
     }
