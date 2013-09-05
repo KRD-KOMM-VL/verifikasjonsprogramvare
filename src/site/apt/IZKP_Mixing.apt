@@ -323,7 +323,7 @@ InvalidMixingDataRecordIncident,a13868a6b6fd4b78a6b65e3840be9ad6,Input votes inv
   * Create and set-up the user <<<usertestmxsmanager>>> as follows:
 
 ---------------------------------------------------------------
-$ sudo -u postgres createuser -P usertestmxsmanager
+$ sudo -u postgres createuser -P usertestmxsmanager --interactive
 Enter password for new role: 
 Enter it again: 
 Shall the new role be a superuser? (y/n) n
@@ -346,9 +346,9 @@ Shall the new role be allowed to create more new roles? (y/n) n
 ** Re-restoring the Database
 
   You can re-restore a database, i.e. restore the database to the same
-  PostgreSQL database instance by dropping the database instance first (<<<sudo -u postgres dropdb mxmanagertest>>>), 
-  re-creating (<<<sudo -u postgres createdb mxmanagertest>>>) it and then
-  restoring it once again from the dump (<<<sudo -u postgres psql mxmanagertest -f mxsmdump1>>> or <<<sudo -u postgres ps_restore -d mxmanagertest mxsmdump1>>>).
+  PostgreSQL database instance by dropping the database instance first (<<<sudo -u postgres dropdb mxmanagertest2013>>>), 
+  re-creating (<<<sudo -u postgres createdb mxmanagertest2013>>>) it and then
+  restoring it once again from the dump (<<<sudo -u postgres psql mxmanagertest2013 -f mxsmdump1>>> or <<<sudo -u postgres ps_restore -d mxmanagertest2013 mxsmdump1>>>).
     
 ** pgAdmin III
 

@@ -26,17 +26,23 @@ import com.computas.zkpev2013.ElGamalZkp;
 
 import java.io.IOException;
 
-import java.sql.*;
+import java.security.NoSuchAlgorithmException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import java.util.Properties;
 
 
 /**
- * Class implementing the interactive zero-knowledge proof for the mixing process.
+ * Class implementing the interactive zero-knowledge proof for the mixing
+ * process.
  */
 public class IzkpMixing extends ElGamalZkp {
+    private static final int QUERY_FETCH_SIZE = 50;
     private static final int MIN_NO_OF_PARAMETERS_ALLOWED = 3;
     private static final String DATABASE_NAME_KEY = "databasename";
     private static final String USERNAME_KEY = "username";
@@ -45,6 +51,7 @@ public class IzkpMixing extends ElGamalZkp {
     private String databaseName;
     private String username;
     private String password;
+    private ResultSet resultSet;
 
     protected IzkpMixing(String[] arguments) {
         super(arguments);
@@ -53,7 +60,8 @@ public class IzkpMixing extends ElGamalZkp {
     /**
      * Main entry method.
      *
-     * @param arguments The arguments to be passed to the constructor.
+     * @param arguments
+     *            The arguments to be passed to the constructor.
      */
     public static void main(String[] arguments) {
         try {
@@ -87,96 +95,68 @@ public class IzkpMixing extends ElGamalZkp {
         calculateElGamalAggregateKey();
         loadDatabaseProperties();
 
-        verifyMixingProofs();
+        openDatabaseAndRunWorkers();
         closeResultsFileIfNeeded();
     }
 
-    private void verifyMixingProofs() throws SQLException {
-        List<Thread> workers = setUpWorkers();
-        waitForWorkersToFinish(workers);
-    }
-
-    private List<Thread> setUpWorkers() throws SQLException {
-        List<Thread> workers = new ArrayList<Thread>();
-
-        openDatabaseAndAddWorkers(workers);
-
-        LOGGER.info(String.format("%d worker threads set up.", workers.size()));
-
-        return workers;
-    }
-
-    private void openDatabaseAndAddWorkers(List<Thread> workers) {
+    private void openDatabaseAndRunWorkers() {
         try {
-            tryToOpenDatabaseAndAddWorkers(workers);
+            tryToOpenDatabaseAndRunWorkers();
         } catch (ClassNotFoundException e) {
             LOGGER.error("Class missing exception while trying to connect to the database.",
                 e);
         } catch (SQLException e) {
             LOGGER.error("SQL exception while trying to read the mixing data from the database.",
                 e);
+        } catch (NoSuchAlgorithmException e) {
+            LOGGER.error("Algorithm missing exception while trying to read the mixing data from the database.",
+                e);
         }
     }
 
-    private void tryToOpenDatabaseAndAddWorkers(List<Thread> workers)
-        throws ClassNotFoundException, SQLException {
+    private void tryToOpenDatabaseAndRunWorkers()
+        throws ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         Class.forName("org.postgresql.Driver");
 
         Connection db = null;
         Statement sql = null;
-        ResultSet results = null;
 
         try {
             db = DriverManager.getConnection("jdbc:postgresql:" +
                     getDatabaseName(), getUsername(), getPassword());
+            db.setAutoCommit(false);
             sql = db.createStatement();
-            results = sql.executeQuery(
+            sql.setFetchSize(QUERY_FETCH_SIZE);
+            resultSet = sql.executeQuery(
                     "SELECT mixingdata.uuid AS muuid, auditdata.uuid AS auuid, inputvotes, outputvotes, votegroupaffsin, votegroupaffsout, encreencproofs FROM mixingdata INNER JOIN auditdata ON mixingdata.processid = auditdata.processid AND mixingdata.nodeid = auditdata.nodeid WHERE mixingdata.isinput IS FALSE");
-            addWorkersFromResultSet(workers, results);
+            runWorkers();
         } finally {
-            results.close();
+            resultSet.close();
             sql.close();
             db.close();
         }
     }
 
-    private void addWorkersFromResultSet(List<Thread> workers, ResultSet results)
+    MixingVerificationData getMixingVerificationData()
         throws SQLException {
-        if (results != null) {
-            while (results.next()) {
-                workers.add(setUpWorkerForCurrentResult(results));
+        if (resultSet != null) {
+            synchronized (resultSet) {
+                if (resultSet.next()) {
+                    MixingVerificationData data = new MixingVerificationData(this);
+                    data.setMixingData(resultSet.getString("muuid"),
+                        resultSet.getBytes("inputvotes"),
+                        resultSet.getBytes("outputvotes"));
+                    data.setAuditData(resultSet.getString("auuid"),
+                        resultSet.getBytes("votegroupaffsin"),
+                        resultSet.getBytes("votegroupaffsout"),
+                        resultSet.getBytes("encreencproofs"));
+
+                    return data;
+                }
             }
         }
-    }
 
-    private Thread setUpWorkerForCurrentResult(ResultSet resultSet)
-        throws SQLException {
-        MixingVerificationWorker worker = new MixingVerificationWorker(results,
-                getP(), getG(), getH());
-        worker.setMixingData(resultSet.getString("muuid"),
-            resultSet.getBytes("inputvotes"), resultSet.getBytes("outputvotes"));
-        worker.setAuditData(resultSet.getString("auuid"),
-            resultSet.getBytes("votegroupaffsin"),
-            resultSet.getBytes("votegroupaffsout"),
-            resultSet.getBytes("encreencproofs"));
-        worker.start();
-
-        return worker;
-    }
-
-    private void waitForWorkersToFinish(List<Thread> workers) {
-        for (Thread worker : workers) {
-            tryToWaitForWorker(worker);
-        }
-    }
-
-    private void tryToWaitForWorker(Thread worker) {
-        try {
-            worker.join();
-        } catch (InterruptedException e) {
-            LOGGER.error("An exception occured while trying to wait for a worker thread to finish",
-                e);
-        }
+        return null;
     }
 
     String getDatabasePropertiesFileName() {
@@ -200,5 +180,10 @@ public class IzkpMixing extends ElGamalZkp {
 
     String getPassword() {
         return password;
+    }
+
+    @Override
+    protected Thread createWorker() {
+        return new MixingVerificationWorker(this, getP(), getG(), getH());
     }
 }

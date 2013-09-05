@@ -62,6 +62,7 @@ public class EncryptedVote extends CsvLineParseable {
     private String votingReceipt;
     private String voterAreaId;
     private ElGamalEncryptionTuple encVoteOptIds;
+    private String channelId;
 
     /**
      * Constructs an encrypted vote from a line read in from an encrypted votes file.
@@ -128,6 +129,7 @@ public class EncryptedVote extends CsvLineParseable {
                 EncryptedVoteCsvIndex.VOTER_AREA_ID);
         encVoteOptIds = getAttributeAsElGamalEncryptionTuple(attributes,
                 EncryptedVoteCsvIndex.ENC_GAMMA_AND_VOTE_OPT_IDS);
+        channelId = getAttribute(attributes, EncryptedVoteCsvIndex.CHANNEL_ID);
 
         byte[][] encGammaAndVoteOptIds = getAttributeAsByteArrayArray(attributes,
                 EncryptedVoteCsvIndex.ENC_GAMMA_AND_VOTE_OPT_IDS);
@@ -254,15 +256,17 @@ public class EncryptedVote extends CsvLineParseable {
     /**
      * Returns a compressed ElGamal encryption tuple.
      *
-     * @param modulus Modulus.
-     * @param areaPrime Prime.
+     * @param areaPrime The area prime.
+     * @param environmentPrime The environment prime.
+     * @param compressionFactor The compression factor.
+     * @param modulus The modulus.
      * @return A compressed ElGamal encryption tuple.
      *
-     * TODO
+     * TODO: compressionFactor?
      */
     public ElGamalEncryptionTuple getCompressedEncVoteOptIds(
-        int compressionFactor, BigInteger areaPrime,
-        BigInteger environmentPrime, BigInteger modulus) {
+        BigInteger areaPrime, BigInteger environmentPrime,
+        int compressionFactor, BigInteger modulus) {
         return new ElGamalEncryptionTuple(encVoteOptIds.getPublicKeyComponent(),
             compressMessageComponents(encVoteOptIds.getMessageComponents(),
                 areaPrime, environmentPrime, modulus));
@@ -290,6 +294,14 @@ public class EncryptedVote extends CsvLineParseable {
     */
     public ElGamalEncryptionTuple getEncVoteOptIds() {
         return encVoteOptIds;
+    }
+
+    /**
+     * Returns the channel ID.
+     * @return The channel ID.
+     */
+    public String getChannelId() {
+        return channelId;
     }
 
     /**

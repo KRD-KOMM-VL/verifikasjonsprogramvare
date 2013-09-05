@@ -24,7 +24,6 @@ package com.computas.zkpev2013.decryption;
 
 import com.computas.zkpev2013.Collection;
 import com.computas.zkpev2013.ElGamalZkp;
-import com.computas.zkpev2013.Result;
 
 import java.io.IOException;
 
@@ -36,9 +35,10 @@ import java.security.NoSuchAlgorithmException;
  * decryption in the counting server.
  */
 public class NizkpDecryption extends ElGamalZkp {
-    private static final int MIN_NO_OF_PARAMETERS_ALLOWED = 3;
+    private static final int MIN_NO_OF_PARAMETERS_ALLOWED = 4;
     private String decryptionFileName;
     private DecryptionLinesArrayList decryptionLines;
+    private MixingType mixingType;
 
     NizkpDecryption(String[] arguments) {
         super(arguments);
@@ -66,11 +66,17 @@ public class NizkpDecryption extends ElGamalZkp {
     protected void parseArguments(String[] arguments) {
         checkNoOfParameters(arguments, MIN_NO_OF_PARAMETERS_ALLOWED);
 
-        setElGamalPropertiesFileName(arguments[0]);
-        setElGamalPublicKeysFileName(arguments[1]);
-        decryptionFileName = arguments[2];
+        setElGamalPropertiesFileName(arguments[ArgumentsIndex.EL_GAMAL_PROPERTIES_FILE_NAME.ordinal()]);
+        setElGamalPublicKeysFileName(arguments[ArgumentsIndex.EL_GAMAL_PUBLIC_KEYS_FILE_NAME.ordinal()]);
+        setMixingType(arguments[ArgumentsIndex.MIXING_TYPE.ordinal()]);
+        decryptionFileName = arguments[ArgumentsIndex.DECRYPTION_FILE_NAME.ordinal()];
 
-        setOptionalResultsFileName(arguments, MIN_NO_OF_PARAMETERS_ALLOWED);
+        setOptionalResultsFileName(arguments,
+            ArgumentsIndex.RESULTS_FILE_NAME.ordinal());
+    }
+
+    private void setMixingType(String mixingTypeString) {
+        this.mixingType = MixingType.valueOf(mixingTypeString);
     }
 
     @Override
@@ -81,56 +87,13 @@ public class NizkpDecryption extends ElGamalZkp {
         calculateElGamalAggregateKey();
 
         loadDecryptionLines();
-        verifyDecryptionLineProofs();
+        runWorkers();
         closeResultsFileIfNeeded();
     }
 
-    private void verifyDecryptionLineProofs() throws NoSuchAlgorithmException {
-        Thread[] workers = setUpWorkers();
-        waitForWorkersToFinish(workers);
-    }
-
-    private Thread[] setUpWorkers() {
-        return setUpWorkers(getNoOfWorkers());
-    }
-
-    private int getNoOfWorkers() {
-        return Runtime.getRuntime().availableProcessors();
-    }
-
-    private Thread[] setUpWorkers(int noOfWorkers) {
-        LOGGER.info(String.format("Setting up %d worker threads.", noOfWorkers));
-
-        Thread[] workers = new Thread[noOfWorkers];
-
-        for (int i = 0; i < noOfWorkers; i++) {
-            workers[i] = setUpWorker();
-        }
-
-        return workers;
-    }
-
-    private Thread setUpWorker() {
-        Thread worker = new DecryptionVerificationWorker(this, getP(), getG(),
-                getH());
-        worker.start();
-
-        return worker;
-    }
-
-    private void waitForWorkersToFinish(Thread[] workers) {
-        for (Thread worker : workers) {
-            tryToWaitForWorker(worker);
-        }
-    }
-
-    private void tryToWaitForWorker(Thread worker) {
-        try {
-            worker.join();
-        } catch (InterruptedException e) {
-            LOGGER.error("An exception occured while trying to wait for a worker thread to finish",
-                e);
-        }
+    @Override
+    protected Thread createWorker() {
+        return new DecryptionVerificationWorker(this, getP(), getG(), getH());
     }
 
     String getDecryptionFileName() {
@@ -141,7 +104,7 @@ public class NizkpDecryption extends ElGamalZkp {
         LOGGER.info(String.format("Loading the decryption lines from %s.",
                 decryptionFileName));
 
-        decryptionLines = new DecryptionLinesArrayList();
+        decryptionLines = new DecryptionLinesArrayList(mixingType);
         addFileContentToCollection(decryptionFileName,
             (Collection) decryptionLines);
         LOGGER.info(String.format(
@@ -156,8 +119,13 @@ public class NizkpDecryption extends ElGamalZkp {
     DecryptionLinesList getNextDecryptionLineBatch() {
         return decryptionLines.popBatch(LOGGER);
     }
-
-    void addResult(Result result) {
-        results.add(result);
+    enum MixingType {SCYTL,
+        VERIFICATUM;
+    }
+    enum ArgumentsIndex {EL_GAMAL_PROPERTIES_FILE_NAME,
+        EL_GAMAL_PUBLIC_KEYS_FILE_NAME,
+        MIXING_TYPE,
+        DECRYPTION_FILE_NAME,
+        RESULTS_FILE_NAME;
     }
 }

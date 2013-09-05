@@ -26,29 +26,23 @@ import com.computas.zkpev2013.CsvLineParseable;
 import com.computas.zkpev2013.ElGamalEncryptionPair;
 import com.computas.zkpev2013.ElGamalEncryptionTuple;
 
-import org.opensaml.xml.util.Base64;
-
 import java.math.BigInteger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import java.util.ArrayList;
-
 
 /**
  * Domain object holding all relevant information about a decryption line.
  */
-public class DecryptionLine extends CsvLineParseable {
+public abstract class DecryptionLine extends CsvLineParseable {
     private static final String HASHING_ALGORITHM = "SHA-256";
+    ElGamalEncryptionPair encodedVotingOptionsIdsProduct;
+    String[] decryptedVotingOptionIds;
+    BigInteger decryptedVotingOptionIdsProduct;
+    SchnorrSignature schnorrSignature;
+    ElGamalEncryptionTuple encodedVotingOptionsIds;
     private final String line;
-    private ElGamalEncryptionTuple encodedVotingOptionsIds;
-    private ArrayList<ElGamalEncryptionPair> encodedVotingOptionsIdsVerificatum;
-    private ElGamalEncryptionPair encodedVotingOptionsIdsProduct;
-    private SchnorrSignature schnorrSignature;
-    private ArrayList<SchnorrSignature> schnorrSignaturesVerificatum;
-    private String[] decryptedVotingOptionIds;
-    private BigInteger decryptedVotingOptionIdsProduct;
     private String electionEventId;
     private String electionId;
     private String contestId;
@@ -58,11 +52,6 @@ public class DecryptionLine extends CsvLineParseable {
 
     DecryptionLine(String line) {
         super(line);
-        this.line = line;
-    }
-
-    DecryptionLine(String line, String mixingMode) {
-        super(line, mixingMode);
         this.line = line;
     }
 
@@ -124,12 +113,8 @@ public class DecryptionLine extends CsvLineParseable {
         electionId = getAttribute(attributes, DecryptionLineCsvIndex.ELECTION_ID);
         contestId = getAttribute(attributes, DecryptionLineCsvIndex.CONTEST_ID);
 
-        if (mixingMode.equals("default")) {
-            encodedVotingOptionsIds = getAttributeAsElGamalEncryptionTuple(attributes,
-                    DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
-        } else if (mixingMode.equals("verificatum")) {
-            readEncodedVotingOptionsIdsVerificatum(attributes);
-        }
+        setEncodedVotionOptionsIds(attributes,
+            DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
 
         encryptedVotingOptionsIdsString = getAttribute(attributes,
                 DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
@@ -137,46 +122,20 @@ public class DecryptionLine extends CsvLineParseable {
                 DecryptionLineCsvIndex.DEC_VOTE_OPT_IDS_PROD);
         decryptedVotingOptionIds = decryptedVotingOptionIdsString.split("#");
 
-        if (mixingMode.equals("default")) {
-            schnorrSignature = new SchnorrSignature(getAttributeAsByteArray(
-                        attributes, DecryptionLineCsvIndex.SIGNATURE));
-        } else if (mixingMode.equals("verificatum")) {
-            readSchnorrSignaturesVerificatum(attributes);
-        }
+        setSchnorrSignature(attributes, DecryptionLineCsvIndex.SIGNATURE);
 
         schnorrSignatureString = getAttribute(attributes,
                 DecryptionLineCsvIndex.SIGNATURE);
     }
 
-    void readEncodedVotingOptionsIdsVerificatum(String[] attributes) {
-        String[] encodedVotingOptionIdsStrings = getAttributeAsString(attributes,
-                DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS).split("#");
-        BigInteger publicKeyComponent;
-        BigInteger messageComponent;
-        encodedVotingOptionsIdsVerificatum = new ArrayList<ElGamalEncryptionPair>();
+    abstract void setEncodedVotionOptionsIds(String[] attributes,
+        DecryptionLineCsvIndex index);
 
-        for (int i = 0; i < (encodedVotingOptionIdsStrings.length - 1);
-                i += 2) {
-            publicKeyComponent = new BigInteger(Base64.decode(
-                        (encodedVotingOptionIdsStrings[i])));
-            messageComponent = new BigInteger(Base64.decode(
-                        encodedVotingOptionIdsStrings[i + 1]));
-            encodedVotingOptionsIdsVerificatum.add(new ElGamalEncryptionPair(
-                    publicKeyComponent, messageComponent));
-        }
-    }
+    abstract void setSchnorrSignature(String[] attributes,
+        DecryptionLineCsvIndex index);
 
-    void readSchnorrSignaturesVerificatum(String[] attributes) {
-        String[] schnorrSignaturesStrings = new String(Base64.decode(
-                    getAttributeAsString(attributes,
-                        DecryptionLineCsvIndex.SIGNATURE))).split("\\|null#");
-        schnorrSignaturesVerificatum = new ArrayList<SchnorrSignature>();
-
-        for (String str : schnorrSignaturesStrings) {
-            schnorrSignaturesVerificatum.add(new SchnorrSignature(
-                    str.getBytes()));
-        }
-    }
+    abstract boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
+        throws NoSuchAlgorithmException;
 
     protected void calculateDecryptedVotingOptionIdsProduct(BigInteger p) {
         decryptedVotingOptionIdsProduct = BigInteger.ONE;
@@ -185,49 +144,6 @@ public class DecryptionLine extends CsvLineParseable {
             decryptedVotingOptionIdsProduct = decryptedVotingOptionIdsProduct.multiply(new BigInteger(
                         str).mod(p));
         }
-    }
-
-    boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
-        throws NoSuchAlgorithmException {
-        setEncodedVotingOptionIdsProduct(p);
-        calculateDecryptedVotingOptionIdsProduct(p);
-
-        BigInteger x = calculateNonInteractiveChallengeX();
-        BigInteger g1 = calculateGeneratorG1(p, g, x);
-        BigInteger h1 = calculatePublicKeyH1(p, h, x);
-        BigInteger w1 = calculateSchnorrMessageW1(p, g1, h1);
-        BigInteger c1 = calculateSchnorrChallengeC1(p, g, h, w1);
-
-        return verifySchnorrChallenge(c1);
-    }
-
-    boolean verifyProofsVerificatum(BigInteger p, BigInteger g, BigInteger h)
-        throws NoSuchAlgorithmException {
-        if (encodedVotingOptionsIdsVerificatum.size() != schnorrSignaturesVerificatum.size()) {
-            return false;
-        }
-
-        if (encodedVotingOptionsIdsVerificatum.size() != decryptedVotingOptionIds.length) {
-            return false;
-        }
-
-        for (int i = 0; i < encodedVotingOptionsIdsVerificatum.size(); i++) {
-            decryptedVotingOptionIdsProduct = new BigInteger(decryptedVotingOptionIds[i]);
-            encodedVotingOptionsIdsProduct = encodedVotingOptionsIdsVerificatum.get(i);
-            schnorrSignature = schnorrSignaturesVerificatum.get(i);
-
-            BigInteger x = calculateNonInteractiveChallengeXVerificatum(i);
-            BigInteger g1 = calculateGeneratorG1(p, g, x);
-            BigInteger h1 = calculatePublicKeyH1(p, h, x);
-            BigInteger w1 = calculateSchnorrMessageW1(p, g1, h1);
-            BigInteger c1 = calculateSchnorrChallengeC1(p, g, h, w1);
-
-            if (verifySchnorrChallenge(c1) == false) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     BigInteger calculateNonInteractiveChallengeX()
@@ -308,14 +224,14 @@ public class DecryptionLine extends CsvLineParseable {
         return new BigInteger(hash).mod(p);
     }
 
-    private boolean verifySchnorrChallenge(BigInteger c1) {
+    boolean verifySchnorrChallenge(BigInteger c1) {
         return c1.equals(schnorrSignature.getMessageComponent());
     }
 
     /**
     * Indexes of the various fields in the CSV file.
     */
-    private enum DecryptionLineCsvIndex {ELECTION_EVENT_ID,
+    enum DecryptionLineCsvIndex {ELECTION_EVENT_ID,
         ELECTION_ID,
         CONTEST_ID,
         ENC_VOTE_OPT_IDS,

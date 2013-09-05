@@ -22,19 +22,19 @@
  */
 package com.computas.zkpev2013.decryption;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-
 
 /**
  * Unit test against a decryption line.
  */
-public class DecryptionLineUnitTest {
+public class ScytlDecryptionLineUnitTest {
     static final BigInteger SAMPLE_P = new BigInteger(
             "13213513213213513213513213513513213513213563");
     static final String COMMA = ",";
@@ -60,7 +60,7 @@ public class DecryptionLineUnitTest {
      */
     @BeforeMethod
     public void createDecryptionLine() {
-        decryptionLine = new DecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF);
+        decryptionLine = new ScytlDecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF);
         decryptionLine.calculateDecryptedVotingOptionIdsProduct(SAMPLE_P);
     }
 
@@ -103,7 +103,7 @@ public class DecryptionLineUnitTest {
     @Test
     public void mustBeEqualToAnotherDecryptionLineWithTheSameSourceLine() {
         assertEquals(decryptionLine,
-            new DecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF));
+            new ScytlDecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF));
     }
 
     /**
@@ -112,7 +112,7 @@ public class DecryptionLineUnitTest {
     @Test
     public void mustHaveSameHashCodeAsAnotherDecryptionLineWithTheSameSourceLine() {
         assertEquals(decryptionLine.hashCode(),
-            new DecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF).hashCode());
+            new ScytlDecryptionLine(SAMPLE_LINE_WITH_CORRECT_PROOF).hashCode());
     }
 
     /**
@@ -121,7 +121,7 @@ public class DecryptionLineUnitTest {
     @Test
     public void mustNotBeEqualToAnotherDecryptionLineWithAnotherSourceLine() {
         assertFalse(decryptionLine.equals(
-                new DecryptionLine(SAMPLE_LINE_WITH_INCORRECT_PROOF)));
+                new ScytlDecryptionLine(SAMPLE_LINE_WITH_INCORRECT_PROOF)));
     }
 
     /**
@@ -129,7 +129,7 @@ public class DecryptionLineUnitTest {
      */
     @Test
     public void mustNotHaveSameHashCodeAsAnotherDecryptionLineWithAnotherSourceLine() {
-        assertFalse(decryptionLine.hashCode() == new DecryptionLine(
+        assertFalse(decryptionLine.hashCode() == new ScytlDecryptionLine(
                 SAMPLE_LINE_WITH_INCORRECT_PROOF).hashCode());
     }
 

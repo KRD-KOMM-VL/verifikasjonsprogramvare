@@ -23,8 +23,6 @@
 package com.computas.zkpev2013.mixing;
 
 import com.computas.zkpev2013.ElGamalPublicKeyList;
-import com.computas.zkpev2013.ResultsArrayList;
-import com.computas.zkpev2013.ResultsList;
 
 import org.apache.commons.codec.binary.Base64;
 import static org.testng.Assert.assertTrue;
@@ -40,7 +38,11 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Integration tests on the MixingVerificationWorker.
  */
-public class MixingVerificationWorkerIntegrationTest {
+public class MixingVerificationDataIntegrationTest {
+    private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Foo";
+    private static final String ELGAMAL_PUBLIC_KEY_FILE_NAME = "Bar";
+    private static final String DATABASE_PROPERTIES_FILE_NAME = "Qux";
+    private static final String RESULTS_FILE_NAME = "Corge";
     private static final BigInteger SAMPLE_P = new BigInteger(
             "22519781860318881430187237378393910440433456793106883439191554045609533190204716026094503488051043531257695232100353994296431999733305913289830606623675094806877884255872439714678914992056169353692036021770097223778392105262307803104951171429150982767069700653909195647599098780046724703785991755259095912786508845222597772887203546632493935590809326329822837682361511439054458165467044490658668908755516611075852591340913731324282531411301527453756791057107929172839003743485012313000403534330922416540828874783338650662007436059441348150784982317988527563812882812455109992843656727186872083932493433216403334110087");
     private static final BigInteger SAMPLE_G = new BigInteger(
@@ -68,18 +70,23 @@ public class MixingVerificationWorkerIntegrationTest {
     private static final byte[] SAMPLE_REENCRYPTION_PROOFS = Base64.decodeBase64(
             "rO0ABXNyAENjb20uc2N5dGwuZXZvdGUucHJvdG9jb2wuaW50ZWdyYXRpb24ubWl4aW5nLmJhc2UuUmVFbmNyeXB0aW9uUHJvb2ZzTD/h4+Cu7VUCAAFMAAxfcmVFbmNQcm9vZnN0ABBMamF2YS91dGlsL0xpc3Q7eHBzcgAQamF2YS51dGlsLlZlY3RvctmXfVuAO68BAwADSQARY2FwYWNpdHlJbmNyZW1lbnRJAAxlbGVtZW50Q291bnRbAAtlbGVtZW50RGF0YXQAE1tMamF2YS9sYW5nL09iamVjdDt4cAAAAAAAAAABdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAAAXNyADFjb20uc2N5dGwuZXZvdGUucHJvdG9jb2wuc2lnbmVycy5TY2hub3JyU2lnbmF0dXJlcoV1T8sRBe8CAANMAAJfZXQAFkxqYXZhL21hdGgvQmlnSW50ZWdlcjtMAAJfc3EAfgAJTAAGX3NDb2xscQB+AAF4cHNyABRqYXZhLm1hdGguQmlnSW50ZWdlcoz8nx+pO/sdAwAGSQAIYml0Q291bnRJAAliaXRMZW5ndGhJABNmaXJzdE5vbnplcm9CeXRlTnVtSQAMbG93ZXN0U2V0Qml0SQAGc2lnbnVtWwAJbWFnbml0dWRldAACW0J4cgAQamF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHD///////////////7////+AAAAAXVyAAJbQqzzF/gGCFTgAgAAeHAAAAEAsmQa3BqbzngsHvK7BDeVPI7NsI567i2nAyZx3cOirClxXsN98KtZlZ/2QBJ25ezN9k+WuPS+zmHYnEVxhpYlPlcistyndkhFC7ZOcV7kbwmWTl7OeA/A79+/SIGhNolJGXBsmMP7yNYZvuunmCjZQJkqa+Ss/kez3HgDXC2MGESnnqlSP5/oLqcONa1SQWrq7hlDjKxwH6YywoBSyW5aMf9xFH7rCbdg/XaiK0eBQaO2iThx221lIGwKUwBtnnH+9l6+sSeQvLesXJt+4QAix9XQy0lz5cN2KDFJebISpBYghu9mm8DKW/jQZ0GbudnX7fmQkVKkN2gmgeGa5dYvNHhzcQB+AAv///////////////7////+/////3VxAH4ADwAAAgBIfwJdyQdjimVmPsXEV1Vidi+1rI9JVR1nUfgGYhOz4UmCLQmmAy4xWFQKvaKqPFWxImxVQh59fQdXSaL84RZoaplCNIn2sQAbdsMLLGUUFmqpHyK+V3DrPcxSY0TTuo/V7PR40tbys8QbgVLG0HA08A73gCbApA1bwB3amaKK0rXwyfzqhZQHLx7qRQgh+Qm/TrlXAsxk+EaCa05C9m/aST8nHr72ppRcJ/Tt2FvZf6UkG7AS8Qik0t38qWrAUjaJJa2Q7uiL+XFcnGkovQY5loHcQyzoaeZdKW1atv41S0VoeJQCDqh9OZxsvv11RchInBXGBj7fd1G7bwqpH7bRBgMCrR058BQ7+gGok91hZtFlHT82Wz7gcxxArH7wkuho+Ij4OE40sOC2CiRFxJNp3n3VS7xQgTf8iRMKP1PuHBcVt8kULo+FRsCP0sC50VBVM5HRkqy560qNjUCo//7NP6yNx/JCRO84Nb8wxIdt7tPzAz5ykaEeBYnOIHl+FdetVIoMWjKI/vk3S3otLQrxDrVJi5ske8qVR2D4wEsexXaIEcoZqsAqa7kUXUzkZC0ac2WruAEeywfHk5qZ4hh2tVHOL7Hf6OFoU3h4KrEMMFBx8jg2Z2ptTV1gLc/lIoFAJgtNisto9KA6FN0qGbpHixkIT/nDU78kA0tynEl0ZHhweA==");
     private static final byte[] SAMPLE_INVALID_FIELD = "Foo".getBytes();
-    private com.computas.zkpev2013.mixing.MixingVerificationWorker worker;
-    private ResultsList results;
+    private MixingVerificationData data;
+    private IzkpMixing izkp;
+    private MixingVerificationWorker worker;
 
     /**
      * Creates a results list and a worker to run the tests against.
      * @param results
      */
     @BeforeMethod
-    public void createResultsAndWorker() {
-        results = new ResultsArrayList();
-        worker = new com.computas.zkpev2013.mixing.MixingVerificationWorker(results,
-                SAMPLE_P, SAMPLE_G, new ElGamalPublicKeyList(SAMPLE_H));
+    public void createIzkpAndData() {
+        izkp = new IzkpMixing(new String[] {
+                    ELGAMAL_PROPERTIES_FILE_NAME, ELGAMAL_PUBLIC_KEY_FILE_NAME,
+                    DATABASE_PROPERTIES_FILE_NAME, RESULTS_FILE_NAME
+                });
+        data = new MixingVerificationData(izkp);
+        worker = new MixingVerificationWorker(izkp, SAMPLE_P, SAMPLE_G,
+                new ElGamalPublicKeyList(SAMPLE_H));
     }
 
     /**
@@ -90,13 +97,14 @@ public class MixingVerificationWorkerIntegrationTest {
     @Test
     public void mustCreateAnInvalidMixingDataRecordIncidentIfInputVotesInvalid()
         throws NoSuchAlgorithmException {
-        worker.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INVALID_FIELD,
+        data.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INVALID_FIELD,
             SAMPLE_OUTPUT_VOTES);
-        worker.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
+        data.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
             SAMPLE_OUTPUT_VOTE_GROUPS, SAMPLE_REENCRYPTION_PROOFS);
-        worker.tryToRun();
-        assertTrue(results.contains(
-                new InvalidMixingDataRecordIncident(SAMPLE_MIXING_UUID,
+        worker.tryToRun(data);
+        assertTrue(izkp.getResults()
+                       .contains(new InvalidMixingDataRecordIncident(
+                    SAMPLE_MIXING_UUID,
                     InvalidMixingDataRecordIncident.INPUT_VOTES_INVALID)));
     }
 
@@ -108,13 +116,14 @@ public class MixingVerificationWorkerIntegrationTest {
     @Test
     public void mustCreateAnInvalidMixingDataRecordIncidentIfOutputVotesInvalid()
         throws NoSuchAlgorithmException {
-        worker.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INPUT_VOTES,
+        data.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INPUT_VOTES,
             SAMPLE_INVALID_FIELD);
-        worker.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
+        data.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
             SAMPLE_OUTPUT_VOTE_GROUPS, SAMPLE_REENCRYPTION_PROOFS);
-        worker.tryToRun();
-        assertTrue(results.contains(
-                new InvalidMixingDataRecordIncident(SAMPLE_MIXING_UUID,
+        worker.tryToRun(data);
+        assertTrue(izkp.getResults()
+                       .contains(new InvalidMixingDataRecordIncident(
+                    SAMPLE_MIXING_UUID,
                     InvalidMixingDataRecordIncident.OUTPUT_VOTES_INVALID)));
     }
 
@@ -126,16 +135,18 @@ public class MixingVerificationWorkerIntegrationTest {
     @Test
     public void mustCreateTwoInvalidMixingDataRecordIncidentsIfInputAndOutputVotesInvalid()
         throws NoSuchAlgorithmException {
-        worker.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INVALID_FIELD,
+        data.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INVALID_FIELD,
             SAMPLE_INVALID_FIELD);
-        worker.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
+        data.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
             SAMPLE_OUTPUT_VOTE_GROUPS, SAMPLE_REENCRYPTION_PROOFS);
-        worker.tryToRun();
+        worker.tryToRun(data);
 
-        boolean hasInvalidInputVotesIncident = results.contains(new InvalidMixingDataRecordIncident(
+        boolean hasInvalidInputVotesIncident = izkp.getResults()
+                                                   .contains(new InvalidMixingDataRecordIncident(
                     SAMPLE_MIXING_UUID,
                     InvalidMixingDataRecordIncident.INPUT_VOTES_INVALID));
-        boolean hasInvalidOutputVotesIncident = results.contains(new InvalidMixingDataRecordIncident(
+        boolean hasInvalidOutputVotesIncident = izkp.getResults()
+                                                    .contains(new InvalidMixingDataRecordIncident(
                     SAMPLE_MIXING_UUID,
                     InvalidMixingDataRecordIncident.OUTPUT_VOTES_INVALID));
         assertTrue(hasInvalidInputVotesIncident &&
@@ -148,10 +159,11 @@ public class MixingVerificationWorkerIntegrationTest {
      */
     @Test
     public void mustCreateAnInvalidAuditDataRecordIncidentIfInputVoteGroupsInvalid() {
-        worker.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INVALID_FIELD,
+        data.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INVALID_FIELD,
             SAMPLE_OUTPUT_VOTE_GROUPS, SAMPLE_REENCRYPTION_PROOFS);
-        assertTrue(results.contains(
-                new InvalidAuditDataRecordIncident(SAMPLE_AUDIT_UUID,
+        assertTrue(izkp.getResults()
+                       .contains(new InvalidAuditDataRecordIncident(
+                    SAMPLE_AUDIT_UUID,
                     InvalidAuditDataRecordIncident.INPUT_VOTE_GROUPS_INVALID)));
     }
 
@@ -161,10 +173,11 @@ public class MixingVerificationWorkerIntegrationTest {
      */
     @Test
     public void mustCreateAnInvalidAuditDataRecordIncidentIfOutputVoteGroupsInvalid() {
-        worker.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
+        data.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
             SAMPLE_INVALID_FIELD, SAMPLE_REENCRYPTION_PROOFS);
-        assertTrue(results.contains(
-                new InvalidAuditDataRecordIncident(SAMPLE_AUDIT_UUID,
+        assertTrue(izkp.getResults()
+                       .contains(new InvalidAuditDataRecordIncident(
+                    SAMPLE_AUDIT_UUID,
                     InvalidAuditDataRecordIncident.OUTPUT_VOTE_GROUPS_INVALID)));
     }
 
@@ -174,10 +187,11 @@ public class MixingVerificationWorkerIntegrationTest {
      */
     @Test
     public void mustCreateAnInvalidAuditDataRecordIncidentIfReencryptionProofsInvalid() {
-        worker.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
+        data.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
             SAMPLE_OUTPUT_VOTE_GROUPS, SAMPLE_INVALID_FIELD);
-        assertTrue(results.contains(
-                new InvalidAuditDataRecordIncident(SAMPLE_AUDIT_UUID,
+        assertTrue(izkp.getResults()
+                       .contains(new InvalidAuditDataRecordIncident(
+                    SAMPLE_AUDIT_UUID,
                     InvalidAuditDataRecordIncident.REENCRYPTION_PROOFS_INVALID)));
     }
 
@@ -188,14 +202,14 @@ public class MixingVerificationWorkerIntegrationTest {
     @Test
     public void mustCreateAnIncorrectMixingProofIncidentIfAProofIsIncorrect()
         throws NoSuchAlgorithmException {
-        worker.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INPUT_VOTES,
+        data.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INPUT_VOTES,
             SAMPLE_INCORRECT_OUTPUT_VOTES);
-        worker.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
+        data.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
             SAMPLE_OUTPUT_VOTE_GROUPS, SAMPLE_REENCRYPTION_PROOFS);
-        worker.tryToRun();
-        assertTrue(results.contains(
-                new IncorrectMixingProofIncident(SAMPLE_MIXING_UUID,
-                    SAMPLE_AUDIT_UUID, 0)));
+        worker.tryToRun(data);
+        assertTrue(izkp.getResults()
+                       .contains(new IncorrectMixingProofIncident(
+                    SAMPLE_MIXING_UUID, SAMPLE_AUDIT_UUID, 0)));
     }
 
     /**
@@ -205,11 +219,11 @@ public class MixingVerificationWorkerIntegrationTest {
     @Test
     public void mustNotCreateAnIncidentIfAllProofsAreCorrect()
         throws NoSuchAlgorithmException {
-        worker.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INPUT_VOTES,
+        data.setMixingData(SAMPLE_MIXING_UUID, SAMPLE_INPUT_VOTES,
             SAMPLE_OUTPUT_VOTES);
-        worker.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
+        data.setAuditData(SAMPLE_AUDIT_UUID, SAMPLE_INPUT_VOTE_GROUPS,
             SAMPLE_OUTPUT_VOTE_GROUPS, SAMPLE_REENCRYPTION_PROOFS);
-        worker.tryToRun();
-        assertTrue(results.size() == 0);
+        worker.tryToRun(data);
+        assertTrue(izkp.getResults().size() == 0);
     }
 }

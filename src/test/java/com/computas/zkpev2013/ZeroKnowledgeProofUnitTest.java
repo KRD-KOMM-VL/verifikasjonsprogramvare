@@ -57,6 +57,12 @@ public class ZeroKnowledgeProofUnitTest {
                     protected void run() throws IOException {
                         // No implementation needed as part of the unit test.
                     }
+
+                    @Override
+                    protected Thread createWorker() {
+                        // No implementation needed as part of the integration test.
+                        return null;
+                    }
                 };
     }
 

@@ -23,6 +23,7 @@
 package com.computas.zkpev2013.decryption;
 
 import com.computas.zkpev2013.ResultsList;
+import com.computas.zkpev2013.decryption.NizkpDecryption.MixingType;
 
 import org.apache.log4j.Logger;
 
@@ -38,6 +39,11 @@ import java.util.ArrayList;
 public class DecryptionLinesArrayList extends ArrayList<DecryptionLine>
     implements DecryptionLinesList {
     static final int BATCH_SIZE = 1000;
+    private final MixingType mixingType;
+
+    DecryptionLinesArrayList(MixingType mixingType) {
+        this.mixingType = mixingType;
+    }
 
     @Override
     public void addReaderContent(BufferedReader bufferedReader,
@@ -65,7 +71,15 @@ public class DecryptionLinesArrayList extends ArrayList<DecryptionLine>
     }
 
     private void tryToAddDecryptionLine(String line) {
-        add(new DecryptionLine(line));
+        add(createDecryptionLine(line));
+    }
+
+    private DecryptionLine createDecryptionLine(String line) {
+        if (mixingType.equals(MixingType.SCYTL)) {
+            return new ScytlDecryptionLine(line);
+        } else {
+            return new VerificatumDecryptionLine(line);
+        }
     }
 
     @Override
@@ -80,7 +94,7 @@ public class DecryptionLinesArrayList extends ArrayList<DecryptionLine>
     }
 
     private DecryptionLinesList popBatch(int batchSize, Logger logger) {
-        DecryptionLinesList batch = new DecryptionLinesArrayList();
+        DecryptionLinesList batch = new DecryptionLinesArrayList(mixingType);
 
         for (int i = 0; i < batchSize; i++) {
             batch.add(remove(0));

@@ -25,6 +25,8 @@ package com.computas.zkpev2013.rcgvcs;
 import com.computas.zkpev2013.EncryptedVote;
 import com.computas.zkpev2013.ZeroKnowledgeProof;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import java.io.IOException;
 
 
@@ -149,5 +151,13 @@ public class NizkpRcgVcs extends ZeroKnowledgeProof {
                     votingReceiptCounter.getVotingReceipt(),
                     votingReceiptCounter.getEncryptedVotes()));
         }
+    }
+
+    /**
+     * Not used.
+     */
+    @Override
+    protected Thread createWorker() {
+        throw new NotImplementedException();
     }
 }

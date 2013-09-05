@@ -22,6 +22,7 @@
  */
 package com.computas.zkpev2013.decryption;
 
+import com.computas.zkpev2013.ZeroKnowledgeProof;
 import static org.testng.Assert.*;
 
 import org.testng.annotations.BeforeMethod;
@@ -35,6 +36,7 @@ public class NizkpDecryptionUnitTest {
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "Foo";
     private static final String ELGAMAL_PUBLIC_KEYS_FILE_NAME = "Bar";
     private static final String DECRYPTION_FILE_NAME = "Qux";
+    private static final String MIXING_TYPE_NAME = "SCYTL";
     private static final String RESULTS_FILE_NAME = "Corge";
     private NizkpDecryption nizkp;
 
@@ -45,7 +47,7 @@ public class NizkpDecryptionUnitTest {
     public void createNizkp() {
         nizkp = new NizkpDecryption(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, ELGAMAL_PUBLIC_KEYS_FILE_NAME,
-                    DECRYPTION_FILE_NAME, RESULTS_FILE_NAME
+                    MIXING_TYPE_NAME, DECRYPTION_FILE_NAME, RESULTS_FILE_NAME
                 });
     }
 
@@ -106,9 +108,9 @@ public class NizkpDecryptionUnitTest {
      */
     @Test
     public void loggingOfResultsIsNotRequiredIfAResultsFileNameIsNotProvided() {
-        NizkpDecryption nonLoggingNizkp = new NizkpDecryption(new String[] {
+        ZeroKnowledgeProof nonLoggingNizkp = new NizkpDecryption(new String[] {
                     ELGAMAL_PROPERTIES_FILE_NAME, ELGAMAL_PUBLIC_KEYS_FILE_NAME,
-                    DECRYPTION_FILE_NAME
+                    MIXING_TYPE_NAME, DECRYPTION_FILE_NAME
                 });
         assertFalse(nonLoggingNizkp.isLoggingOfResultsRequired());
     }
