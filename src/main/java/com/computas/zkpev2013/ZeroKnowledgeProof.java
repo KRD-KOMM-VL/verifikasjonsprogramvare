@@ -34,8 +34,6 @@ import java.io.InputStreamReader;
 
 import java.net.URL;
 
-import java.security.NoSuchAlgorithmException;
-
 
 /**
  * Abstract class supporting zero-knowledge proofs.
@@ -239,8 +237,10 @@ public abstract class ZeroKnowledgeProof {
         waitForWorkersToFinish(workers);
     }
 
-    public synchronized void addResult(Result result) {
-        results.add(result);
+    public void addResult(Result result) {
+        synchronized (results) {
+            results.add(result);
+        }
     }
 
     /**

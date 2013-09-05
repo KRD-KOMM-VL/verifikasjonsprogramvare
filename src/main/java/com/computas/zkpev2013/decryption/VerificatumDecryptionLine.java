@@ -97,7 +97,7 @@ public class VerificatumDecryptionLine extends DecryptionLine {
             BigInteger w1 = calculateSchnorrMessageW1(p, g1, h1);
             BigInteger c1 = calculateSchnorrChallengeC1(p, g, h, w1);
 
-            if (verifySchnorrChallenge(c1) == false) {
+            if (!verifySchnorrChallenge(c1)) {
                 return false;
             }
         }

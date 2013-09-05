@@ -38,7 +38,8 @@ import java.util.Properties;
 
 
 /**
- * Class implementing the interactive zero-knowledge proof for the mixing process.
+ * Class implementing the interactive zero-knowledge proof for the mixing
+ * process.
  */
 public class IzkpMixing extends ElGamalZkp {
     private static final int QUERY_FETCH_SIZE = 50;
@@ -59,7 +60,8 @@ public class IzkpMixing extends ElGamalZkp {
     /**
      * Main entry method.
      *
-     * @param arguments The arguments to be passed to the constructor.
+     * @param arguments
+     *            The arguments to be passed to the constructor.
      */
     public static void main(String[] arguments) {
         try {
@@ -135,22 +137,26 @@ public class IzkpMixing extends ElGamalZkp {
         }
     }
 
-    synchronized MixingVerificationData getMixingVerificationData()
+    MixingVerificationData getMixingVerificationData()
         throws SQLException {
-        if ((resultSet != null) && resultSet.next()) {
-            MixingVerificationData data = new MixingVerificationData(this);
-            data.setMixingData(resultSet.getString("muuid"),
-                resultSet.getBytes("inputvotes"),
-                resultSet.getBytes("outputvotes"));
-            data.setAuditData(resultSet.getString("auuid"),
-                resultSet.getBytes("votegroupaffsin"),
-                resultSet.getBytes("votegroupaffsout"),
-                resultSet.getBytes("encreencproofs"));
+        if (resultSet != null) {
+            synchronized (resultSet) {
+                if (resultSet.next()) {
+                    MixingVerificationData data = new MixingVerificationData(this);
+                    data.setMixingData(resultSet.getString("muuid"),
+                        resultSet.getBytes("inputvotes"),
+                        resultSet.getBytes("outputvotes"));
+                    data.setAuditData(resultSet.getString("auuid"),
+                        resultSet.getBytes("votegroupaffsin"),
+                        resultSet.getBytes("votegroupaffsout"),
+                        resultSet.getBytes("encreencproofs"));
 
-            return data;
-        } else {
-            return null;
+                    return data;
+                }
+            }
         }
+
+        return null;
     }
 
     String getDatabasePropertiesFileName() {
