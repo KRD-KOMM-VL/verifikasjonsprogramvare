@@ -76,7 +76,8 @@ public class VerificatumDecryptionLine extends DecryptionLine {
         }
     }
 
-    boolean verifyProofsVerificatum(BigInteger p, BigInteger g, BigInteger h)
+    @Override
+    boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
         throws NoSuchAlgorithmException {
         if (encodedVotingOptionsIdsVerificatum.size() != schnorrSignaturesVerificatum.size()) {
             return false;

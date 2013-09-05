@@ -134,6 +134,9 @@ public abstract class DecryptionLine extends CsvLineParseable {
     abstract void setSchnorrSignature(String[] attributes,
         DecryptionLineCsvIndex index);
 
+    abstract boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
+        throws NoSuchAlgorithmException;
+
     protected void calculateDecryptedVotingOptionIdsProduct(BigInteger p) {
         decryptedVotingOptionIdsProduct = BigInteger.ONE;
 
@@ -141,20 +144,6 @@ public abstract class DecryptionLine extends CsvLineParseable {
             decryptedVotingOptionIdsProduct = decryptedVotingOptionIdsProduct.multiply(new BigInteger(
                         str).mod(p));
         }
-    }
-
-    boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
-        throws NoSuchAlgorithmException {
-        setEncodedVotingOptionIdsProduct(p);
-        calculateDecryptedVotingOptionIdsProduct(p);
-
-        BigInteger x = calculateNonInteractiveChallengeX();
-        BigInteger g1 = calculateGeneratorG1(p, g, x);
-        BigInteger h1 = calculatePublicKeyH1(p, h, x);
-        BigInteger w1 = calculateSchnorrMessageW1(p, g1, h1);
-        BigInteger c1 = calculateSchnorrChallengeC1(p, g, h, w1);
-
-        return verifySchnorrChallenge(c1);
     }
 
     BigInteger calculateNonInteractiveChallengeX()

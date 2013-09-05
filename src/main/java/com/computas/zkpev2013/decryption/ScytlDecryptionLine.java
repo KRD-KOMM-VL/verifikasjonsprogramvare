@@ -22,6 +22,10 @@
  */
 package com.computas.zkpev2013.decryption;
 
+import java.math.BigInteger;
+
+import java.security.NoSuchAlgorithmException;
+
 
 /**
  * Decryption line based on Scytl mixing.
@@ -42,5 +46,20 @@ public class ScytlDecryptionLine extends DecryptionLine {
     void setSchnorrSignature(String[] attributes, DecryptionLineCsvIndex index) {
         schnorrSignature = new SchnorrSignature(getAttributeAsByteArray(
                     attributes, index));
+    }
+
+    @Override
+    boolean verifyProof(BigInteger p, BigInteger g, BigInteger h)
+        throws NoSuchAlgorithmException {
+        setEncodedVotingOptionIdsProduct(p);
+        calculateDecryptedVotingOptionIdsProduct(p);
+
+        BigInteger x = calculateNonInteractiveChallengeX();
+        BigInteger g1 = calculateGeneratorG1(p, g, x);
+        BigInteger h1 = calculatePublicKeyH1(p, h, x);
+        BigInteger w1 = calculateSchnorrMessageW1(p, g1, h1);
+        BigInteger c1 = calculateSchnorrChallengeC1(p, g, h, w1);
+
+        return verifySchnorrChallenge(c1);
     }
 }
