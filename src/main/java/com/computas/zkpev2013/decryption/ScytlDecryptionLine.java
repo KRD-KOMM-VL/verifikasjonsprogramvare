@@ -33,9 +33,9 @@ public class ScytlDecryptionLine extends DecryptionLine {
 
     @Override
     void setEncodedVotionOptionsIds(String[] attributes,
-        DecryptionLineCsvIndex encVoteOptIds) {
+        DecryptionLineCsvIndex index) {
         encodedVotingOptionsIds = getAttributeAsElGamalEncryptionTuple(attributes,
-                DecryptionLineCsvIndex.ENC_VOTE_OPT_IDS);
+                index);
     }
 
     @Override
