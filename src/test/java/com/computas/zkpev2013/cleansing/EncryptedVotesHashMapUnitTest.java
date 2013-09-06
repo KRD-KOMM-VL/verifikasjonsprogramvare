@@ -24,13 +24,10 @@ package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.ResultsArrayList;
 import com.computas.zkpev2013.ResultsList;
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.math.BigInteger;
 
 
 /**
@@ -101,8 +98,6 @@ public class EncryptedVotesHashMapUnitTest {
         GIVEN_VOTER_ID + COMMA + CHANNEL_ID + COMMA + RECEIPT_VOTE_TIMESTAMP +
         COMMA + GIVEN_VOTE_Z_K_PROOF_SIG;
     private static final String BROKEN_LINE = "*";
-    private static final BigInteger MODULUS = new BigInteger(
-            "30953935016171929405181725048691475597165054658172086800611741385717085886966135022787053043294599719402052783457906554840050466598200845836350069464569830849652328849164597015834019636250184391187039519241529509539396137383783691026385997868581485251353115862362707856496254648707792083733847740839833577843038160760489606588067058523761002425294322414298639802035594840360412346667825330259855947401569537064580849961903216800408490338672611947294048038395112383055004376963978967260637379317563369771664058743286447728833162866458048271828606452285839103402380751993665831120012178542555391431510173573250387144139");
     private EncryptedVotesHashMap map;
     private ResultsList results;
 
@@ -111,7 +106,7 @@ public class EncryptedVotesHashMapUnitTest {
      */
     @BeforeMethod(alwaysRun = true)
     public void createEncryptedVotesHashMap() {
-        map = new EncryptedVotesHashMap(MODULUS);
+        map = new EncryptedVotesHashMap();
     }
 
     /**
@@ -131,18 +126,21 @@ public class EncryptedVotesHashMapUnitTest {
     }
 
     /**
-     * Verifies that the modulus is set correctly by the constructor.
-     */
-    @Test
-    public void constructorSetsModulusCorrectly() {
-        assertEquals(map.getModulus(), MODULUS);
-    }
-
-    /**
      * Adding must not create an incident if the encrypted vote to be added didn't already exist in the map.
      */
     @Test
     public void mustNotCreateAnIncidentWhenTryingToAddANewEncryptedVote() {
+        map.addEncryptedVoteOrAddIncident(GIVEN_SAMPLE_LINE, results);
+
+        assertTrue(results.isEmpty());
+    }
+
+    /**
+     * Adding must not create an incident if the encrypted vote already existed in the map.
+     */
+    @Test
+    public void mustNotCreateAnIncidentWhenTryingToAddAnEncryptedVoteASecondTime() {
+        map.addEncryptedVoteOrAddIncident(GIVEN_SAMPLE_LINE, results);
         map.addEncryptedVoteOrAddIncident(GIVEN_SAMPLE_LINE, results);
 
         assertTrue(results.isEmpty());

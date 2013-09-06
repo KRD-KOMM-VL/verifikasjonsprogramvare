@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 
 /**
  * Unit tests on InjectedCleansedEncryptedVoteLineIncident.
- *
  */
 public class InjectedCleansedVoteLineIncidentUnitTest {
     private static final String COMMA = ",";

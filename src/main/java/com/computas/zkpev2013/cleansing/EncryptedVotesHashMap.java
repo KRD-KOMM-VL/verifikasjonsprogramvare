@@ -31,8 +31,6 @@ import org.apache.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import java.math.BigInteger;
-
 import java.util.HashMap;
 
 
@@ -43,14 +41,19 @@ public class EncryptedVotesHashMap extends HashMap<String, EncryptedVoteRetentio
     implements EncryptedVotesMap {
     private static final int TICKS_TO_LOG_NO_OF_LINES_READ = 5000;
     private static final String COMMA = ",";
-    private final BigInteger modulus;
 
-    EncryptedVotesHashMap(BigInteger modulus) {
-        this.modulus = modulus;
+    EncryptedVotesHashMap() {
     }
 
-    BigInteger getModulus() {
-        return modulus;
+    @Override
+    public int getNoOfEncryptedVotes() {
+        int no = 0;
+
+        for (EncryptedVoteRetentionCounter counter : values()) {
+            no += counter.getExpectedNoOfMatches();
+        }
+
+        return no;
     }
 
     @Override
@@ -87,9 +90,7 @@ public class EncryptedVotesHashMap extends HashMap<String, EncryptedVoteRetentio
         String key = calculateKeyFromEncryptedVote(encryptedVote);
 
         if (containsKey(key)) {
-            results.add(new EncryptedVotesMapKeyCollisionIncident(
-                    get(key).getEncryptedVote().getUuid(),
-                    encryptedVote.getUuid()));
+            get(key).registerEncryptedVote(encryptedVote);
         } else {
             put(key, new EncryptedVoteRetentionCounter(encryptedVote));
         }

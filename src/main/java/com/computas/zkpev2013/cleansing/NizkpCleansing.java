@@ -25,6 +25,8 @@ package com.computas.zkpev2013.cleansing;
 import com.computas.zkpev2013.ZeroKnowledgeProof;
 import com.computas.zkpev2013.cleansing.EnvironmentsMap.Environment;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -44,11 +46,6 @@ import java.util.Properties;
  *
  */
 public class NizkpCleansing extends ZeroKnowledgeProof {
-    private static final BigInteger HARDCODED_UNCONTROLLED_ENVIRONMENT_PRIME = new BigInteger(
-            "227");
-    private static final BigInteger HARDCODED_CONTROLLED_ENVIRONMENT_PRIME = new BigInteger(
-            "211");
-    private static final String EL_GAMAL_MODULUS_PROPERTY_NAME = "p";
     private static final int TICKS_TO_LOG_NO_OF_CLEANSED_VOTES_CHECKED = 5000;
     private static final int TICKS_TO_LOG_NO_OF_ENCRYPTED_VOTE_RETENTION_COUNTERS_CHECKED =
         5000;
@@ -66,9 +63,6 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
     protected void parseArguments(String[] arguments) {
         checkNoOfParameters(arguments,
             NizkpCleansingMandatoryArgumentIndex.values().length);
-        elGamalPropertiesFileName = arguments[NizkpCleansingMandatoryArgumentIndex.EL_GAMAL_PROPERTIES_FILE_NAME_INDEX.ordinal()];
-        areasFileName = arguments[NizkpCleansingMandatoryArgumentIndex.AREAS_FILE_NAME_INDEX.ordinal()];
-        electionEmlFileName = arguments[NizkpCleansingMandatoryArgumentIndex.ELECTION_EML_FILE_NAME_INDEX.ordinal()];
         encryptedVotesFileName = arguments[NizkpCleansingMandatoryArgumentIndex.ENCRYPTED_VOTES_FILE_NAME_INDEX.ordinal()];
         cleansedFilesDir = arguments[NizkpCleansingMandatoryArgumentIndex.CLEANSED_FILES_DIR_INDEX.ordinal()];
 
@@ -80,73 +74,14 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
     protected void run() throws IOException, URISyntaxException {
         openResultsFileIfRequired();
 
-        BigInteger modulus = loadElGamalModulus();
-        AreasMap areas = loadAreas();
-        EnvironmentsMap environments = loadEnvironments();
-        int compressionFactor = calculateCompressionFactor(areas, environments,
-                modulus);
-        EncryptedVotesMap encryptedVotes = loadEncryptedVotes(modulus);
+        EncryptedVotesMap encryptedVotes = loadEncryptedVotes();
         CleansedVotesList cleansedEncryptedVotes = loadCleansedVotes();
         checkCleansedVotesAgainstEncryptedVotes(cleansedEncryptedVotes,
-            encryptedVotes, areas, environments, compressionFactor, modulus);
+            encryptedVotes);
 
         checkEncryptedVoteRetentionCounters(encryptedVotes);
 
         closeResultsFileIfNeeded();
-    }
-
-    // TODO: Hardcoded for now, but should be loaded from electionEmlFileName.
-    EnvironmentsMap loadEnvironments() {
-        getLogger().warn("Setting hard-coded environment primes.");
-
-        EnvironmentsMap environments = new EnvironmentsHashMap();
-        environments.put(Environment.CONTROLLED,
-            HARDCODED_CONTROLLED_ENVIRONMENT_PRIME);
-        environments.put(Environment.UNCONTROLLED,
-            HARDCODED_UNCONTROLLED_ENVIRONMENT_PRIME);
-
-        return environments;
-    }
-
-    int calculateCompressionFactor(AreasMap areas,
-        EnvironmentsMap environments, BigInteger modulus) {
-        BigInteger largestPossibleVote = findLargestAreaPrime(areas)
-                                             .multiply(findLargestEnvironmentPrime(
-                    environments)).multiply(findLargestPartyPrime())
-                                             .multiply(findMaximalCandidateNumber());
-
-        return calculateFlooredLogarithm(modulus, largestPossibleVote);
-    }
-
-    BigInteger findLargestAreaPrime(AreasMap areas) {
-        return areas.findLargestPrime();
-    }
-
-    private BigInteger findLargestEnvironmentPrime(EnvironmentsMap environments) {
-        return BigInteger.ONE;
-    }
-
-    private BigInteger findLargestPartyPrime() {
-        return BigInteger.ONE;
-    }
-
-    private BigInteger findMaximalCandidateNumber() {
-        return BigInteger.ONE;
-    }
-
-    int calculateFlooredLogarithm(BigInteger modulus,
-        BigInteger largestPossibleVote) {
-        int logarithm = modulus.bitLength() / largestPossibleVote.bitLength();
-
-        while (largestPossibleVote.pow(logarithm).compareTo(modulus) < 0) {
-            logarithm++;
-        }
-
-        while (largestPossibleVote.pow(logarithm).compareTo(modulus) >= 0) {
-            logarithm--;
-        }
-
-        return logarithm;
     }
 
     private void checkEncryptedVoteRetentionCounters(
@@ -168,13 +103,11 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
 
     private void checkCleansedVotesAgainstEncryptedVotes(
         CleansedVotesList cleansedEncryptedVotes,
-        EncryptedVotesMap encryptedVotes, AreasMap areas,
-        EnvironmentsMap environments, int compressionFactor, BigInteger modulus) {
+        EncryptedVotesMap encryptedVotes) {
         int noOfCleansedVotesChecked = 0;
 
         for (CleansedVote cleansedVote : cleansedEncryptedVotes) {
-            checkCleansedVoteAgainstEncryptedVotes(cleansedVote,
-                encryptedVotes, areas, environments, compressionFactor, modulus);
+            checkCleansedVoteAgainstEncryptedVotes(cleansedVote, encryptedVotes);
             noOfCleansedVotesChecked++;
 
             if ((noOfCleansedVotesChecked % TICKS_TO_LOG_NO_OF_CLEANSED_VOTES_CHECKED) == 0) {
@@ -184,16 +117,6 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
                         noOfCleansedVotesChecked));
             }
         }
-    }
-
-    BigInteger loadElGamalModulus() throws IOException {
-        Properties properties = loadProperties(elGamalPropertiesFileName);
-
-        return getBigIntegerProperty(properties, EL_GAMAL_MODULUS_PROPERTY_NAME);
-    }
-
-    private BigInteger getBigIntegerProperty(Properties properties, String key) {
-        return new BigInteger(properties.getProperty(key));
     }
 
     protected Properties loadProperties(String fileName)
@@ -211,12 +134,11 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
         return areas;
     }
 
-    EncryptedVotesMap loadEncryptedVotes(BigInteger modulus)
-        throws IOException {
+    EncryptedVotesMap loadEncryptedVotes() throws IOException {
         LOGGER.info(String.format("Loading the encrypted votes from %s.",
                 encryptedVotesFileName));
 
-        EncryptedVotesMap encryptedVotes = new EncryptedVotesHashMap(modulus);
+        EncryptedVotesMap encryptedVotes = new EncryptedVotesHashMap();
         addFileContentToCollection(encryptedVotesFileName, encryptedVotes);
         LOGGER.info(String.format("All %d encrypted votes loaded.",
                 encryptedVotes.size()));
@@ -267,26 +189,27 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
     }
 
     private void checkCleansedVoteAgainstEncryptedVotes(
-        CleansedVote cleansedVote, EncryptedVotesMap encryptedVotes,
-        AreasMap areas, EnvironmentsMap environments, int compressionFactor,
-        BigInteger modulus) {
+        CleansedVote cleansedVote, EncryptedVotesMap encryptedVotes) {
         EncryptedVoteRetentionCounter counter = encryptedVotes.findMatchForCleansedVote(cleansedVote);
 
+        //TODO
+        /*
         if ((counter == null) ||
                 !counter.matches(cleansedVote, areas, environments,
                     compressionFactor, modulus)) {
             results.add(new InjectedCleansedVoteLineIncident(cleansedVote));
         } else {
             counter.registerMatch(cleansedVote);
-        }
+        }*/
     }
 
+    // TODO: Expected number of matches
     private void checkEncryptedVoteRetentionCounter(
         EncryptedVoteRetentionCounter counter) {
-        if (counter.getNoOfMatches() > 1) {
-            results.add(new EncryptedVoteRetainedMoreThanOnceIncident(
-                    counter.getEncryptedVote(), counter.getNoOfMatches()));
-        }
+        /*       if (counter.getExpectedNoOfMatches() > 1) {
+                   results.add(new EncryptedVoteRetainedTooOftenIncident(
+                           counter.getEncryptedVote(), 1, counter.getExpectedNoOfMatches()));
+               }*/
     }
 
     /**
@@ -326,10 +249,15 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
     String getElectionEmlFileName() {
         return electionEmlFileName;
     }
-    enum NizkpCleansingMandatoryArgumentIndex {
-        EL_GAMAL_PROPERTIES_FILE_NAME_INDEX,AREAS_FILE_NAME_INDEX,
-        ELECTION_EML_FILE_NAME_INDEX,
-        ENCRYPTED_VOTES_FILE_NAME_INDEX,
+
+    /**
+     * Not used.
+     */
+    @Override
+    protected Thread createWorker() {
+        throw new NotImplementedException();
+    }
+    enum NizkpCleansingMandatoryArgumentIndex {ENCRYPTED_VOTES_FILE_NAME_INDEX,
         CLEANSED_FILES_DIR_INDEX;
     }
 }

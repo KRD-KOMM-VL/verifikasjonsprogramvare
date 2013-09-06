@@ -22,11 +22,7 @@
  */
 package com.computas.zkpev2013.cleansing;
 
-import com.computas.zkpev2013.ElGamalEncryptionTuple;
 import com.computas.zkpev2013.EncryptedVote;
-import com.computas.zkpev2013.cleansing.EnvironmentsMap.Environment;
-
-import java.math.BigInteger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,130 +33,28 @@ import java.util.List;
  * file from the Cleansing server.
  */
 public class EncryptedVoteRetentionCounter {
-    private final EncryptedVote encryptedVote;
+    private final List<EncryptedVote> encryptedVotes;
     private final List<CleansedVote> cleansedVotes;
 
     EncryptedVoteRetentionCounter(EncryptedVote encryptedVote) {
-        this.encryptedVote = encryptedVote;
+        encryptedVotes = new ArrayList<EncryptedVote>();
         cleansedVotes = new ArrayList<CleansedVote>();
+        registerEncryptedVote(encryptedVote);
     }
 
-    EncryptedVote getEncryptedVote() {
-        return encryptedVote;
+    final void registerEncryptedVote(EncryptedVote encryptedVote) {
+        encryptedVotes.add(encryptedVote);
     }
 
     void registerMatch(CleansedVote cleansedVote) {
         cleansedVotes.add(cleansedVote);
     }
 
-    int getNoOfMatches() {
+    int getExpectedNoOfMatches() {
+        return encryptedVotes.size();
+    }
+
+    public int getActualNoOfMatches() {
         return cleansedVotes.size();
-    }
-
-    boolean matches(CleansedVote cleansedVote, AreasMap areas,
-        EnvironmentsMap environments, int compressionFactor, BigInteger modulus) {
-        Area voterArea = getVoterAreaFromEncryptedVote(areas);
-        Environment voteEnvironment = getEnvironmentFromEncryptedVote();
-
-        return areaOrLinkedAreasGeneratesAMatch(cleansedVote, voterArea, areas,
-            environments.getPrime(voteEnvironment), compressionFactor, modulus);
-    }
-
-    private Environment getEnvironmentFromEncryptedVote() {
-        return EnvironmentsHashMap.getEnvironment(encryptedVote.getChannelId());
-    }
-
-    private boolean areaOrLinkedAreasGeneratesAMatch(
-        CleansedVote cleansedVote, Area voterArea, AreasMap areas,
-        BigInteger environmentPrime, int compressionFactor, BigInteger modulus) {
-        if (environmentPrime == null) {
-            throw new IllegalArgumentException(String.format(
-                    "Could not look up the environment prime for %s for the encrypted vote with UUID %s.",
-                    encryptedVote.getChannelId(), encryptedVote.getUuid()));
-        }
-
-        return areaGeneratesAMatch(cleansedVote, voterArea, environmentPrime,
-            compressionFactor, modulus) ||
-        thresholdAreaGeneratesAMatch(cleansedVote, areas, voterArea,
-            environmentPrime, compressionFactor, modulus) ||
-        area100GeneratesAMatch(cleansedVote, areas, voterArea,
-            environmentPrime, compressionFactor, modulus);
-    }
-
-    private boolean areaGeneratesAMatch(CleansedVote cleansedVote,
-        Area voterArea, BigInteger environmentPrime, int compressionFactor,
-        BigInteger modulus) {
-        if (voterArea.getPrime() == null) {
-            return false;
-        }
-
-        ElGamalEncryptionTuple compressedEncVoteOptIds = encryptedVote.getCompressedEncVoteOptIds(voterArea.getPrime(),
-                environmentPrime, compressionFactor, modulus);
-
-        return compressedEncVoteOptIds.equals(cleansedVote.getEncryptedVoteOptIds());
-    }
-
-    private boolean thresholdAreaGeneratesAMatch(CleansedVote cleansedVote,
-        AreasMap areas, Area voterArea, BigInteger environmentPrime,
-        int compressionFactor, BigInteger modulus) {
-        String thresholdAreaId = voterArea.getThresholdAreaId();
-
-        if ("".equals(thresholdAreaId)) {
-            return false;
-        }
-
-        Area thresholdArea = areas.get(thresholdAreaId);
-
-        if (thresholdArea == null) {
-            throw new IllegalArgumentException(String.format(
-                    "Could not look up the threshold area %s for the encrypted vote with UUID %s.",
-                    thresholdArea, encryptedVote.getUuid()));
-        }
-
-        return areaOrLinkedAreasGeneratesAMatch(cleansedVote, thresholdArea,
-            areas, environmentPrime, compressionFactor, modulus);
-    }
-
-    private boolean area100GeneratesAMatch(CleansedVote cleansedVote,
-        AreasMap areas, Area voterArea, BigInteger environmentPrime,
-        int compressionFactor, BigInteger modulus) {
-        String area100Id = voterArea.getArea100Id();
-
-        if ("".equals(area100Id)) {
-            return false;
-        }
-
-        Area area100 = areas.get(area100Id);
-
-        if (area100 == null) {
-            throw new IllegalArgumentException(String.format(
-                    "Could not look up area 100 %s for the encrypted vote with UUID %s.",
-                    area100Id, encryptedVote.getUuid()));
-        }
-
-        return areaOrLinkedAreasGeneratesAMatch(cleansedVote, area100, areas,
-            environmentPrime, compressionFactor, modulus);
-    }
-
-    private String getReducedAreaId(String areaId) {
-        return areaId.substring(encryptedVote.getElectionEventId().length() +
-            1);
-    }
-
-    private Area getVoterAreaFromEncryptedVote(AreasMap areas) {
-        String voterAreaId = getReducedVoterAreaId();
-        Area area = areas.get(voterAreaId);
-
-        if (area == null) {
-            throw new IllegalArgumentException(String.format(
-                    "Could not look up the voter area %s for the encrypted vote with UUID %s.",
-                    voterAreaId, encryptedVote.getUuid()));
-        }
-
-        return area;
-    }
-
-    private String getReducedVoterAreaId() {
-        return getReducedAreaId(encryptedVote.getVoterAreaId());
     }
 }

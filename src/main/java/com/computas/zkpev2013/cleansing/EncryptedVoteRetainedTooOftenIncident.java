@@ -25,40 +25,48 @@ package com.computas.zkpev2013.cleansing;
 import com.computas.zkpev2013.EncryptedVote;
 import com.computas.zkpev2013.Incident;
 
+import org.apache.commons.codec.binary.Base64;
+
 
 /**
  * Incident relating to an encrypted vote retained more than once
  * in the list of cleansed votes.
  *
  */
-public class EncryptedVoteRetainedMoreThanOnceIncident extends Incident {
+public class EncryptedVoteRetainedTooOftenIncident extends Incident {
     private final EncryptedVote encryptedVote;
-    private final int noOfMatches;
+    private final int expectedNoOfMatches;
+    private final int actualNoOfMatches;
 
-    EncryptedVoteRetainedMoreThanOnceIncident(EncryptedVote encryptedVote,
-        int noOfMatches) {
+    EncryptedVoteRetainedTooOftenIncident(EncryptedVote encryptedVote,
+        int expectedNoOfMatches, int actualNoOfMatches) {
         this.encryptedVote = encryptedVote;
-        this.noOfMatches = noOfMatches;
+        this.expectedNoOfMatches = expectedNoOfMatches;
+        this.actualNoOfMatches = actualNoOfMatches;
     }
 
     @Override
     public boolean equals(Object other) {
         return sameSubclass(other) &&
-        privateEqual((EncryptedVoteRetainedMoreThanOnceIncident) other);
+        privateEqual((EncryptedVoteRetainedTooOftenIncident) other);
     }
 
     private boolean sameSubclass(Object other) {
         return (other != null) && other.getClass().equals(this.getClass());
     }
 
-    private boolean privateEqual(
-        EncryptedVoteRetainedMoreThanOnceIncident other) {
+    private boolean privateEqual(EncryptedVoteRetainedTooOftenIncident other) {
         return encryptedVote.equals(other.getEncryptedVote()) &&
-        (noOfMatches == other.getNoOfMatches());
+        (expectedNoOfMatches == other.getExpectedNoOfMatches()) &&
+        (actualNoOfMatches == other.getActualNoOfMatches());
     }
 
-    private int getNoOfMatches() {
-        return noOfMatches;
+    private int getActualNoOfMatches() {
+        return actualNoOfMatches;
+    }
+
+    private int getExpectedNoOfMatches() {
+        return expectedNoOfMatches;
     }
 
     private EncryptedVote getEncryptedVote() {
@@ -67,13 +75,18 @@ public class EncryptedVoteRetainedMoreThanOnceIncident extends Incident {
 
     @Override
     public int hashCode() {
-        return encryptedVote.hashCode() + noOfMatches;
+        return encryptedVote.hashCode() + expectedNoOfMatches +
+        actualNoOfMatches;
     }
 
     @Override
     protected String[] getValuesForCsvLine() {
         return new String[] {
-            encryptedVote.getUuid(), String.format("%d", noOfMatches)
+            Base64.encodeBase64String(encryptedVote.getEncVoteOptIds()
+                                                   .getPublicKeyComponent()
+                                                   .toByteArray()),
+            String.format("%d", expectedNoOfMatches),
+            String.format("%d", actualNoOfMatches)
         };
     }
 }

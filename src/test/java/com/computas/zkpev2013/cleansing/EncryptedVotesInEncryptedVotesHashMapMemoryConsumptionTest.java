@@ -32,8 +32,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.math.BigInteger;
-
 
 /**
  * Memory consumption test for the encrypted votes. The memory consumption
@@ -42,8 +40,6 @@ import java.math.BigInteger;
  */
 public class EncryptedVotesInEncryptedVotesHashMapMemoryConsumptionTest {
     private static final int ALLOWED_MEMORY_CONSUMPTION = 30000;
-    private static final BigInteger MODULUS = new BigInteger(
-            "30953935016171929405181725048691475597165054658172086800611741385717085886966135022787053043294599719402052783457906554840050466598200845836350069464569830849652328849164597015834019636250184391187039519241529509539396137383783691026385997868581485251353115862362707856496254648707792083733847740839833577843038160760489606588067058523761002425294322414298639802035594840360412346667825330259855947401569537064580849961903216800408490338672611947294048038395112383055004376963978967260637379317563369771664058743286447728833162866458048271828606452285839103402380751993665831120012178542555391431510173573250387144139");
     private EncryptedVotesHashMap map;
     private EncryptedVoteLineGenerator encryptedVoteLineGenerator;
     private ResultsList results;
@@ -52,8 +48,8 @@ public class EncryptedVotesInEncryptedVotesHashMapMemoryConsumptionTest {
      * Creates a RcgVotingReceiptsHashMap for the tests.
      */
     @BeforeMethod(alwaysRun = true)
-    public void createVcsEncryptedVotesHashMap() {
-        map = new EncryptedVotesHashMap(MODULUS);
+    public void createEncryptedVotesHashMap() {
+        map = new EncryptedVotesHashMap();
     }
 
     /**

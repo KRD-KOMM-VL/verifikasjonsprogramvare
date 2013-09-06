@@ -41,4 +41,12 @@ public interface EncryptedVotesMap extends Map<String, EncryptedVoteRetentionCou
      */
     EncryptedVoteRetentionCounter findMatchForCleansedVote(
         CleansedVote cleansedVote);
+
+    /**
+     * Returns the number of encrypted votes. This is different from the size in that the size
+     * only returns the number of keys that can be verified, and multiple encrypted votes can
+     * map to the same key.
+     * @return The number of encrypted votes.
+     */
+    int getNoOfEncryptedVotes();
 }
