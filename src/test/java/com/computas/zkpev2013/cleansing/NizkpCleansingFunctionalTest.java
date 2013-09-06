@@ -48,8 +48,6 @@ public class NizkpCleansingFunctionalTest {
     private static final String BROKEN_CLEANSED_VOTE_LINE = "*";
     private static final String CLOSING_CLEANSED_VOTES_LINE = "p1";
     private static final int NO_OF_INCIDENTS_IN_TEST_FILES = 6;
-    private static final String ENCRYPTED_VOTE_WITH_COLLIDING_KEYS_1_UUID = "8a80d79b3206038a0132163b996e005c";
-    private static final String ENCRYPTED_VOTE_WITH_COLLIDING_KEYS_2_UUID = "8a80d79b3206038a0132163b996e005d";
     private NizkpCleansing nizkp;
     private EncryptedVote ecryptedVoteRetainedMoreThanOnce;
 
@@ -142,20 +140,6 @@ public class NizkpCleansingFunctionalTest {
         assertZkpContainsIncident(nizkp,
             new InjectedCleansedVoteLineIncident(
                 new CleansedVote(INJECTED_AREA_SHIFTED_CLEANSED_VOTE_LINE)));
-    }
-
-    /**
-     * Verifies that the NIZKP produced an incident about colliding VCS encrypted
-     * votes map keys.
-     *
-     * TODO
-     */
-    @Test(enabled = false)
-    public void resultsMustContainVcsEncryptedVotesMapKeyCollisionIncident() {
-        assertZkpContainsIncident(nizkp,
-            new EncryptedVotesMapKeyCollisionIncident(
-                ENCRYPTED_VOTE_WITH_COLLIDING_KEYS_1_UUID,
-                ENCRYPTED_VOTE_WITH_COLLIDING_KEYS_2_UUID));
     }
 
     /**

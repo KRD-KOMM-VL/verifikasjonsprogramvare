@@ -23,15 +23,12 @@
 package com.computas.zkpev2013.cleansing;
 
 import com.computas.zkpev2013.ZeroKnowledgeProof;
-import com.computas.zkpev2013.cleansing.EnvironmentsMap.Environment;
 
 import org.apache.commons.lang.NotImplementedException;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-
-import java.math.BigInteger;
 
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -117,21 +114,6 @@ public class NizkpCleansing extends ZeroKnowledgeProof {
                         noOfCleansedVotesChecked));
             }
         }
-    }
-
-    protected Properties loadProperties(String fileName)
-        throws IOException {
-        Properties properties = new Properties();
-        properties.load(getFileAsStream(fileName));
-
-        return properties;
-    }
-
-    AreasMap loadAreas() throws IOException {
-        AreasMap areas = new AreasHashMap();
-        addFileContentToCollection(areasFileName, areas);
-
-        return areas;
     }
 
     EncryptedVotesMap loadEncryptedVotes() throws IOException {
