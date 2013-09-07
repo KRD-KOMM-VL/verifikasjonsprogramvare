@@ -60,6 +60,8 @@ cp src/main/sh/NizkpCleansing.sh $TMPDIR
 chmod a+x $TMPDIR/NizkpCleansing.sh
 cp src/main/sh/UnpackCleansedFiles2013.sh $TMPDIR
 chmod a+x $TMPDIR/UnpackCleansedFiles2013.sh
+cp src/main/sh/CompareCleansedFiles2013.sh $TMPDIR
+chmod a+x $TMPDIR/CompareCleansedFiles2013.sh
 cp src/main/sh/IzkpMixing2013.sh $TMPDIR
 chmod a+x $TMPDIR/IzkpMixing2013.sh
 cp src/main/sh/NizkpDecryption2013.sh $TMPDIR
