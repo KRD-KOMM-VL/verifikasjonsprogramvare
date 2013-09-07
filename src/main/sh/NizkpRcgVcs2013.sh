@@ -26,13 +26,11 @@
 # the Vote Collector Server (VCS).
 #
 
-RCG_VOTES=$1
-RCG_RECEIPTS=$2
-VCS_VOTES=$3
-VCS_RECEIPTS=$4
-VCS_VOTES_REDUCED=$5
-VCS_RECEIPTS_REDUCED=$6
-BULLETIN_BOARD_RECEIPTS=$7
+VCS_VOTES=$1
+VCS_RECEIPTS=$2
+VCS_VOTES_REDUCED=$3
+VCS_RECEIPTS_REDUCED=$4
+BULLETIN_BOARD_RECEIPTS=$5
 
 function cut_sort_diff {
 	INPUT_FILE1=$1
@@ -91,28 +89,18 @@ function compare_encrypted_votes_with_receipts {
 	java -Xmx2048m -cp $CLASSPATH com.computas.zkpev2013.rcgvcs.NizkpRcgVcs $VOTES $RECEIPTS $LOG
 }
 
-RCG_VOTES_SIZE=`file_length $RCG_VOTES`
 VCS_VOTES_SIZE=`file_length $VCS_VOTES`
-echo "Comparing RCG and VCS votes ($RCG_VOTES_SIZE - $VCS_VOTES_SIZE)..."
-cut_sort_diff $RCG_VOTES 2-17 $VCS_VOTES 2-17 rcg_vcs_votes_diff.log
-assert_deletions_only rcg_vcs_votes_diff.log
-
-RCG_RECEIPTS_SIZE=`file_length $RCG_RECEIPTS`
-VCS_RECEIPTS_SIZE=`file_length $VCS_RECEIPTS`
-echo "Comparing RCG and VCS receipts ($RCG_RECEIPTS_SIZE - $VCS_RECEIPTS_SIZE)..."
-cut_sort_diff $RCG_RECEIPTS 2-9 $VCS_RECEIPTS 2-9 rcg_vcs_receipts_diff.log
-assert_deletions_only rcg_vcs_receipts_diff.log
-
 VCS_VOTES_REDUCED_SIZE=`file_length $VCS_VOTES_REDUCED`
 echo "Comparing VCS votes with reduced file ($VCS_VOTES_SIZE - $VCS_VOTES_REDUCED_SIZE)..."
 cut_sort_diff $VCS_VOTES 2-16 $VCS_VOTES_REDUCED 2-16  vcs_vcs_reduced_votes_diff.log
 assert_empty vcs_vcs_reduced_votes_diff.log
 
+VCS_RECEIPTS_SIZE=`file_length $VCS_RECEIPTS`
 VCS_RECEIPTS_REDUCED_SIZE=`file_length $VCS_RECEIPTS_REDUCED`
 echo "Base64 decoding the voting receipts in the reduced receipts file ($VCS_RECEIPTS_REDUCED_SIZE)..."
 VCS_RECEIPTS_REDUCED_DECODED="$(mktemp)"
 base64_decode_voting_receipts $VCS_RECEIPTS_REDUCED $VCS_RECEIPTS_REDUCED_DECODED
-echo "Comparing VCS receipts with reduced file ($RCG_RECEIPTS_SIZE - $VCS_RECEIPTS_REDUCED_SIZE)..."
+echo "Comparing VCS receipts with reduced file ($VCS_RECEIPTS_SIZE - $VCS_RECEIPTS_REDUCED_SIZE)..."
 echo -e "\e[33mCOMPARISON OF FULL_VOTING_RECEIPT NOT IMPLEMENTED YET\e[0m"
 cut_sort_diff $VCS_RECEIPTS 2,4-9 $VCS_RECEIPTS_REDUCED_DECODED 2,4-9 vcs_vcs_reduced_receipts_diff.log
 assert_empty vcs_vcs_reduced_receipts_diff.log
@@ -122,9 +110,6 @@ BULLETIN_BOARD_RECEIPTS_SIZE=`file_length $BULLETIN_BOARD_RECEIPTS`
 echo "Comparing VCS and BB receipts ($VCS_RECEIPTS_REDUCED_SIZE - $BULLETIN_BOARD_RECEIPTS_SIZE)..."
 cut_sort_diff $VCS_RECEIPTS_REDUCED 1-2,4-9 $BULLETIN_BOARD_RECEIPTS 1-8 vcs_bb_receipts_diff.log
 assert_empty vcs_bb_receipts_diff.log
-
-echo "Comparing RCG receipts against RCG votes..."
-compare_encrypted_votes_with_receipts $RCG_VOTES $RCG_RECEIPTS rcg_votes_receipts.log
 
 echo "Comparing VCS receipts against VCS votes..."
 compare_encrypted_votes_with_receipts $VCS_VOTES $VCS_RECEIPTS vcs_votes_receipts.log
