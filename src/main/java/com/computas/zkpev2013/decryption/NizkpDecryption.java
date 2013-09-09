@@ -56,7 +56,7 @@ public class NizkpDecryption extends ElGamalZkp {
             LOGGER.info("Done.");
         } catch (IllegalArgumentException iae) {
             LOGGER.fatal(
-                "Could not parse the arguments provided.\nCorrect usage:\n\tNizkpDecryption <ElGamalPropertiesFileName> <ElGamalPublicKeyFileName> <DecryptionFileName> [<ResultsFileName>]");
+                "Could not parse the arguments provided.\nCorrect usage:\n\tNizkpDecryption <ElGamalPropertiesFileName> <MixingType> <ElGamalPublicKeyFileName> <DecryptionFileName> [<ResultsFileName>]");
         } catch (Exception exception) {
             LOGGER.fatal("A fatal error occurred.", exception);
         }
