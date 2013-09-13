@@ -108,7 +108,7 @@ rm $VCS_RECEIPTS_REDUCED_DECODED
 
 BULLETIN_BOARD_RECEIPTS_SIZE=`file_length $BULLETIN_BOARD_RECEIPTS`
 echo "Comparing VCS and BB receipts ($VCS_RECEIPTS_REDUCED_SIZE - $BULLETIN_BOARD_RECEIPTS_SIZE)..."
-cut_sort_diff $VCS_RECEIPTS_REDUCED 1-2,4-9 $BULLETIN_BOARD_RECEIPTS 1-8 vcs_bb_receipts_diff.log
+cut_sort_diff $VCS_RECEIPTS_REDUCED 6 $BULLETIN_BOARD_RECEIPTS 1 vcs_bb_receipts_diff.log
 assert_empty vcs_bb_receipts_diff.log
 
 echo "Comparing VCS receipts against VCS votes..."
