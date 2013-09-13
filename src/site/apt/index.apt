@@ -22,8 +22,10 @@
 Introduction
 
   This software component performs the zero-knowledge protocols for the
-  Norwegian E-Vote 2011 project. In particular, it performs four proofs using
-  so-called zero-knowledge protocols, marked in orange in the figure below.
+  Norwegian E-Vote 2013 project. In particular, it performs three proofs using
+  so-called zero-knowledge protocols, marked in orange in the figure below. Due
+  to a problem with the ballot boxes, a fourth proof, the cleansing, was left
+  out.
   
 [images/Overview.png] Overview
 
@@ -32,27 +34,28 @@ Introduction
   from the votes stored by the Vote Collector Server (VCS). The identity proofs
   that the VCS hasn't removed any votes that the RCG has registered, and that
   the RCG hasn't accepted any votes it should have rejected. This proof is
-  non-interactive, and can therefore be run over two CSV files: one containing
-  the hashes from the RCG, and one containing the encrypted votes stored by the
-  VCS. See {{{./NIZKP_RCG-VCS.html}NIZKP RCG-VCS}} for more information about
-  this proof.
-  
-  The second proof, called <<NIZKP Cleansing>>, verifies that the result of the
-  cleansing services doesn't contain any votes that weren't registered in the
-  Vote Collector Server (VCS). In order to do that, it has also to check that
-  the votes from the VCS have been compressed correctly. This proof is 
-  non-interactive, and can therefore be run over two CSV files: one containing
-  the encrypted votes from the VCS, and one containing the result from the 
-  cleansing service. See {{{./NIZKP_Cleansing.html}NIZKP Cleansing}} for more
+  non-interactive, and can therefore be run over a set of CSV files: a set
+  of files each containing the encrypted votes, and a set of files each
+  containing the hashes. See {{{./NIZKP_RCG-VCS.html}NIZKP RCG-VCS}} for more
   information about this proof.
   
+  The second proof, called <<NIZKP Cleansing>>, would have verified that the 
+  result of the cleansing services doesn't contain any votes that weren't
+  registered in the Vote Collector Server (VCS). However, due to the poor
+  encryption of part of the votes, it was decided that parallell cleansing was
+  to be used in 2013.
+  
   The third proof, called <<IZKP Mixing>>, checks the Schnorr signature based
-  zero-knowledge proofs on
-  the mix-nodes. This proof demonstrates that the mix-node has decrypted and
-  encrypted groups of votes it has received as input correctly. This proof is
-  interactive, and requires communication with the databases of the mix-nodes.
-  See {{{./IZKP_Mixing.html}IZKP Mixing}} for more information about
-  this proof.
+  zero-knowledge proofs on the mix-nodes. This proof demonstrates that the
+  mix-node has decrypted and encrypted groups of votes it has received as input
+  correctly. This proof is interactive, and requires communication with the
+  databases of the mix-nodes. See {{{./IZKP_Mixing.html}IZKP Mixing}} for more
+  information about this proof.
+
+  Notice however that this proof was used during the verification of the 2013
+  elections. Instead, a verifier for the Verificatum mixing was used. See 
+  the <<CPPVV>> documenation for more information about the verification of 
+  Verificatum.
 
   The fourth proof, called <<NIZKP Decryption>>, checks the Schnorr signature
   based zero-knowledge proofs on
@@ -61,4 +64,4 @@ Introduction
   is non-interactive, and can therefore be run over a CSV file extracted from
   the Counting server database containing both encrypted votes, decrypted votes
   and their zero-knowledge proofs. See {{{./NIZKP_Decryption.html}NIZKP Decryption}}
-  for more information about   this proof.
+  for more information about this proof.

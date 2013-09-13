@@ -172,30 +172,6 @@ NIZKP RCG-VCS
                     than one encrypted vote generated a matching voting receipt
                   
     [[]] Close the <Log File>
-  
-  Voting receipts are calculated as follows from an encrypted vote:
-  
-    [[1]] <Message> := <<<"">>>
-  
-    [[]] <<For each>> <EncVoteOptId> <<in>> <EncVoteOptIds> <<do>>
-  
-         [[1]] <Message> := <Message> || <EncVoteOptId>
-       
-    [[]] <Message> := <Message> || <VoterId> || <VoteZKProofSig> ||
-                      <ElectionEventId> || <ElectionId> || <ContestId> || 
-                      <VoteTimestamp> || <AuthTokenId> || <InternalAuthTokenId>
-  
-    [[]] <Message> := <Message> || <EncVoteSig> || <VoterCertificate>
-  
-    [[]] <Message> := <Message> || <AuthTokenMessage>
-  
-    [[]] <VotingReceipt> := Base64(Base64(SHA-1(<Message>)))
-    
-  <<Note:>> The <AuthTokenMessage> is calculated using the <<<toByteArray>>>
-  method of the <<<AuthToken>>> class. This class, and all classes used by this
-  class, has been copied into this project from the E-vote project's source
-  code. <<<AuthToken>>> objects are deserialized from the VCS encrypted votes
-  file using Java serialization.
 
 * Running the Program
 
@@ -230,7 +206,7 @@ NizkpRcgVcs2013.sh NizkpRcgVcs2013FunctionalTestRcgVotes.csv NizkpRcgVcs2013Func
 
 * Input
 
-** RCG Encrypted Votes, VCS Encrypted Votes 
+** Encrypted Votes 
 
    The encrypted votes file is a comma-separated values (CSV) file, with the
    following fields in the following order:
@@ -252,10 +228,11 @@ NizkpRcgVcs2013.sh NizkpRcgVcs2013FunctionalTestRcgVotes.csv NizkpRcgVcs2013Func
      * <<<INTERNALAUTHTOKENID>>>: The ballot's internal assertion identifier.
      (<<<String>>>)
      
+     * <<<ELECTIONTYPE>>>: The election type.
+     (<<<String>>>)
+
      * <<<VOTETIMESTAMP>>>: The ballot time stamp. (<<<Date>>>)
-     
-     * <<<VOTEZKPROOFSIG>>>: The voter Schnorr signature proof. (<<<byte[]>>>)
-     
+         
      * <<<VOTERCERTIFICATE>>>: The voter's certificate corresponding to the
      private key that was used to sign the vote. (<<<String>>>)
      
@@ -272,7 +249,11 @@ NizkpRcgVcs2013.sh NizkpRcgVcs2013FunctionalTestRcgVotes.csv NizkpRcgVcs2013Func
      * <<<CHANNELID>>>: The channel through witch the vote is cast
      (<<<CHANNEL_ID_CONTROLLED>>>, <<<CHANNEL_ID_UNCONTROLLED>>>) (<<<String>>>)
 
-** RCG Voting Receipts and VCS Voting Receipts
+     * <<<RECEIPTTIMESTAMP>>>: The receipt time stamp. (<<<Date>>>)
+
+     * <<<VOTEZKPROOFSIG>>>: The voter Schnorr signature proof (optionally). (<<<byte[]>>>)
+
+** Voting Receipts
 
    The first input file is a comma-separated values (CSV) file, with the
    following fields in the following order:
@@ -298,97 +279,35 @@ NizkpRcgVcs2013.sh NizkpRcgVcs2013FunctionalTestRcgVotes.csv NizkpRcgVcs2013Func
      
      * <<<ELECTIONEVENTID>>>: The election event of the receipt. (<<<String>>>)
      
-     * <<<VOTERAREA>>>: The voter area path related to the voter of the receipt. 
-
 * Output
 
   The output of this program is a result file, listing all incidents that
   occurred during its execution. The following is an overview over the incidents
   the program can detect:
   
-    * <<<DoubleOccurrenceOfRcgVotingReceiptIncident>>>: The same voting receipt
-    appeared twice in the file with RCG voting receipts. The results file will
+    * <<<DoubleOccurrenceOfVotingReceiptIncident>>>: The same voting receipt
+    appeared twice in the file with voting receipts. The results file will
     show the voting receipt in question.
-    
-    * <<<RcgVotingReceiptBrokenLineIncident>>>: The file with the RCG voting
-    receipts contained a line that didn't conform to the format. The results
-    file will show the first eighty characters of the line, commas being
-    replaced by apostrophes.
-    
-    * <<<RcgVotingReceiptCollisionIncident>>>: Two or more encrypted votes
-    generated the same voting receipt. The results file will show the voting
-    receipt in question, and the UUIDs of the encrypted votes.
-    
-    * <<<RcgVotingReceiptWithoutVcsEncryptedVoteIncident>>>: There was no
-    encrypted vote that generated a voting receipt registered by the RCG. The
-    results file will show the voting receipt in question.
-    
-    * <<<VcsEncryptedVoteBrokenLineIncident>>>: The file with the VCS encrypted
+
+    * <<<EncryptedVoteBrokenLineIncident>>>: The file with the encrypted
     votes contained a line that didn't conform to the format. The results
     file will show the first eighty characters of the line, commas being
     replaced by apostrophes.
     
-    * <<<VcsEncryptedVoteNotRegisteredByRcgIncident>>>: An encrypted vote
-    generated a voting receipt that wasn't registered by the RCG. The results
-    file will show the UUID of the encrypted vote in question.
-
-* Sample Files
-
-  Two sample files containing RCG voting receipts and VCS encrypted votes are
-  provided with this program. The following figure sketches the design of the
-  sample files:
-
-[images/NIZKP_RCG-VCS_Sample_File_Design.png] Design of the sample file for the
-                                              NIZKP RCG-VCS program.
-                                              
-  The sample files are designed to illustrate the following cases:
-  
-    * <<<A>>>: The normal case, i.e. a pair consisting of an encrypted vote
-    that generates a voting receipt that occurs only once in the list of voting
-    receipts at the RCG.
+    * <<<EncryptedVoteWithoutVotingReceiptIncident>>>: An encrypted vote
+    generated a voting receipt that wasn't registered in the voting receipts
+    file. The results file will show the UUID of the encrypted vote in question.
     
-    * <<<B>>>: Generates a <<<DoubleOccurrenceOfRcgVotingReceiptIncident>>>.
+    * <<<VotingReceiptBrokenLineIncident>>>: The file with the voting
+    receipts contained a line that didn't conform to the format. The results
+    file will show the first eighty characters of the line, commas being
+    replaced by apostrophes.
     
-    * <<<C>>>: Generates a <<<RcgVotingReceiptCollisionIncident>>>.
+    * <<<VotingReceiptCollisionIncident>>>: Two or more encrypted votes
+    generated the same voting receipt. The results file will show the voting
+    receipt in question, and the UUIDs of the encrypted votes.
     
-    * <<<D>>> and <<<D'>>>: Generate a <<<RcgVotingReceiptCollisionIncident>>>.
+    * <<<VotingReceiptWithoutEncryptedVoteIncident>>>: There was no
+    encrypted vote that generated a voting receipt registered. The
+    results file will show the voting receipt in question.
     
-    * <<<E>>>: Generates a <<<RcgVotingReceiptWithoutVcsEncryptedVoteIncident>>>.
-    
-    * <<<F>>>: Generates a <<<VcsEncryptedVoteNotRegisteredByRcgIncident>>>.
-    
-    * <<<*>>>: Generates a <<<RcgVotingReceiptBrokenLineIncident>>>.
-    
-    * <<<#>>>: Generates a <<<VcsEncryptedVoteBrokenLineIncident>>>.
-
-  Use the following command from the command-line in order to run the program
-  against the two sample files, directing all output to a file called
-  <<<Results.csv>>>:
-  
-----------------------------------------------------------------------------------------------------------------  
-NizkpRcgVcs.sh NizkpRcgVcsFunctionalTestRcgVotingReceipts.csv NizkpRcgVcsFunctionalTestVcsEncryptedVotes.csv Results.csv
-----------------------------------------------------------------------------------------------------------------
-
-  The program should then output the following information to the console:
-  
-----------------------------------------------------------------------------------------------------
-INFO - Results file Results.csv opened for writing.
-INFO - Loading the RCG voting receipts from NizkpRcgVcsFunctionalTestRcgVotingReceipts.csv.
-INFO - All RCG voting receipts loaded.
-INFO - Loading the encrypted votes from the VCS from NizkpRcgVcsFunctionalTestVcsEncryptedVotes.csv.
-INFO - All encrypted votes from the VCS loaded.
-INFO - Results file Results.csv closed for writing; wrote 7 events.
-INFO - Done.
-----------------------------------------------------------------------------------------------------
-
-  The content of the file <<<Results.csv>>> should look like this:
-
-----------------------------------------------------
-DoubleOccurrenceOfRcgVotingReceiptIncident,TXJmT2pEMExySHM0ZzFYdlJWTEkzOGdOSDRjPQ==
-RcgVotingReceiptBrokenLineIncident,*
-VcsEncryptedVoteBrokenLineIncident,#
-VcsEncryptedVoteNotRegisteredByRcgIncident,4028806a2fda69fd012fda7a46b10012
-RcgVotingReceiptWithoutVcsEncryptedVoteIncident,NzlRUUgrdzEwM2J1emNXR05FWVVDZGt5WDFVPQ==
-RcgVotingReceiptCollisionIncident,MDVVR0I3VW9MQmF3UTlsYW1oZVdCQ0dpR1p3PQ==,4028806a2fda69fd012fdab9ce9c0015,4028806a2fda69fd012fdab9ce9c0016
-RcgVotingReceiptCollisionIncident,SkFEMHQvSmd1dnNkaUZUS3ZWdnlRd0R3ODE0PQ==,4028806a2fde06e0012fde40c5aa000e,4028806a2fde06e0012fde40c5aa000f
-----------------------------------------------------
