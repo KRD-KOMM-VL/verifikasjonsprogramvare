@@ -63,7 +63,8 @@ public class DecryptionLineWithIncorrectProofIncident extends Incident
             decryptionLine.getContestId(),
             decryptionLine.getEncryptedVotingOptionsIdsString(),
             decryptionLine.getDecryptedVotingOptionIdsString(),
-            decryptionLine.getSchnorrSignatureString(), String.valueOf(decryptionLine.decryptedVotingOptionIds.length)
+            decryptionLine.getSchnorrSignatureString(),
+            String.valueOf(decryptionLine.decryptedVotingOptionIds.length)
         };
     }
 }
