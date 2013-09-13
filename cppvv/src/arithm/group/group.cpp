@@ -1,7 +1,7 @@
 /**
  * @file   group.cpp
  * @author Léo Perrin <leoperrin@picarresursix.fr>
- * @date   Time-stamp: <2013-09-03 18:53:17 leo>
+ * @date   Time-stamp: <2013-09-09 13:43:05 leo>
  * 
  * @brief  The source code of the Group class.
  * 

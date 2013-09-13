@@ -1,7 +1,7 @@
 /**
  * @file   algorithm_19.cpp
  * @author Léo Perrin <leoperrin@picarresursix.fr>
- * @date   Time-stamp: <2013-09-07 15:42:38 leo>
+ * @date   Time-stamp: <2013-09-09 13:46:57 leo>
  * 
  * @brief Contains the implementation of algorithm 19 (Verifier).
  * 
@@ -70,11 +70,12 @@ int proof::algorithm_19(
         // !SUBSECTION! a) Read input ciphers
         arithm::CollectionOfElmts L_0, L_lambda, m;
         unsigned int N;
+        utils::ByteTree * L_0_bt;
         try
         {
-                utils::ByteTree * l_0Bt = arg->getByteTreeFromFile(
+                L_0_bt = arg->getByteTreeFromFile(
                         arg->getProofDir() + "Ciphertexts");
-                L_0 = arg->getCkappaOmega()->getCiphers(l_0Bt);
+                L_0 = arg->getCkappaOmega()->getCiphers(L_0_bt);
                 N = L_0.size();
         }
         catch (utils::Exception exc)
@@ -91,12 +92,12 @@ int proof::algorithm_19(
         // !SUBSECTION! b) Read shuffled ciphertexts
 
 
+        utils::ByteTree * L_lambda_bt;
         try
-        {                        
-                L_lambda = arg->getCkappaOmega()->getCiphers(
-                        arg->getByteTreeFromFile(
-                                "ShuffledCiphertexts"
-                                ));
+        {
+                L_lambda_bt = arg->getByteTreeFromFile(
+                        arg->getProofDir() +"ShuffledCiphertexts");
+                L_lambda = arg->getCkappaOmega()->getCiphers(L_lambda_bt);
         }
         catch (utils::Exception exc)
         {
@@ -106,6 +107,8 @@ int proof::algorithm_19(
                 return 1;
         }
         log->write("[DONE] reading L_lambda");
+
+
         
 
         // !SECTION! 7. Verify relations between lists        
@@ -119,7 +122,9 @@ int proof::algorithm_19(
                         N,
                         pk,
                         L_0,
-                        L_lambda
+                        L_lambda,
+                        L_0_bt,
+                        L_lambda_bt
                         );
         }
         catch (utils::Exception exc)

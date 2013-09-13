@@ -1,7 +1,7 @@
 /**
  * @file   modfield.cpp
  * @author Léo Perrin <leoperrin@picarresursix.fr>
- * @date   Time-stamp: <2013-04-12 23:55:08 leo>
+ * @date   Time-stamp: <2013-09-09 17:30:49 leo>
  * 
  * @brief  The source code of the Elmt class.
  * 
@@ -10,6 +10,7 @@
 
 
 #include "modfield.hpp"
+#include <iostream>
 
 using namespace cppVerifier;
 using namespace cppVerifier::arithm;
@@ -22,7 +23,19 @@ ModField::ModField(mpz_class aOrder) :
                 new LargeNumber(2) // generator of the mult. subgroup
                 )
 {
-        leafSize = (mpz_sizeinbase(addOrder.get_mpz_t(), 16)+1)/2;
+        
+        leafSize = mpz_sizeinbase(addOrder.get_mpz_t(),2);
+        if (leafSize % 8 == 0)
+                leafSize = (leafSize+7)/8 + 1;
+        else
+                leafSize = (leafSize+7)/8;
+        std::cout << leafSize << std::endl;
+
+        // leafSize = (mpz_sizeinbase(addOrder.get_mpz_t(), 16)+1)/2;
+        // if (leafSize % 8 == 0)
+        //         leafSize += 1;
+        // std::cout << leafSize << std::endl;
+
 }
 
 

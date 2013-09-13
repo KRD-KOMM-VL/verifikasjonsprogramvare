@@ -1,7 +1,7 @@
 /**
  * @file   leaf.cpp
  * @author Léo Perrin <leoperrin@picarresursix.fr>
- * @date   Time-stamp: <2012-08-12 21:41:25 leo>
+ * @date   Time-stamp: <2013-09-09 17:17:05 leo>
  * 
  * @brief  The source code of the Leaf class.
  * 

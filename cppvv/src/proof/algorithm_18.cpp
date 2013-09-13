@@ -1,7 +1,7 @@
 /**
  * @file   algorithm_18.cpp
  * @author Léo Perrin <leoperrin@picarresursix.fr>
- * @date   Time-stamp: <2013-09-04 22:04:14 leo>
+ * @date   Time-stamp: <2013-09-09 17:35:15 leo>
  * 
  * @brief Contains the implementation of algorithm 18 (verifier of
  * shuffling).
@@ -20,7 +20,9 @@ int proof::algorithm_18(
         unsigned int N, ///< The size of the arrays.)
         arithm::Elmt * pk, ///< El Gamal public key.
         arithm::CollectionOfElmts L_0,       ///< Original ciphertexts.
-        arithm::CollectionOfElmts L_lambda  ///< Shuffled ciphertexts.
+        arithm::CollectionOfElmts L_lambda,  ///< Shuffled ciphertexts.
+        utils::ByteTree * L_0_bt, /// The bytetree representation of L_0
+        utils::ByteTree * L_lambda_bt /// The bytetree representation of L_lambda
         )
 {
         arithm::Group
@@ -28,7 +30,12 @@ int proof::algorithm_18(
                 * C_kappa_omega = arg->getCkappaOmega();
 
         
-        arithm::CollectionOfElmts L_lMinusOne = L_0, L_l, u_l;
+        arithm::CollectionOfElmts
+                L_lMinusOne = L_0,
+                L_l,
+                u_l;
+        utils::ByteTree * L_l_bt
+                , * L_lMinusOne_bt = L_0_bt;
 
         for (unsigned int l=1; l<=arg->getLambda(); l++)
         {
@@ -54,11 +61,11 @@ int proof::algorithm_18(
                 {
                         try
                         {
-                                L_l = C_kappa_omega->getCiphers(
-                                        arg->getByteTreeFromFile(
-                                                arg->getProofDir()
-                                                + "proofs/Ciphertexts",
-                                                l));
+                                L_l_bt = arg->getByteTreeFromFile(
+                                        arg->getProofDir()
+                                        + "proofs/Ciphertexts",
+                                        l);
+                                L_l = C_kappa_omega->getCiphers(L_l_bt);
                         }
                         catch(utils::Exception exc)
                         {
@@ -71,7 +78,10 @@ int proof::algorithm_18(
                         }
                 }
                 else
+                {
                         L_l = L_lambda;
+                        L_l_bt = L_lambda_bt;
+                }
                         
                 
                 // !SUBSECTION! 2. Verify proof of shuffle
@@ -96,7 +106,9 @@ int proof::algorithm_18(
                                 L_l,
                                 u_l,
                                 tau_l_pos,
-                                sigma_l_pos
+                                sigma_l_pos,
+                                L_l_bt,
+                                L_lMinusOne_bt
                                 );
                 }
                 catch (utils::Exception exc)
@@ -104,15 +116,16 @@ int proof::algorithm_18(
                         log->write(exc.what());
                         algo17Result = 1;
                 }
-                if (algo17Result != 0 ||
-                    !C_kappa_omega->compare(L_l,L_lMinusOne) )
+                if (algo17Result != 0 && !C_kappa_omega->compare(L_l,L_lMinusOne) )
                 {
                         log->write("-- Verifier of shuffling failed for"
                                    " ciphertext " + utils::num2str(l));
                         return 1;
                 }
                 log->write("  Verification passed.");
+
                 L_lMinusOne = L_l;
+                L_lMinusOne_bt = L_l_bt;
         }
         // !SUBSECTION! 3. Accept proof
         return 0;

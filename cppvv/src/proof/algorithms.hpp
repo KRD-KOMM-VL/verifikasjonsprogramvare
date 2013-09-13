@@ -1,7 +1,7 @@
 /**
  * @file   algorithms.hpp
  * @author Léo Perrin <leoperrin@picarresursix.fr>
- * @date   Time-stamp: <2013-09-03 23:40:22 leo>
+ * @date   Time-stamp: <2013-09-09 13:51:39 leo>
  * 
  * @brief Contains the declaration of the different algorithms
  * described in the specification.
@@ -50,7 +50,9 @@ namespace proof {
                 arithm::CollectionOfElmts wPrime,  ///< Array of output ciphertexts in C_omega of size N.
                 arithm::CollectionOfElmts u,       ///< Permutation commitment.
                 utils::ByteTree * tau_pos,  ///< Commitment of the Fiat-Shamir proof.
-                utils::ByteTree * sigma_pos ///< Reply of the Fiat-Shamir proof.
+                utils::ByteTree * sigma_pos, ///< Reply of the Fiat-Shamir proof.
+                utils::ByteTree * w_bt, ///< The bytetree representation of w
+                utils::ByteTree * wPrime_bt ///< The bytetree representation of wPrime_bt
                 );
 
 
@@ -69,7 +71,9 @@ namespace proof {
                 unsigned int N, ///< The size of the arrays.
                 arithm::Elmt * pk, ///< El Gamal public key.
                 arithm::CollectionOfElmts L_0,       ///< Original ciphertexts.
-                arithm::CollectionOfElmts L_lambda  ///< Shuffled ciphertexts.
+                arithm::CollectionOfElmts L_lambda,  ///< Shuffled ciphertexts.
+                utils::ByteTree * L_0_bt, /// The bytetree representation of L_0
+                utils::ByteTree * L_lambda_bt /// The bytetree representation of L_lambda
                 );
 
 

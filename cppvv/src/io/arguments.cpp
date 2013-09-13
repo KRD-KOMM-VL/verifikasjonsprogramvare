@@ -1,7 +1,7 @@
 /**
  * @file   arguments.cpp
  * @author Léo Perrin <leoperrin@picarresursix.fr>
- * @date   Time-stamp: <2013-09-06 22:38:40 leo>
+ * @date   Time-stamp: <2013-09-09 12:31:34 leo>
  * 
  * @brief  The source code of the Arguments class.
  * 
@@ -64,16 +64,33 @@ Arguments::Arguments(
                 ROchallenge = new crypto::RO(H,nv);
 
                 // !SUBSECTION! Creating the group gq
+                unsigned int omega;
+                if (omega_expected == -1)
+                        omega = omega_default;
+                else
+                        omega = omega_expected;
+
                 std::string sGq = protInfo.retrieveText("pgroup");
                 gq = arithm::unmarshal(sGq);
                 zq = new arithm::ModField(gq->getMultOrder());
+                arithm::Group * M_kappa;
+                arithm::Field * R_kappa;
 
-                arithm::Group * M_kappa = new arithm::ProdGrp(gq, kappa);
-                arithm::Field * R_kappa = new arithm::ProdField(zq, kappa);
+                if (kappa == 1)
+                {
+                        M_kappa = gq;
+                        R_kappa = zq;
+                }
+                else
+                {
+                        M_kappa = new arithm::ProdGrp(gq, kappa);
+                        R_kappa = new arithm::ProdField(zq, kappa);
+                }
                 C_kappa = new arithm::ProdGrp(M_kappa, 2);
 
+
                 // !SUBSECTION! Creating the other arithmetic objects
-                if (omega_default == 1)
+                if (omega == 1)
                 {
                         M_kappa_omega = M_kappa;
                         R_kappa_omega = R_kappa;
@@ -89,6 +106,8 @@ Arguments::Arguments(
 
                 // !SUBSECTION! Computing the prefix rho
                 std::string s1 = sid + "." + auxsid;
+                std::cout << version << s1 << std::endl;
+
 
                 utils::ByteTree * rhoBt = new utils::Node();
                 // version and version_proof have to be identical
@@ -220,7 +239,7 @@ void Arguments::computeH(unsigned int Nprime)
         seed.insert(seed.end(), btVector.begin(), btVector.end());
         s2 = ROseed->query(seed);
         prg->initialize(s2);
-        h = gq->getRandArray(prg,nr,Nprime);
+        h = gq->getRandArray(prg, nr, Nprime);
 }
 
 

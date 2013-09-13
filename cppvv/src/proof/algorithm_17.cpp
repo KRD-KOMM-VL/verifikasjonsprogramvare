@@ -1,7 +1,7 @@
 /**
  * @file   algorithm_17.cpp
  * @author Léo Perrin <leoperrin@picarresursix.fr>
- * @date   Time-stamp: <2013-09-05 22:34:19 leo>
+ * @date   Time-stamp: <2013-09-09 17:36:28 leo>
  * 
  * @brief Contains the implementation of algorithm 17 (proof of a
  * shuffle).
@@ -15,15 +15,17 @@ using namespace cppVerifier;
 
 
 int proof::algorithm_17(
-        io::Log * log, ///< To know what happened.
-        io::Arguments * arg, ///< The basic arguments to use.
-        unsigned int N, ///< The size of the arrays.
-        arithm::Elmt * pk, ///< El Gamal public key.
-        arithm::CollectionOfElmts w,       ///< Array of input ciphertexts in C_kappa_omega of size N.
-        arithm::CollectionOfElmts wPrime,  ///< Array of output ciphertexts in C_kappa_omega of size N.
-        arithm::CollectionOfElmts u,       ///< Permutation commitment.
-        utils::ByteTree * tau_pos,  ///< Commitment of the Fiat-Shamir proof.
-        utils::ByteTree * sigma_pos ///< Reply of the Fiat-Shamir proof.
+        io::Log * log,
+        io::Arguments * arg,
+        unsigned int N,
+        arithm::Elmt * pk,
+        arithm::CollectionOfElmts w,
+        arithm::CollectionOfElmts wPrime,
+        arithm::CollectionOfElmts u,
+        utils::ByteTree * tau_pos,
+        utils::ByteTree * sigma_pos,
+        utils::ByteTree * w_bt,
+        utils::ByteTree * wPrime_bt
         )
 {
         arithm::Group
@@ -88,7 +90,7 @@ int proof::algorithm_17(
 
         arg->computeH(N);
         arithm::CollectionOfElmts h = arg->getH();
-        gq->getByteTree(h)->prettyPrint("");
+        // gq->getByteTree(h)->prettyPrint("");
 
         log->write("-- -- h computed successfully.");
         
@@ -96,10 +98,10 @@ int proof::algorithm_17(
         std::vector<uint8_t> s;
         try
         {
-                seedBt->addChild(gq->getByteTree(gq->getGenerator()));                
-                seedBt->addChild(gq->getByteTree(h));
-                seedBt->addChild(gq->getByteTree(u));
-                seedBt->addChild(C_kappa->getByteTree(pk));
+                seedBt->addChild(gq->getByteTree(gq->getGenerator()));  // OK
+                seedBt->addChild(gq->getByteTree(h)); // OK
+                seedBt->addChild(gq->getByteTree(u)); // OK
+                seedBt->addChild(C_kappa->getByteTree(pk)); // OK
                 seedBt->addChild(C_kappa_omega->getByteTree(w));
                 seedBt->addChild(C_kappa_omega->getByteTree(wPrime));
                 s = arg->getSeed(seedBt);
@@ -122,7 +124,7 @@ int proof::algorithm_17(
         arithm::CollectionOfElmts e;
         try
         {
-                e = arg->randomExponents(s,N);
+                e = arg->randomExponents(s, N);
         }
         catch (utils::Exception exc)
         {
@@ -326,6 +328,7 @@ int proof::algorithm_17(
         // !SECTION! Accepting
         // ===================
 
+        log->write("Algorithm_17 succeeded");
         return 0;
 }
 
