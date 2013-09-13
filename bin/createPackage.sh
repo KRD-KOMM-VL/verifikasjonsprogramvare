@@ -27,6 +27,8 @@
 # This script assumes that it is run from the trunk directory.
 #
 
+BASE_DIR=$(pwd)
+
 VERSION="1.0a4"
 TMPDIR="zkpev2013-${VERSION}"
 TMPLIBDIR="$TMPDIR/lib"
@@ -34,10 +36,14 @@ TARFILE="zkpev2013-${VERSION}.tgz"
 ZIPFILE="zkpev2013-${VERSION}.zip"
 
 mvn clean install -P MixingDatabaseAbsent,NoCodeQuality
+cd $BASE_DIR/cppvv
+# Remove the build directory if it already exists
+[ -d build ] && rm -R build
+./install.sh
 
 echo
 echo "Packing all run-time code together..."
-
+cd $BASE_DIR
 # Remove the temporary directory if it already exists
 [ -d $TMPDIR ] && rm -R $TMPDIR
 
@@ -60,6 +66,8 @@ cp src/main/sh/UnpackCleansedFiles2013.sh $TMPDIR
 chmod a+x $TMPDIR/UnpackCleansedFiles2013.sh
 cp src/main/sh/CompareCleansedFiles2013.sh $TMPDIR
 chmod a+x $TMPDIR/CompareCleansedFiles2013.sh
+cp cppvv/build/cppvv $TMPDIR
+chmod a+x $TMPDIR/cppvv
 cp src/main/sh/IzkpMixing2013.sh $TMPDIR
 chmod a+x $TMPDIR/IzkpMixing2013.sh
 cp src/main/sh/NizkpDecryption2013.sh $TMPDIR
