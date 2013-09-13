@@ -98,19 +98,25 @@ IZKP Mixing
     
   The verification of the zero-knowledge proofs is done as follows:
 
-    [[1]] <Ai> := 1
+    [[1]] <h> := 1
+
+    [[]] <<For each>> <h>[<i>] <<in>> <ElGamal Public Keys> <<do>>
+
+          [[]] <h> := <h> * <h>[<i>]
+
+    [[]] <Ai> := 1
 
     [[]] <Bi> := 1
   
     [[]] <<For each>> <Input Vote> <<in>> <Input Votes Subgroup> <<do>>
     
-          [[1]] Extract the <Input Voting Options> as a set of (<a>[<i>], <b>[<i>])
+          [[1]] Extract the <Input Voting Options> as a set of (<a>, <b>[<i>])
 
-          [[]] <<For each>> (<a>[<i>], <b>[<i>]) <<in>> <Input Voting Options> <<do>>
+          [[]] <Ai> := <Ai> * <a>
+
+          [[]] <<For each>> <b>[<i>] <<in>> <Input Voting Options> <<do>>
     
-               [[1]] <Ai> := <Ai> * <a>[<i>]
-
-               [[]] <Bi> := <Bi> * <b>[<i>]
+               [[1]] <Bi> := <Bi> * <b>[<i>]
 
     [[]] <Ao> := 1
 
@@ -118,13 +124,13 @@ IZKP Mixing
 
     [[]] <<For each>> <Output Vote> <<in>> <Output Votes Subgroup> <<do>>
     
-          [[1]] Extract the <Output Voting Options> as a set of (<a>[<i>], <b>[<i>])
+          [[1]] Extract the <Output Voting Options> as a set of (<a>, <b>[<i>])
 
-          [[]] <<For each>> (<a>[<i>], <b>[<i>]) <<in>> <Output Voting Options> <<do>>
+          [[]] <Ao> := <Ao> * <a>
+
+          [[]] <<For each>> <b>[<i>] <<in>> <Output Voting Options> <<do>>
     
-               [[1]] <Ao> := <Ai> * <a>[<i>]
-
-               [[]] <Bo> := <Bi> * <b>[<i>]
+               [[1]] <Bo> := <Bi> * <b>[<i>]
       
     [[]] Extract the <Zero-Knowledge Proof> as (<s>, <c>)
                   
@@ -140,7 +146,7 @@ IZKP Mixing
     
     [[]] Verify that <c1> == <c>
     
-  In this alhorithm, <h> is the public ElGamal key of the Electoral Board, and
+  In this alhorithm, <h>[<i>] are the public ElGamal keys of the Electoral Board, and
   <g> the generator of the cyclic group.
 
 * Parallellization
@@ -204,12 +210,12 @@ IzkpMixing.sh IzkpMixingFunctionalTestElGamalProperties.properties IzkpMixingFun
      * <<<generator>>>: The generator for the cyclic group <G>.
        (<<<BigInteger>>>)
      
-** ElGamal Public Key
+** ElGamal Public Keys
 
-   The second input file is a properties file containing the ElGamal public key
+   The second input file is a properties file containing the ElGamal public keys
    of the Electoral Board:
    
-     * <<<publicKey>>>: The public key <h>. (<<<BigInteger>>>)
+     * <<<publicKey>>>: The public keys <h>[<i>]. (<<<BigInteger[]>>>)
 
 ** Database Properties
 
@@ -256,45 +262,6 @@ IzkpMixing.sh IzkpMixingFunctionalTestElGamalProperties.properties IzkpMixingFun
       * <<<Input votes invalid>>>.
       
       * <<<Output votes invalid>>>.
-
-* Sample Files
-
-  Three sample files containing the ElGamal encryption properties, the ElGamal
-  public key and the database properties are provided with this program.
-
-  Use the following command from the command-line in order to run the program
-  against the three sample files, directing all output to a file called
-  <<<Results.csv>>>:
-  
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-./IzkpMixing.sh IzkpMixingFunctionalTestElGamalProperties.properties IzkpMixingFunctionalTestElGamalPublicKey.properties IzkpMixingDatabaseProperties.properties Results.csv
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  The program should then output the following information to the console:
-  
-----------------------------------------------------------------------------------------------------
-INFO - Results file Izkp.csv opened for writing.
-INFO - Loading the mixing data from mxmanagertest.
-INFO - All mixing data from the Mixing Server loaded.
-INFO - 4 worker threads set up.
-INFO - Worker for mixing/audit dataset a13868a6b6fd4b78a6b65e3840be9ad6/c3c5c17c5ba246438e942539429926bd finished; all proofs were correct.
-INFO - Worker for mixing/audit dataset f450bba1a10946b4acf7a14224003027/2c7268b07f234edc98563946864c10f8 finished; all proofs were correct.
-INFO - Worker for mixing/audit dataset 398abc84d00149b9b94b1193b484e3b1/f9045bf144aa4547a97aba54dbd86c95 finished; all proofs were correct.
-INFO - Worker for mixing/audit dataset 766ae3944f3744f1b059d865fadda924/050ec7482895429dbae04688bf22fa57 finished; all proofs were correct.
-INFO - Results file Izkp.csv closed for writing; wrote 0 events to it.
-INFO - Done.
-----------------------------------------------------------------------------------------------------
-
-  In this case, the content of the file <<<Results.csv>>> should be empty. If
-  problems were found, it will typically look like this:
-
-----------------------------------------------------
-IncorrectMixingProofIncident,daacc2e43c6044589d5525749a8b0ef0,050ec7482895429dbae04688bf22fa57,0
-IncorrectMixingProofIncident,90b37ec02d6846aaae0a31253b6a00a6,c3c5c17c5ba246438e942539429926bd,0
-IncorrectMixingProofIncident,2ce8cf95411b49999112565a7fe50094,2c7268b07f234edc98563946864c10f8,0
-InvalidMixingDataRecordIncident,766ae3944f3744f1b059d865fadda924,Input votes invalid
-InvalidMixingDataRecordIncident,a13868a6b6fd4b78a6b65e3840be9ad6,Input votes invalid
-----------------------------------------------------
 
 * Database Installation
 
