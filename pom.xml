@@ -222,8 +222,8 @@
               </instrumentation>
               <check>
                 <haltOnFailure>${cobertura.haltOnFailure}</haltOnFailure>
-                <lineRate>80</lineRate>
-                <branchRate>75</branchRate>
+                <lineRate>70</lineRate>
+                <branchRate>70</branchRate>
                 <packageLineRate>80</packageLineRate>
                 <packageBranchRate>80</packageBranchRate>
                 <totalLineRate>80</totalLineRate>
