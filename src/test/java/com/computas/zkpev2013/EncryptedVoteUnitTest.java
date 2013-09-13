@@ -131,14 +131,6 @@ public class EncryptedVoteUnitTest {
     }
 
     /**
-     * Verifies that the voter area ID is set correctly from a line.
-     */
-    @Test
-    public void constructorMustSetTheVoterAreaIdCorrectly() {
-        assertEquals(encryptedVote.getVoterAreaId(), VOTER_AREA_ID);
-    }
-
-    /**
      * Verifies that the constructor sets the contest ID correctly from
      * a line.
      */

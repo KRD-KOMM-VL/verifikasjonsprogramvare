@@ -34,14 +34,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import java.math.BigInteger;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -60,7 +56,6 @@ public class EncryptedVote extends CsvLineParseable {
     private String electionEventId;
     private String uuid;
     private String votingReceipt;
-    private String voterAreaId;
     private ElGamalEncryptionTuple encVoteOptIds;
     private String channelId;
 
@@ -109,15 +104,6 @@ public class EncryptedVote extends CsvLineParseable {
         return uuid;
     }
 
-    /**
-     * Returns the voter area ID.
-     *
-     * @return The voter area ID.
-     */
-    public String getVoterAreaId() {
-        return voterAreaId;
-    }
-
     @Override
     protected void setAttributes(String[] attributes) throws Exception {
         uuid = getAttribute(attributes, EncryptedVoteCsvIndex.UUID);
@@ -125,8 +111,7 @@ public class EncryptedVote extends CsvLineParseable {
         electionId = getAttribute(attributes, EncryptedVoteCsvIndex.ELECTION_ID);
         electionEventId = getAttribute(attributes,
                 EncryptedVoteCsvIndex.ELECTION_EVENT_ID);
-        voterAreaId = getAttribute(attributes,
-                EncryptedVoteCsvIndex.VOTER_AREA_ID);
+
         encVoteOptIds = getAttributeAsElGamalEncryptionTuple(attributes,
                 EncryptedVoteCsvIndex.ENC_GAMMA_AND_VOTE_OPT_IDS);
         channelId = getAttribute(attributes, EncryptedVoteCsvIndex.CHANNEL_ID);
@@ -237,8 +222,7 @@ public class EncryptedVote extends CsvLineParseable {
 
     private boolean privateEqual(EncryptedVote other) {
         return uuid.equals(other.getUuid()) && electionIdsEqual(other) &&
-        votingReceipt.equals(other.getVotingReceipt()) &&
-        voterAreaId.equals(other.getVoterAreaId());
+        votingReceipt.equals(other.getVotingReceipt());
     }
 
     private boolean electionIdsEqual(EncryptedVote other) {
@@ -251,40 +235,6 @@ public class EncryptedVote extends CsvLineParseable {
     public int hashCode() {
         return uuid.hashCode() + contestId.hashCode() + electionId.hashCode() +
         electionEventId.hashCode() + votingReceipt.hashCode();
-    }
-
-    /**
-     * Returns a compressed ElGamal encryption tuple.
-     *
-     * @param areaPrime The area prime.
-     * @param environmentPrime The environment prime.
-     * @param compressionFactor The compression factor.
-     * @param modulus The modulus.
-     * @return A compressed ElGamal encryption tuple.
-     *
-     * TODO: compressionFactor?
-     */
-    public ElGamalEncryptionTuple getCompressedEncVoteOptIds(
-        BigInteger areaPrime, BigInteger environmentPrime,
-        int compressionFactor, BigInteger modulus) {
-        return new ElGamalEncryptionTuple(encVoteOptIds.getPublicKeyComponent(),
-            compressMessageComponents(encVoteOptIds.getMessageComponents(),
-                areaPrime, environmentPrime, modulus));
-    }
-
-    private List<BigInteger> compressMessageComponents(
-        List<BigInteger> messageComponents, BigInteger areaPrime,
-        BigInteger environmentPrime, BigInteger modulus) {
-        List<BigInteger> result = new ArrayList<BigInteger>();
-        BigInteger r = areaPrime.multiply(environmentPrime).mod(modulus);
-
-        for (BigInteger c : messageComponents) {
-            r = r.multiply(c).mod(modulus);
-        }
-
-        result.add(r);
-
-        return result;
     }
 
     /**

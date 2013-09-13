@@ -93,28 +93,6 @@ public abstract class CsvLineParseable {
         return s.replace("#n#", "\n");
     }
 
-    protected ElGamalEncryptionPair getAttributeAsElGamalEncryptionPair(
-        String[] attributes, Enum index) {
-        String encodedVotingOptionIdsProductString = getAttributeAsString(attributes,
-                index);
-        String[] encodedVotingOptionIdsProductStrings = encodedVotingOptionIdsProductString.split(
-                "#");
-
-        if (encodedVotingOptionIdsProductStrings.length != 2) {
-            throw new IllegalArgumentException(String.format(
-                    "Could not parse a field as an ElGamal encryption pair: %s.",
-                    encodedVotingOptionIdsProductString));
-        }
-
-        BigInteger encodedVotingOptionIdsProductPublicKeyComponent = new BigInteger(Base64.decodeBase64(
-                    encodedVotingOptionIdsProductStrings[0]));
-        BigInteger encodedVotingOptionIdsProductMessageComponent = new BigInteger(Base64.decodeBase64(
-                    encodedVotingOptionIdsProductStrings[1]));
-
-        return new ElGamalEncryptionPair(encodedVotingOptionIdsProductPublicKeyComponent,
-            encodedVotingOptionIdsProductMessageComponent);
-    }
-
     protected ElGamalEncryptionTuple getAttributeAsElGamalEncryptionTuple(
         String[] attributes, Enum index) {
         String encodedVotingOptionIdsProductString = getAttributeAsString(attributes,
@@ -139,10 +117,5 @@ public abstract class CsvLineParseable {
 
         return new ElGamalEncryptionTuple(encodedVotingOptionIdsProductPublicKeyComponent,
             encodedVotingOptionIdsProductMessageComponents);
-    }
-
-    protected BigInteger getAttributeAsBigInteger(String[] attributes,
-        Enum index) {
-        return new BigInteger(getAttribute(attributes, index));
     }
 }
