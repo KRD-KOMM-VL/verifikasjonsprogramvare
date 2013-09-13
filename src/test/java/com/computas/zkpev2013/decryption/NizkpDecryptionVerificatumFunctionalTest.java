@@ -36,7 +36,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Functional tests against the NizkpDecryption class.
  */
-public class NizkpDecryptionFunctionalTestVerificatum {
+public class NizkpDecryptionVerificatumFunctionalTest {
     private static final String DECRYPTION_FILE_NAME = "NizkpDecryption2013FunctionalTestDecryptionFileVerificatum.csv";
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "NizkpDecryption2013FunctionalTestElGamalPropertiesVerificatum.properties";
     private static final String ELGAMAL_PUBLIC_KEYS_FILE_NAME = "NizkpDecryption2013FunctionalTestElGamalPublicKeysVerificatum.properties";
@@ -80,7 +80,8 @@ public class NizkpDecryptionFunctionalTestVerificatum {
     public void resultsMustContainIncorrectProofIncident() {
         assertZkpContainsIncident(nizkp,
             new DecryptionLineWithIncorrectProofIncident(
-                new ScytlDecryptionLine(DECRYPTION_LINE_WITH_INCORRECT_PROOF)));
+                new VerificatumDecryptionLine(
+                    DECRYPTION_LINE_WITH_INCORRECT_PROOF)));
     }
 
     /**
@@ -91,6 +92,7 @@ public class NizkpDecryptionFunctionalTestVerificatum {
     public void resultsMustNotContainIncidentAboutCorrectProof() {
         assertZkpDoesNotContainIncident(nizkp,
             new DecryptionLineWithIncorrectProofIncident(
-                new ScytlDecryptionLine(DECRYPTION_LINE_WITH_CORRECT_PROOF)));
+                new VerificatumDecryptionLine(
+                    DECRYPTION_LINE_WITH_CORRECT_PROOF)));
     }
 }

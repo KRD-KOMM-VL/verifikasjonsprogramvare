@@ -36,7 +36,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Functional tests against the NizkpDecryption class.
  */
-public class NizkpDecryptionFunctionalTestOptimizationLine {
+public class NizkpDecryptionOptimizationLineFunctionalTest {
     private static final String DECRYPTION_FILE_NAME = "NizkpDecryption2013FunctionalTestDecryptionFileOptimization.csv";
     private static final String ELGAMAL_PROPERTIES_FILE_NAME = "NizkpDecryption2013FunctionalTestElGamalPropertiesOptimization.properties";
     private static final String ELGAMAL_PUBLIC_KEYS_FILE_NAME = "NizkpDecryption2013FunctionalTestElGamalPublicKeysOptimization.properties";
