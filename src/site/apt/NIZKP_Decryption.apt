@@ -83,25 +83,39 @@ NIZKP Decryption
 
     [[]] Close the <Votes File>
     
-  The verification of the zero-knowledge proof is done as follows:
+  The verification of the zero-knowledge proof after Scytl mixing is done as follows:
   
-    [[1]] Extract the <Encrypted Voting Options> as a set of (<a>[<i>], <b>[<i>])
+    [[1]] Extract the <Encrypted Voting Options> as a set of (<a>, <b>[<i>])
     
-    [[]] Extract the <Decrypted Voting Options> as <Bo>
+    [[]] Extract the <Decrypted Voting Options> as <c>[<i>]
     
     [[]] Extract the <Zero-Knowledge Proof> as (<s>, <c>)
     
-    [[]] <Ai> := 1
+    [[]] <h> := 1
+
+    [[]] <<For each>> <h>[<i>] <<in>> <ElGamal Public Keys> <<do>>
+
+          [[]] <h> := <h> * <h>[<i>]
+
+    [[]] <Ai> := <a>
 
     [[]] <Bi> := 1
     
-    [[]] <<For each>> (<a>[<i>], <b>[<i>]) <<in>> <Encrypted Voting Options> <<do>>
+    [[]] <<For each>> <b>[<i>] <<in>> <Encrypted Voting Options> <<do>>
     
-         [[1]] <Ai> := <Ai> * <a>[<i>]
-
-         [[]] <Bi> := <Bi> * <b>[<i>]
+         [[1]] <Bi> := <Bi> * <b>[<i>]
                   
-    [[]] <x> := SHA-256(<Bo>)
+    [[]] <Bo> := 1
+    
+    [[]] <Co> := ''
+
+    [[]] <<For each>> <c>[<i>] <<in>> <Decrypted Voting Options> <<do>>
+    
+         [[1]] <Bo> := <Bo> * <c>[<i>]
+
+         [[]] <Co> := <Co> ||  <c>[<i>]
+
+    [[]] <x> := SHA-256(<Co>)
     
     [[]] <<If>> <Bo> \u2264 <Bi> <<then>>
          
@@ -121,12 +135,13 @@ NIZKP Decryption
     
     [[]] Verify that <c1> == <c>
     
-  In this alhorithm, <h> is the public ElGamal key of the Electoral Board, and
+  In this alhorithm, <h>[<i>] are the public ElGamal keys of the Electoral Board, and
   <g> the generator of the cyclic group.
-  
-  Notice that the decrypted vote is retrieved as <Bo>, the product of the 
-  decrypted voting options <C>[<i>].
 
+  For decryption after Verificatum mixing, the proofs encrypted votes are 
+  represented as a set (<a>[<i>], <b>[<i>]), and proofs are created and to be 
+  verified per encrypted voting option pair.
+  
 * Parallellization
 
   In order to speed up the verification of a large batch of decryption lines,
@@ -165,7 +180,7 @@ NIZKP Decryption
   invocation of the script looks like this:
   
 -------------------------------------------------------------------------------------------------------------
-NizkpDecryption.sh <ElGamalPropertiesFileName> <ElGamalPublicKeyFileName> <DecryptionFileName> [<ResultsFileName>]
+NizkpDecryption.sh <ElGamalPropertiesFileName> <ElGamalPublicKeyFileName> <VERIFICATUM|SCYTL> <DecryptionFileName> [<ResultsFileName>]
 -------------------------------------------------------------------------------------------------------------
 
   The arguments are as follows:
@@ -178,6 +193,8 @@ NizkpDecryption.sh <ElGamalPropertiesFileName> <ElGamalPublicKeyFileName> <Decry
   
     * <<<DecryptionFileName>>>, the name of the file where the program can find
       the decryption lines.
+
+    * <<<VERIFICATUM>>> or <<<SCYTL>>>, the type of mixing used before the decryption.
     
     * <<<ResultsFileName>>>, the name of the file where the program can write the results
       to. This argument is optional; if it is not provided, no results will be
@@ -186,14 +203,14 @@ NizkpDecryption.sh <ElGamalPropertiesFileName> <ElGamalPublicKeyFileName> <Decry
   The following is an example of a correct invocation of the program:
   
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties NizkpDecryptionFunctionalTestElGamalPublicKey.properties NizkpDecryptionFunctionalTestDecryptionFile.csv Results.csv
+NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties NizkpDecryptionFunctionalTestElGamalPublicKey.properties VERIFICATUM NizkpDecryptionFunctionalTestDecryptionFile.csv Results.csv
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   The following invocation will do the same thing, but will not write the 
   results to a file:
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties NizkpDecryptionFunctionalTestElGamalPublicKey.properties NizkpDecryptionFunctionalTestDecryptionFile.csv
+NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties NizkpDecryptionFunctionalTestElGamalPublicKey.properties VERIFICATUM NizkpDecryptionFunctionalTestDecryptionFile.csv
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 * Input
@@ -216,7 +233,7 @@ NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties Niz
    The second input file is a properties file containing the ElGamal public key
    of the Electoral Board:
    
-     * <<<publicKey>>>: The public key <h>. (<<<BigInteger>>>)
+     * <<<publicKey>>>: The public keys <h>. (<<<BigInteger[]>>>)
 
 ** Decryption File
 
@@ -253,36 +270,3 @@ NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties Niz
       results file will show the election event ID, the election ID, the contest
       ID, the encrypted voting options, the decrypted voting options and the
       incorrect Schnorr signature proof.
-
-* Sample Files
-  
-  Three sample files containing the ElGamal encryption properties, the ElGamal
-  public key and three decryption lines are provided with this program. The 
-  decryption lines include a broken line, a line with a correct proof and a line
-  with an incorrect proof.
-
-  Use the following command from the command-line in order to run the program
-  against the three sample files, directing all output to a file called
-  <<<Results.csv>>>:
-  
-----------------------------------------------------------------------------------------------------------------  
-./NizkpDecryption.sh NizkpDecryptionFunctionalTestElGamalProperties.properties NizkpDecryptionFunctionalTestElGamalPublicKey.properties NizkpDecryptionFunctionalTestDecryptionFile.csv Results.csv
-----------------------------------------------------------------------------------------------------------------
-
-  The program should then output the following information to the console:
-  
-----------------------------------------------------------------------------------------------------
-INFO - Results file Results.csv opened for writing.
-INFO - Loading the decryption lines from NizkpDecryptionFunctionalTestDecryptionFile.csv.
-INFO - All decryption lines from the Counting Server loaded.
-INFO - Setting up 4 worker threads.
-INFO - Results file Results.csv closed for writing; wrote 2 events to it.
-INFO - Done.
-----------------------------------------------------------------------------------------------------
-
-  The content of the file <<<Results.csv>>> should look like this:
-
-----------------------------------------------------
-DecryptionFileBrokenLineIncident,*
-DecryptionLineWithIncorrectProofIncident,999901,01,000004,MzY2MDI1Njg4NTgzMDQ5OTQ5NTE2NTQ2ODU5NTAzNjQxMDQxNzUzMDMyODE3NDM2#n#MDM5ODc4OTgwODYxNzgxOTU4Mjk4Mjg3Mjc0MzMyMzI1MDExNzA2NTc0NzA2Mzkw#n#NDQwMzcyMjQ5MjE4MzAxNTUxMDA5NjY2ODA0ODYzNDc4MTE4NjI4OTM4NzE2MzM2#n#MDEwNTk0NzY0NzUzNTM2OTAxNTgyNTE1MDEyMTgwNjUwMDI4OTg2MTQ1Nzk3ODMx#n#OTMyNjkzODAxNjA0NTUyODA1NDQ1OTY2MTcwNTgyNTkxNTM4NzMyNDg4NTA2Mzg4#n#MzIzMzk2MzUyNDQ4MTQzNjUwMzE2NDc2MDgwMjQwMjY3NTc3NjMyMzgyMTY5OTMz#n#MTU1MjIyNzg0MTU2Njk4ODU0OTE1NTE5MzQxODA4OTk3MDIwODg0NTAxNzA4MTY2#n#NzY5Mjk2ODc2NTE1NDYwNTM5MDAxNDM1MTI0NDk1Mzk5MjgzMTQ2NTU4ODk0NTM1#n#NjM3MDA4NTMwMDM5MjgyMjAwMTI4NzQ2NTYxNDEyMzE5OTc4MDM3OTUxMzk1NTkz#n#Mzg0Mzg1MjMwNDAyNzk0NjMyNzE4NDE2MTg4OTk5NDMyNTM1MzA3NDU0MjIwODU2#n#ODQ5NDU0NzYxODg0MDU2NzI1NzgyMTczMTkzNzM5NjQyMjg3MDI2ODI0NTY0OTc1#n#MTcwOTQxNTUyMTY3MTI2NzE0OTY1MTI5NTI3ODYwMTUwODg0MjE0NjUyNzUzNTg3#n#MjczMTkyODc3MjczMzM2NzMyNTEwNDE3MjM5MjIzMDA4MTY3ODI3MnwyMjQ5NDA3#n#MjA0NzM4OTYzNzc0OTc0MTI2NzIzODA1MzQ0ODM5ODMzOTkyMTY2MzEzNTIzNDI3#n#MDY3NDE0MDgwOTMyNDgxNzQ2MDMzNTA4NzM3NTgxNDc5MTY1MzY1MzYwNDIwOTY0#n#MDA0MjI3NjEzNjA3MzU4MTE1ODc0MDY2MDA3NTM0NjIwNjcyMjU5NTQ5MTEzMDUy#n#NTI2MjM3NjU2NDY4MTg3OTQ0OTIwNjMxODc1NjQ2OTU0MTEyOTkxNDA0OTAxNDIx#n#NTkwNDU1MDEwODA1ODM4ODE3OTUxMDgwNjY2MDI0MTkwNTQ0NTcwMTc4NTcwNTgy#n#NjUwMDkxMzg4MTI5ODg0Mjk3MzcxMTAwNzgyMzIxNzc0OTUzNjU0OTYxMDE2MDM2#n#OTE5NDI0MjQzODQ0NTMxMDA3MzYwMzg5NDUzMTQ2MjM2NjM0NTczNTk2MzgyOTk3#n#MzA0NDY2NjU1MjE1OTE4OTc0ODg3NjM3MzkwMDkwMjgxMzczNTk4NDAyNjE2MDU0#n#NDgyNzI5Mzg3MzYwMDkzNzAyODgwMDEwNjU0Nzg5MjA4MTUwMzAwOTk2NTE0MDA0#n#Njk0NzQyNzY4NzYxMjA0MDM2NDU2ODUzMDIzMDU2NjU3OTQ4NjY2NjI4MzEyNTg5#n#MjM0NjYzMTQ3NDEzOTg4ODgyNjM4OTMzMzIzODY2NjcyMzM2ODg2NzE5MjU3MTUx#n#NzU4MDQyNDYzNDM0MzMyMTQ1ODI2MzgwMTgxMjg4NTM2MTM2MjMwNDM2OTcxMzAx#n#OTUzMTE3OTIzNjcyMzQ1NzUzMjg4MjgzMzkwMDcwNTU5MQ==#,92413907,OTgxMzYzNTc0Mjk2MzcxMjg0MTQyMzQzMjQ2MTA3ODQ5Mzc3NzYyNDI1NDIxMjg0NDY0MTUyNTczMDU2MTc4MTIzNjIwNTIzMTE5MHwtMjQyNjQ1NTkwNzk0NjE5NTE4NDI3MTA1ODM4MzEwNjA1MzcxODg2NjUzMTUxMjkxMDgyMzUwMzE5MjAxOTI5MzkwNzQ3MDU3NzkyNjk0NTk3MTYzMDU4Mzk4NTMyODA3MDMyNDcxODU1MzE0NTkwMzMwMzkzNDk4Mjc1NTYyMTA5MzQ0MTkwOTM1MTcwOTkyODU3MjQ5NjI1MjA0NTEzMTI3NTkxNzM5MjkyNDM5OTQzNDUxNTgyNDk0OTk3ODE5MDU0MzM4NDk0MTM1NDk5OTQ4OTIzMjMwMjk3NzA3NjcxMTA5NDUxNjc0OTg4NDU0MTUwNzkyMDYyNjk5MzkyOTM2ODMyNjI3MzEyMzc2ODUxMDE1ODIzMjU2NTM0MDkyNzYwNjk3MDUzMDUzMzczMDM0Nzg2MzIzNDAwOTg5MjY3MzAyNDg0MzE3NzYwMjQ5ODMxMDg2NTUwMjY0NDgxNzYyNzA5NDE4MjUyODU0MzM3OTY2MjY0NzM3NDgxMTg5Njg3MzUzODkxNDU0NzQ2MjY3OTA2OTgyNTE4Njk5NjI4MDg3MTEyMTQ1MzA3NjY1NzQwNzg3NTQ3MzA4NzM2ODMwNjgzNDIyMTQwMjk4OTg0ODQ2MTA4ODM2ODQwOTM5NTEyMTgzNDk0OTk2Njg2OTEzNzczMTI3OTM5MTI4NzMzNjQ5MjgzNjY3OTE3MzM0NDEyNDQ4MDQ3MjYzNTY3Nzg1MDM1NzIxNTE3NjM5MTM5NDQ3MjkyMjYwNjk2NzI5MDk1MjU0NDAxMjY3ODE2ODQ0OTUyNDgxOTY0ODQ1Mzk2MTM1MTI2NjQ2MTEyMDQzMDY4NzQyMDUwNTQwNzUwODcxNjg4OTM0OTk3MTY0ODM2MzMxMTAyNDg3OTM4NjUxMzY2NDMxMzUxNjE2ODYxMzYwNTYzfG51bGw=
-----------------------------------------------------
