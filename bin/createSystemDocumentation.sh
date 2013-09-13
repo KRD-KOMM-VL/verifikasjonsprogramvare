@@ -28,7 +28,7 @@
 #
 #
 
-VERSION="1.0a4"
+VERSION="1.0"
 TMPDIR="zkpev2013-sysdoc-${VERSION}"
 TARFILE="zkpev2013-sysdoc-${VERSION}.tgz"
 ZIPFILE="zkpev2013-sysdoc-${VERSION}.zip"

@@ -27,7 +27,7 @@
 # This script assumes that it is run from the trunk directory.
 #
 
-VERSION="1.0a4"
+VERSION="1.0"
 TMPDIR="zkpev2013-test-${VERSION}"
 TARFILE="zkpev2013-test-${VERSION}.tgz"
 ZIPFILE="zkpev2013-test-${VERSION}.zip"

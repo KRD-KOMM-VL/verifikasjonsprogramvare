@@ -27,7 +27,7 @@
   <groupId>com.computas.zkpev</groupId>
   <artifactId>zkpev2013</artifactId>
   <packaging>jar</packaging>
-  <version>1.0a4</version>
+  <version>1.0</version>
   <name>Zero-Knowledge Protocols for E-Vote</name>
   <description>
     Software component to perform the zero-knowledge protocols for the Norwegian
