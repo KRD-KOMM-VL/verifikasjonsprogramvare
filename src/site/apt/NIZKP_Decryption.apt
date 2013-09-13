@@ -140,7 +140,9 @@ NIZKP Decryption
 
   For decryption after Verificatum mixing, the proofs encrypted votes are 
   represented as a set (<a>[<i>], <b>[<i>]), and proofs are created and to be 
-  verified per encrypted voting option pair.
+  verified per encrypted voting option pair. In the 2013 election, only single
+  option votes occured, and proofs for multiple options were therefore not
+  implemented.
   
 * Parallellization
 
