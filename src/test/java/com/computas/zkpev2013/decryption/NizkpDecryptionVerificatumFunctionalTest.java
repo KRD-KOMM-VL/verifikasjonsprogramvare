@@ -22,14 +22,16 @@
  */
 package com.computas.zkpev2013.decryption;
 
+import static com.computas.zkpev2013.ZkpFunctionalTestAssertions.assertZkpContainsIncident;
+import static com.computas.zkpev2013.ZkpFunctionalTestAssertions.assertZkpDoesNotContainIncident;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+
 import java.security.NoSuchAlgorithmException;
 
-import static com.computas.zkpev2013.ZkpFunctionalTestAssertions.assertZkpContainsIncident;
-import static com.computas.zkpev2013.ZkpFunctionalTestAssertions.assertZkpDoesNotContainIncident;
 
 /**
  * Functional tests against the NizkpDecryption class.
